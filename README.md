@@ -10,6 +10,10 @@ I may or may not update this; because as I've said I'm trying to just put the ra
 
 # Running the program
 
+You will need to download the images folder. A zip should be included with every release.
+
+Extract this so that the images folder is in the same place as the exe.
+
 In order to run the program properly you will need to download SDL2-2.0.3 or higher. 
 
 A link can be found [here] (https://www.libsdl.org/download-2.0.php).

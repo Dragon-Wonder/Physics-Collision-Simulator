@@ -63,23 +63,23 @@ void clsScreen::update(void) {
     SDL_RenderPresent(ren);
 }
 /**********************************************************************************************************************************************************************/
-void clsScreen::updateBall(uint x, uint y) {
+void clsScreen::updateBall(LOC newplace) {
     //Make sure the values aren't going off screen
     //not sure if that would cause an error, but I feel like
     //dealing with it if it does.
-    if (x > width) {x = width;}
-    if (y > height) {y = height;}
+    if (newplace.x > width) {newplace.x = width;}
+    if (newplace.y > height) {newplace.y = height;}
     //Clear renderer
     SDL_RenderClear(ren);
     //Copy sky
     SDL_RenderCopy(ren,sky,NULL,NULL);
 
     //Because the top left is 0,0 I have to change the y value to match this
-    y = height - y;
+    newplace.y = height - newplace.y;
 
     SDL_Rect dst;
-    dst.x = x;
-    dst.y = y;
+    dst.x = newplace.x;
+    dst.y = newplace.y;
     //Query ball texture to get its width and height
     SDL_QueryTexture(ball,NULL,NULL, &dst.w, &dst.h);
     //Place the ball

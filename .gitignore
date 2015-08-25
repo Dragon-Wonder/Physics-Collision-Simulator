@@ -40,3 +40,6 @@
 *.dll
 sdl2-config
 
+# Zip files
+*.zip
+

@@ -18,14 +18,10 @@
 					<Add option="-pg" />
 					<Add option="-g" />
 					<Add option="-DDEFINED_BUILD_MODE_PRIVATE" />
-					<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/include" />
+					<Add directory="src/" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
-					<Add library="mingw32" />
-					<Add library="SDL2main" />
-					<Add library="SDL2" />
-					<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/lib" />
 				</Linker>
 				<Environment>
 					<Variable name="BUILD_MODE" value="-DDEFINED_BUILD_MODE_PRIVATE" />
@@ -39,14 +35,10 @@
 				<Compiler>
 					<Add option="-Os" />
 					<Add option="-std=c++11" />
-					<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/include" />
+					<Add directory="src/" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="mingw32" />
-					<Add library="SDL2main" />
-					<Add library="SDL2" />
-					<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/lib" />
 				</Linker>
 				<Environment>
 					<Variable name="BUILD_MODE" value="" />
@@ -67,14 +59,11 @@
 		<Unit filename="../README.md" />
 		<Unit filename="../res/boilerplate.rc">
 			<Option compilerVar="WINDRES" />
-			<Option weight="93" />
+			<Option weight="98" />
 			<Option compiler="gcc" use="1" buildCommand="$rescomp $file $(BUILD_MODE) -O coff $resource_output" />
 		</Unit>
-		<Unit filename="../res/my_icon.rc">
-			<Option compilerVar="WINDRES" />
-			<Option weight="100" />
-			<Option compiler="gcc" use="1" buildCommand="$rescomp $file -O coff $resource_output" />
-		</Unit>
+		<Unit filename="../src/cannonball.cpp" />
+		<Unit filename="../src/cannonball.h" />
 		<Unit filename="../src/main.cpp" />
 		<Unit filename="../src/screen.cpp" />
 		<Unit filename="../src/screen.h" />

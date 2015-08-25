@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <string>
 #include <cstdio>
+#include "cannonball.h"
 /**********************************************************************************************************************************************************************/
 //typedefs because reasons
 typedef unsigned int uint;
@@ -17,7 +18,7 @@ class clsScreen {
         ~clsScreen();
 
         void update(void);
-        void updateBall(uint, uint);
+        void updateBall(LOC);
         void cleanup(void);
 
         bool bln_SDL_started;

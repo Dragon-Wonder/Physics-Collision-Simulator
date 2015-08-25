@@ -1,4 +1,17 @@
 25 August 2015
+   Released version 1.1.1-Alpha
+
+     Change log:
+        -Removed: Icon.rc
+        -Applied: Icon to boilerplate.rc
+        -Removed: Compile.bat (couldn't get it working)
+        -Added: Cannonball class
+        -Added: Location Structure
+        -Added: Other structures to make things nicer
+        -Cleaned: main.cpp (only has main now)
+        -Added: User now prompted for values.
+
+25 August 2015
    Released version 1.0.3-Alpha
 
      Change log:
