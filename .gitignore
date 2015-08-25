@@ -3,6 +3,7 @@
 *.lo
 *.o
 *.obj
+*.res
 
 # Precompiled Headers
 *.gch
@@ -26,3 +27,16 @@
 *.exe
 *.out
 *.app
+
+# Code Blocks Stuff
+/project/bin/
+/project/bin*
+/project/obj/
+/project/obj/*
+*.layout
+*.depend
+
+# SDL stuff
+*.dll
+sdl2-config
+

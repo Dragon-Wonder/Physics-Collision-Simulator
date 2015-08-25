@@ -1,0 +1,34 @@
+25 August 2015
+   Released version 1.0.3-Alpha
+
+     Change log:
+        -Fixed: Incorrect path format
+        -Fixed: Sky now loaded before ball
+        -Updated: Clean up is now done before error message
+        -Added: Console messages about where the program is at.
+        -Added: Getchar just before program closes
+        -Fixed: Bug with the location of the ball while updating
+        -Updated: Drag is now off by default
+        -Updated: Ball.bmp picture
+        -Fixed: Ball position bug
+        -Added: Tick Class
+        -Fixed: Physics equation mistake
+
+25 August 2015
+   Released version 1.0.2-Alpha
+
+     Change log:
+        -Added: Define of image path so people can change it easier
+
+25 August 2015
+   Released version 1.0.1-Alpha
+
+     Change log:
+        -Added: Version.h
+        -Added: Code Block Support
+        -Applied: Boilerplate and version.h 
+        -Fixed: SDL Referencing
+        -Updated: SDL Stuff to SDL2
+        -Added: Skybox
+        -New: Windows Class
+

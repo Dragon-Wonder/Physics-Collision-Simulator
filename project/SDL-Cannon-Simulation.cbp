@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="SDL-Cannon-Simulation" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../Cannon-PRIVATE" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-pg" />
+					<Add option="-g" />
+					<Add option="-DDEFINED_BUILD_MODE_PRIVATE" />
+					<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+					<Add library="mingw32" />
+					<Add library="SDL2main" />
+					<Add library="SDL2" />
+					<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/lib" />
+				</Linker>
+				<Environment>
+					<Variable name="BUILD_MODE" value="-DDEFINED_BUILD_MODE_PRIVATE" />
+				</Environment>
+			</Target>
+			<Target title="Release">
+				<Option output="../Cannon" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-Os" />
+					<Add option="-std=c++11" />
+					<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="mingw32" />
+					<Add library="SDL2main" />
+					<Add library="SDL2" />
+					<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/lib" />
+				</Linker>
+				<Environment>
+					<Variable name="BUILD_MODE" value="" />
+				</Environment>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
+			<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/include" />
+		</Compiler>
+		<Linker>
+			<Add library="mingw32" />
+			<Add library="SDL2main" />
+			<Add library="SDL2" />
+			<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/lib" />
+		</Linker>
+		<Unit filename="../README.md" />
+		<Unit filename="../res/boilerplate.rc">
+			<Option compilerVar="WINDRES" />
+			<Option weight="93" />
+			<Option compiler="gcc" use="1" buildCommand="$rescomp $file $(BUILD_MODE) -O coff $resource_output" />
+		</Unit>
+		<Unit filename="../res/my_icon.rc">
+			<Option compilerVar="WINDRES" />
+			<Option weight="100" />
+			<Option compiler="gcc" use="1" buildCommand="$rescomp $file -O coff $resource_output" />
+		</Unit>
+		<Unit filename="../src/main.cpp" />
+		<Unit filename="../src/screen.cpp" />
+		<Unit filename="../src/screen.h" />
+		<Unit filename="../src/tick.cpp" />
+		<Unit filename="../src/tick.h" />
+		<Unit filename="../src/version.h" />
+		<Extensions>
+			<AutoVersioning>
+				<Scheme minor_max="1000" build_max="0" rev_max="0" rev_rand_max="999999" build_times_to_increment_minor="1000" />
+				<Settings autoincrement="1" date_declarations="1" use_define="1" update_manifest="0" do_auto_increment="1" ask_to_increment="1" language="C++" svn="0" svn_directory="" header_path="..\src\version.h" />
+				<Changes_Log show_changes_editor="1" app_title="Released version %M.%m.%b-%T" changeslog_path="..\ChangesLog.txt" />
+				<Code header_guard="__VERSION_HEADER__" namespace="Version" prefix="DEFINED_VER" />
+			</AutoVersioning>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
