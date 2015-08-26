@@ -16,22 +16,27 @@ int main(int argc, char *argv[]) {
     tempLoc.x = 0;
     tempLoc.y = 5;
 
-    double tempradius;
-    double tempAngle;
+    uint tempradius;
+    uint tempAngle;
     uint tempVel;
+    uint tempBln;
 
     //Ask user for values.
-    printf("Please enter radius for the sphere (floating point): ");
-    scanf("%f",&tempradius);
-    printf("\nPlease enter initial velocity (decimal): ");
-    scanf("%d", &tempVel);
-    printf("\nPlease enter angle of fire (in degrees): ");
-    scanf("%f", &tempAngle);
-    printf("\n");
+    printf("Please enter radius for the sphere (meters): ");
+    scanf("%4d",&tempradius);
+    printf("Please enter initial velocity (m/s): ");
+    scanf("%4d", &tempVel);
+    printf("Please enter angle of fire (°): ");
+    scanf("%d", &tempAngle);
+    printf("Would you like to enable drag (experimental)? (1 = yes, 0 = no): ");
+    scanf("%d", &tempBln);
+
 
     clsTick Tick; //create tick object
-    clsCannonball Cannonball (tempradius, tempLoc, tempVel, tempAngle); //Create Cannonball object
+    clsCannonball Cannonball (tempradius, tempLoc, (double)tempVel, (double)tempAngle); //Create Cannonball object
     Cannonball.setdeltat(Tick.getdeltat()); //Set Cannonball deltat to the one in tick
+
+    if (tempBln == 1) {Cannonball.enableDrag();}
 
     clsScreen CannonWindow; //Start the screen
 	if (CannonWindow.bln_SDL_started == false) {return 1;}
@@ -40,7 +45,7 @@ int main(int argc, char *argv[]) {
 	do {
 		Cannonball.update(); //calc new ball values
 		tempLoc = Cannonball.getPlace();
-		CannonWindow.updateBall(tempLoc); //Update ball's location
+		CannonWindow.updateBall(Cannonball.getPlace()); //Update ball's location
 		Tick.wait();
 	} while (tempLoc.y > 0);
 	printf("Finished.\n");

@@ -68,7 +68,7 @@ void clsScreen::updateBall(LOC newplace) {
     //not sure if that would cause an error, but I feel like
     //dealing with it if it does.
     if (newplace.x > width) {newplace.x = width;}
-    if (newplace.y > height) {newplace.y = height;}
+    if (newplace.y > height) {newplace.y = 0;}
     //Clear renderer
     SDL_RenderClear(ren);
     //Copy sky

@@ -41,7 +41,7 @@ void clsTick::wait(void) {
 	pause = ulngSleepTime * (CLOCKS_PER_SEC/1000);
 
 	now = then = clock();
-	printf("Wait started for %lu milliseconds.\n", ulngSleepTime);
+	//printf("Wait started for %lu milliseconds.\n", ulngSleepTime);
 
 	while ( abs(now - then) < pause) {now = clock();}
 }
