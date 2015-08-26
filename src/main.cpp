@@ -7,6 +7,14 @@
 #include "cannonball.h"
 #include "tick.h"
 /**********************************************************************************************************************************************************************/
+namespace Global {
+#ifdef DEFINED_BUILD_MODE_PRIVATE
+    const bool blnDebugMode = true;
+#else
+    const bool blnDebugMode = false;
+#endif
+}
+/**********************************************************************************************************************************************************************/
 //Structs and type defs
 typedef unsigned char uchar;
 typedef unsigned int uint;

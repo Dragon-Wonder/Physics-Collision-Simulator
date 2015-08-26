@@ -30,6 +30,10 @@ typedef struct stcLocation LOC;
 typedef struct stcDoubleValues dblXY;
 typedef struct stcPhysicalProperties PP;
 /**********************************************************************************************************************************************/
+namespace Global {
+    extern const bool blnDebugMode;
+}
+/**********************************************************************************************************************************************/
 class clsCannonball {
     public:
         /** Default constructor */

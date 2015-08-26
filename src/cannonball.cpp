@@ -24,7 +24,7 @@ clsCannonball::clsCannonball(double r, LOC init_place, uint init_vel, double ini
     vel.x = (double)(init_vel) * (cos(init_angle * Rad_Convert));
 	vel.y = (double)(init_vel) * (sin(init_angle * Rad_Convert));
 
-    printf("Ball created.\n");
+   if (Global::blnDebugMode) {printf("Ball created.\n");}
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::setdeltat(double value) {
@@ -34,7 +34,7 @@ void clsCannonball::setdeltat(double value) {
 void clsCannonball::enableDrag(void) {
     blnDragEnabled = true;
     Drag_calcvalues();
-    printf("Drag enabled.\n");
+    if (Global::blnDebugMode) {printf("Drag enabled.\n");}
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::Drag_calcvalues(void) {
@@ -68,8 +68,12 @@ void clsCannonball::update(void) {
 	dblLOC.y = dblLOC.y + vel.y * deltat + 0.5 * acc.y * pow(deltat,2);
 	vel.y = (vel.y + acc.y * deltat);
 
-	place.x = round(dblLOC.x);
-	place.y = round(dblLOC.y);
-	printf("Ball updated, new position (%d, %d)\n",place.x,place.y);
+    if (dblLOC.x < 0.0) {place.x = 0;}
+    else {place.x = round(dblLOC.x);}
+
+    if (dblLOC.y < 0.0) {place.y = 0;}
+    else {place.y = round(dblLOC.y);}
+
+	if (Global::blnDebugMode) {printf("Ball updated, new position (%d, %d)\n",place.x,place.y);}
 }
 /**********************************************************************************************************************************************/

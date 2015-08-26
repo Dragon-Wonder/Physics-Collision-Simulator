@@ -21,7 +21,10 @@ clsScreen::clsScreen() {
 		bln_SDL_started = false;
 		error();
 		return;
-	} else {bln_SDL_started = true; printf("SDL init successful\n"); }
+	} else {
+	    bln_SDL_started = true;
+	    if (Global::blnDebugMode) {printf("SDL init successful\n");}
+    }
 
 	win = SDL_CreateWindow("Cannon Simulation",100,100,width, height, SDL_WINDOW_SHOWN);
 	if (win == nullptr) {
@@ -30,7 +33,10 @@ clsScreen::clsScreen() {
         error();
 		bln_SDL_started = false;
 		return;
-	} else {blnWindow = true; printf("Window creation successful\n");}
+	} else {
+	    blnWindow = true;
+	    if (Global::blnDebugMode) {printf("Window creation successful\n");}
+	}
 
 	ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (ren == nullptr) {
@@ -39,28 +45,39 @@ clsScreen::clsScreen() {
         error();
         bln_SDL_started = false;
         return;
-	} else {blnRenderer = true; printf("Renderer creation successful\n");}
+	} else {
+	    blnRenderer = true;
+	    if (Global::blnDebugMode) {printf("Renderer creation successful\n");}
+    }
 
 	sky = loadIMG(DEFINED_SKY_BMP_PATH_STR);
     if (bln_SDL_started == false) {return;}
-    else {blnSky = true; printf("Sky loading successful\n");}
+    else {
+        blnSky = true;
+        if (Global::blnDebugMode) {printf("Sky loading successful\n");}
+    }
 
     ball = loadIMG(DEFINED_BALL_BMP_PATH_STR);
     if (bln_SDL_started == false) {return;}
-    else {blnBall = true; printf("Ball loading successful\n");}
+    else {
+        blnBall = true;
+        if (Global::blnDebugMode) {printf("Ball loading successful\n");}
+    }
 }
 /**********************************************************************************************************************************************************************/
 clsScreen::~clsScreen() {
     cleanup();
     SDL_Quit();
-    printf("SDL quit\n");
+    if (Global::blnDebugMode) {printf("SDL quit\n");}
 }
 /**********************************************************************************************************************************************************************/
 void clsScreen::update(void) {
+    //static uint uintUpdateCounter;
     //function for just updating the screen, nothing else
     //on its own in case I want to just update the screen at some point
-    //printf("Update screen.\n");
     SDL_RenderPresent(ren);
+    //uintUpdateCounter++;
+    //printf("%d\n",uintUpdateCounter);
 }
 /**********************************************************************************************************************************************************************/
 void clsScreen::updateBall(LOC newplace) {
@@ -125,7 +142,9 @@ SDL_Texture* clsScreen::loadIMG(std::string filename) {
         error();
         bln_SDL_started = false;
         return nullptr;
-	} else {printf("img to surface successful\n");}
+	} else {
+	    if (Global::blnDebugMode) {printf("img to surface successful\n");}
+    }
 
 	SDL_Texture *tex = SDL_CreateTextureFromSurface(ren,temp);
 	SDL_FreeSurface(temp);
@@ -134,7 +153,9 @@ SDL_Texture* clsScreen::loadIMG(std::string filename) {
         cleanup();
         error();
         bln_SDL_started = false;
-	} else {printf("Surface to texture successful\n");}
+	} else {
+	    if (Global::blnDebugMode) {printf("Surface to texture successful\n");}
+    }
 
 	return tex;
 }

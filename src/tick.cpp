@@ -5,7 +5,7 @@
 /**********************************************************************************************************************************************/
 //Default Constructor
 clsTick::clsTick() {
-	uchrFPS = 60;
+	uchrFPS = 80;
 
 	/*
 	Figure out how long the wait should be based on the our goal frames per second.
