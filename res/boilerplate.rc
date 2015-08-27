@@ -10,7 +10,7 @@ id ICON "Icon_App.ico"
 #define VER_FILENAME_STR "SDL Cannon Simulation"
 #define VER_ORIGINALFILENAME_STR "Cannon.exe"
 #define VER_LEGALCOPYRIGHT_STR "http://unlicense.org"
-#define VER_COMMENTS_STR "Source Code found at: https://github.com/GamerMan7799/SDL-Cannon-Simulation"
+#define VER_COMMENTS_STR "Source Code found at: https://github.com/GamerMan7799/Cannon-Simulation"
 /**********************************************************************************************************************************************/
 //If Private is define above, indicting that it was a build not meant to be released define these variables
 #ifndef DEFINED_BUILD_MODE_PRIVATE
