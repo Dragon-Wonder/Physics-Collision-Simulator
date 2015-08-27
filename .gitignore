@@ -49,3 +49,6 @@ sdl2-config
 
 # Config File
 *.ini
+
+# Log files
+*.log

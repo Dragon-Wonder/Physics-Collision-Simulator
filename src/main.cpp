@@ -17,6 +17,12 @@ namespace Global {
     clsConfig Config;
 }
 /**********************************************************************************************************************************************************************/
+/* TODO (GamerMan7799#1#): Find and implement Cannon image */
+/* TODO (GamerMan7799#1#): Allow changing starting points */
+/* TODO (GamerMan7799#6#): Embed images in exe */
+/* TODO (GamerMan7799#1#): Figure out how to detect the edges of the images */
+/* TODO (GamerMan7799#9#): Multiple cannonballs ??!?? */
+/**********************************************************************************************************************************************************************/
 //Structs and type defs
 typedef unsigned char uchar;
 typedef unsigned int uint;
