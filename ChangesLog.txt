@@ -1,8 +1,18 @@
+27-August 2015
+	Released version 0.9.1
+	
+	 Change log:
+	 -Implemeneted: Drag Mode
+	 -Changed: Increased default FPS (from 10 to 30)
+	 -Removed: Old C++ Files
+	 -Added: Physical Properties Class
+	 -Added: XY class
+
 27 August 2015
    Released version 0.9.0
 
      Change log:
-        -Notes: Convert from C++ to Ruby
+    -Notes: Convert from C++ to Ruby
 	-Notes: Drag disabled in this version
 	-Notes: Just trying to get it working in Ruby before I add a bunch of stuff
 
