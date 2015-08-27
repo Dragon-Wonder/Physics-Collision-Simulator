@@ -42,4 +42,7 @@ sdl2-config
 
 # Zip files
 *.zip
+*.tmp
 
+# Config File
+*.ini

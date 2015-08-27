@@ -5,15 +5,21 @@
 #include <string>
 #include <cstdio>
 #include "cannonball.h"
+#include "config.h"
 /**********************************************************************************************************************************************************************/
 //typedefs because reasons
 typedef unsigned int uint;
 typedef unsigned char uchar;
 /**********************************************************************************************************************************************************************/
+namespace Global {
+    extern const bool blnDebugMode;
+    extern clsConfig Config;
+}
+/**********************************************************************************************************************************************************************/
 class clsScreen {
     public:
         /** Default constructor */
-        clsScreen();
+        clsScreen(uint);
         /** Default destructor */
         ~clsScreen();
 

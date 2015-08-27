@@ -1,3 +1,28 @@
+27 August 2015
+   Released version 1.0.2-Beta
+
+     Change log:
+        -Fixed: Several Bugs.
+        -Removed: Version info including software status (not working)
+		-Removed: Loading of Images path (was causing issues)
+
+27 August 2015
+   Released version 1.0.1-Beta
+
+     Change log:
+        -Added: Config file
+        -Applied: Software state being added to boilerplater
+        -Added: Logging of ball location to a file
+        -Applied: Easier way to change images path (config file)
+
+27 August 2015
+   Released version 1.0.0-Beta
+
+     Change log:
+        -Added: Various ball sizes that are pulled when radius is entered
+        -Updated: Moved to beta
+        -Removed: Old sky bitmap
+
 26 August 2015
    Released version 1.1.6-Alpha
 

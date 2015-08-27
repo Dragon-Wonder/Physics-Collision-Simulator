@@ -6,6 +6,7 @@
 #include "screen.h"
 #include "cannonball.h"
 #include "tick.h"
+#include "config.h"
 /**********************************************************************************************************************************************************************/
 namespace Global {
 #ifdef DEFINED_BUILD_MODE_PRIVATE
@@ -13,6 +14,7 @@ namespace Global {
 #else
     const bool blnDebugMode = false;
 #endif
+    clsConfig Config;
 }
 /**********************************************************************************************************************************************************************/
 //Structs and type defs
@@ -20,6 +22,8 @@ typedef unsigned char uchar;
 typedef unsigned int uint;
 /**********************************************************************************************************************************************************************/
 int main(int argc, char *argv[]) {
+    Global::Config.Check(); //Load Config file and all its values.
+
     LOC tempLoc;
     tempLoc.x = 0;
     tempLoc.y = 5;
@@ -46,7 +50,7 @@ int main(int argc, char *argv[]) {
 
     if (tempBln == 1) {Cannonball.enableDrag();}
 
-    clsScreen CannonWindow; //Start the screen
+    clsScreen CannonWindow(tempradius); //Start the screen
 	if (CannonWindow.bln_SDL_started == false) {return 1;}
 
 	CannonWindow.updateBall(tempLoc); //Place ball at its starting point

@@ -2,6 +2,7 @@
 id ICON "Icon_App.ico"
 /**********************************************************************************************************************************************/
 #include <windows.h>
+//#include <string>
 #include "../src/version.h"
 /**********************************************************************************************************************************************/
 //General stuff that should need to be changed
@@ -22,6 +23,11 @@ id ICON "Icon_App.ico"
 	#define VER_PRIVATEBUILD VS_FF_PRIVATEBUILD
 	#define VER_PRERELEASE VS_FF_PRERELEASE
 #endif
+/**********************************************************************************************************************************************/
+/*char* strProductVersion = DEFINED_VER_FULLVERSION_STRING;
+strProductVersion += "-";
+strProductVersion += DEFINED_VER_STATUS;
+strProductVersion += "\0";*/
 /**********************************************************************************************************************************************/
 VS_VERSION_INFO VERSIONINFO
 FILEVERSION    	DEFINED_VER_RC_FILEVERSION

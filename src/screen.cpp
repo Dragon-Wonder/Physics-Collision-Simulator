@@ -3,13 +3,11 @@
 /**********************************************************************************************************************************************************************/
 //These are the paths to the images needed for the program
 //They are relative to the exe
-#define DEFINED_SKY_BMP_PATH_STR ".\\images\\sky.bmp"
-#define DEFINED_BALL_BMP_PATH_STR ".\\images\\ball.bmp"
 /**********************************************************************************************************************************************************************/
-clsScreen::clsScreen() {
-    //Basic constructor, defaults size to 680 w by 480 h
-    width = 680;
-    height = 480;
+clsScreen::clsScreen(uint ball_radius) {
+    /* TODO (GamerMan7799#5#): Add check if images path is correct */
+    width = Global::Config.values.uintScreenWidth;
+    height = Global::Config.values.uintScreenHeight;
 
     blnWindow = false;
     blnRenderer = false;
@@ -50,14 +48,52 @@ clsScreen::clsScreen() {
 	    if (Global::blnDebugMode) {printf("Renderer creation successful\n");}
     }
 
-	sky = loadIMG(DEFINED_SKY_BMP_PATH_STR);
+    std::string pathstring = Global::Config.values.PathToImages;
+    pathstring += "sky.bmp";
+
+	sky = loadIMG(pathstring);
     if (bln_SDL_started == false) {return;}
     else {
         blnSky = true;
         if (Global::blnDebugMode) {printf("Sky loading successful\n");}
     }
 
-    ball = loadIMG(DEFINED_BALL_BMP_PATH_STR);
+    std::string ballpath = Global::Config.values.PathToImages;
+
+    switch (ball_radius) {
+    case 1:
+        ballpath += "ball_1.bmp";
+        break;
+    case 2:
+        ballpath += "ball_2.bmp";
+        break;
+    case 3:
+        ballpath += "ball_3.bmp";
+        break;
+    case 4:
+        ballpath += "ball_4.bmp";
+        break;
+    case 5:
+        ballpath += "ball_5.bmp";
+        break;
+    case 6:
+        ballpath += "ball_6.bmp";
+        break;
+    case 7:
+        ballpath += "ball_7.bmp";
+        break;
+    case 8:
+        ballpath += "ball_8.bmp";
+        break;
+    case 9:
+        ballpath += "ball_9.bmp";
+        break;
+    default :
+        ballpath += "ball_10.bmp";
+        break;
+    };
+
+    ball = loadIMG(ballpath);
     if (bln_SDL_started == false) {return;}
     else {
         blnBall = true;

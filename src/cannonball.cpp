@@ -75,5 +75,10 @@ void clsCannonball::update(void) {
     else {place.y = round(dblLOC.y);}
 
 	if (Global::blnDebugMode) {printf("Ball updated, new position (%d, %d)\n",place.x,place.y);}
+	if (Global::Config.values.blnLogging) {
+        FILE* logfile = fopen("logfile.log","a");
+        fprintf(logfile,"new position (%d, %d)\n",place.x,place.y);
+        fclose(logfile);
+	}
 }
 /**********************************************************************************************************************************************/
