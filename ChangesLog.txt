@@ -1,4 +1,10 @@
 27-August 2015
+	Released version 1.0.0
+	
+	 Change log:
+	 -Notes: Couldn't think of anything else from last version so just calling it 1.0.0
+
+27-August 2015
 	Released version 0.9.1
 	
 	 Change log:

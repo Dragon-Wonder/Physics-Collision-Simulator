@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 
 # Make some global variables for later use.
-$Program_version = "0.9.1"
-$Debug_Mode = 1 # Enables Debug mode which prints more messages to the console.
+$Program_version = "1.0.0"
+$Debug_Mode = 0 # Enables Debug mode which prints more messages to the console.
 $Rad_Convert = Math::PI / 180 # Converts Degrees to radians
 
 # main code
