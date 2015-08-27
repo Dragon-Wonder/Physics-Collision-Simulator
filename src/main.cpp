@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
 
     clsTick Tick; //create tick object
     clsCannonball Cannonball (tempradius, tempLoc, (double)tempVel, (double)tempAngle); //Create Cannonball object
-    Cannonball.setdeltat(Tick.getdeltat()); //Set Cannonball deltat to the one in tick
+    Cannonball.setdeltat(Tick.getTimeDifference());
 
     if (tempBln == 1) {Cannonball.enableDrag();}
 
@@ -55,10 +55,11 @@ int main(int argc, char *argv[]) {
 
 	CannonWindow.updateBall(tempLoc); //Place ball at its starting point
 	do {
+        Cannonball.setdeltat(Tick.getTimeDifference());
 		Cannonball.update(); //calc new ball values
 		tempLoc = Cannonball.getPlace();
 		CannonWindow.updateBall(Cannonball.getPlace()); //Update ball's location
-		Tick.wait();
+		//Tick.wait();
 	} while (tempLoc.y > 0);
 	printf("Finished.\n");
 	getchar();

@@ -33,6 +33,8 @@
 /project/bin*
 /project/obj/
 /project/obj/*
+/project/images/
+/project/images/*
 *.layout
 *.depend
 
@@ -41,6 +43,7 @@
 sdl2-config
 
 # Zip files
+*.rar
 *.zip
 *.tmp
 

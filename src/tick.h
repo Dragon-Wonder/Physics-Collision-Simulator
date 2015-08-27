@@ -6,25 +6,26 @@
 #include <cstdio>
 #include <cstdlib>
 /**********************************************************************************************************************************************/
+namespace Global {extern const bool blnDebugMode;}
+/**********************************************************************************************************************************************/
 //typedef because reasons
 typedef unsigned char uchar;
 typedef unsigned int uint;
 typedef unsigned long ulong;
 /**********************************************************************************************************************************************/
 class clsTick {
-    public:
-	//private:
+	private:
 		//Members
-		uchar uchrFPS;
-		ulong ulngSleepTime;
+		clock_t lngTimerStart;
 
-	//public:
+	public:
 		//Default Constructor
 		clsTick();
 
 		//Functions
-		void wait(void); //Call this to activate the wait
-		double getdeltat(void);
+		void startTimer(void);
+		double getTimeDifference(void);
+		void wait(void);
 };
 /**********************************************************************************************************************************************/
 #endif

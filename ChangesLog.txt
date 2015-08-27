@@ -1,4 +1,13 @@
 27 August 2015
+   Released version 1.1.0-Beta
+
+     Change log:
+        -Updated: Deltat is now variable on the time since the last update.
+		-Fixed: Some Debug message appearing when not in debug mode
+		-Fixed: A few bugs
+		
+
+27 August 2015
    Released version 1.0.2-Beta
 
      Change log:

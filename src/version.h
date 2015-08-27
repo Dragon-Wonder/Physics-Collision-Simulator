@@ -15,18 +15,18 @@ namespace Version{
 	
 	//Standard Version Type
 	#define DEFINED_VER_MAJOR  1
-	#define DEFINED_VER_MINOR  0
-	#define DEFINED_VER_BUILD  2
-	#define DEFINED_VER_REVISION  17
+	#define DEFINED_VER_MINOR  1
+	#define DEFINED_VER_BUILD  0
+	#define DEFINED_VER_REVISION  56
 	
 	//Miscellaneous Version Types
-	#define DEFINED_VER_BUILDS_COUNT  24
-	#define DEFINED_VER_RC_FILEVERSION 1,0,2,17
-	#define DEFINED_VER_RC_FILEVERSION_STRING "1, 0, 2, 17\0"
-	#define DEFINED_VER_FULLVERSION_STRING  "1.0.2.17"
+	#define DEFINED_VER_BUILDS_COUNT  13
+	#define DEFINED_VER_RC_FILEVERSION 1,1,0,56
+	#define DEFINED_VER_RC_FILEVERSION_STRING "1, 1, 0, 56\0"
+	#define DEFINED_VER_FULLVERSION_STRING  "1.1.0.56"
 	
 	//These values are to keep track of your versioning state, don't modify them.
-	#define DEFINED_VER_BUILD_HISTORY  17
+	#define DEFINED_VER_BUILD_HISTORY  1
 	
 
 }

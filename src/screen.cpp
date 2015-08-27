@@ -145,22 +145,22 @@ void clsScreen::cleanup(void) {
     if (blnBall) {
         SDL_DestroyTexture(ball);
         blnBall = false;
-        printf("Ball texture destroyed\n");
+        if (Global::blnDebugMode) {printf("Ball texture destroyed\n");}
     }
 	if (blnSky) {
         SDL_DestroyTexture(sky);
         blnSky = false;
-        printf("Sky texture destroyed\n");
+        if (Global::blnDebugMode) {printf("Sky texture destroyed\n");}
     }
 	if (blnRenderer) {
         SDL_DestroyRenderer(ren);
         blnRenderer = false;
-        printf("Renderer destroyed\n");
+        if (Global::blnDebugMode) {printf("Renderer destroyed\n");}
     }
 	if (blnWindow) {
         SDL_DestroyWindow(win);
         blnWindow = false;
-        printf("Window destroyed\n");
+        if (Global::blnDebugMode) {printf("Window destroyed\n");}
     }
 }
 /**********************************************************************************************************************************************************************/

@@ -59,7 +59,7 @@ void clsConfig::load(void) {
 	fgets(chrTempString,50,configFile);
 	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %d",&intTempBool);
 	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
-	if(Global::blnDebugMode) {printf("Log Path \t \t %d\n",intTempBool);}
+	if(Global::blnDebugMode) {printf("Log Path \t %d\n",intTempBool);}
 	if(intTempBool == 1) {values.blnLogging = true;}
 	else {values.blnLogging = false;}
 
@@ -82,7 +82,7 @@ char clsConfig::verisonCheck(const char *ConfigVerison) {
 	uint C_MajorNum, C_MinorNum, C_PatchNum, C_BuildNum;
     char C_SoftwareStatus, P_SoftwareStatus;
 	sscanf(ConfigVerison,"%u.%u.%u.%u-%c",&C_MajorNum, &C_MinorNum, &C_PatchNum, &C_BuildNum, &C_SoftwareStatus);
-	if (Global::blnDebugMode) {printf("Config: v %u %u %u %u %s \n", C_MajorNum, C_MinorNum, C_PatchNum, C_BuildNum, C_SoftwareStatus);}
+	if (Global::blnDebugMode) {printf("Config: v %u %u %u %u %c \n", C_MajorNum, C_MinorNum, C_PatchNum, C_BuildNum, C_SoftwareStatus);}
 	sscanf(DEFINED_VER_STATUS_SHORT,"%c",&P_SoftwareStatus);
 	if (P_SoftwareStatus != C_SoftwareStatus) {return NEWCONFIG;}
 	else if (DEFINED_VER_MAJOR != C_MajorNum) {return NEWCONFIG;}
