@@ -65,7 +65,6 @@
 					<Add directory="src/" />
 				</Compiler>
 				<Linker>
-					<Add option="-pg -lgmon" />
 					<Add option="-pg" />
 					<Add library="SDL2main" />
 					<Add library="SDL2" />
