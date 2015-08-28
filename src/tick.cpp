@@ -29,6 +29,6 @@ void clsTick::wait(void) {
 	clock_t now, then;
 	pause = 5 * (CLOCKS_PER_SEC/1000); //pause equals 1 millisecond
     now = then = clock();
-	while (abs(now - then) < pause) {now = clock();}
+	while ( (ulong)(now - then) < pause) {now = clock();}
 }
 /**********************************************************************************************************************************************/
