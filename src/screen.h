@@ -8,6 +8,10 @@
 #include "cannonball.h"
 #include "config.h"
 /**********************************************************************************************************************************************************************/
+//Include the xpm files which present the images.
+#include "image_ball.xpm"
+#include "image_sky.xpm"
+/**********************************************************************************************************************************************************************/
 //typedefs because reasons
 typedef unsigned int uint;
 typedef unsigned char uchar;

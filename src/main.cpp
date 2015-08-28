@@ -19,7 +19,6 @@ namespace Global {
 /**********************************************************************************************************************************************************************/
 /* TODO (GamerMan7799#1#): Find and implement Cannon image */
 /* TODO (GamerMan7799#1#): Allow changing starting points */
-/* TODO (GamerMan7799#6#): Embed images in exe */
 /* TODO (GamerMan7799#1#): Figure out how to detect the edges of the images */
 /* TODO (GamerMan7799#9#): Multiple cannonballs ??!?? */
 /**********************************************************************************************************************************************************************/
@@ -29,6 +28,8 @@ typedef unsigned int uint;
 /**********************************************************************************************************************************************************************/
 int main(int argc, char *argv[]) {
     Global::Config.Check(); //Load Config file and all its values.
+
+    if (Global::blnDebugMode) {printf("OS: %s\n",Global::Config.values.OperatingSystem);}
 
     LOC tempLoc;
     tempLoc.x = 0;

@@ -11,15 +11,29 @@ clsConfig::clsConfig() {
     values.blnLogging = false;
     values.uintScreenWidth = 640;
     values.uintScreenHeight = 480;
-#if defined(_WIN64) || defined(_WIN32)
-    values.PathToImages = ".\\images\\";
-#elif defined(__linux__) || defined(__CYGWIN__)
-    values.PathToImages = "./images/";
-#elif defined(__APPLE__)
-    values.PathToImages = "Apple sucks :p";
+#if defined(_AIX)
+    values.OperatingSystem = "AIX";
+#elif defined(__unix__)
+    values.OperatingSystem = "Unix";
+#elif defined(__hpux)
+    values.OperatingSystem = "HP-UX";
+#elif defined(__linux__)
+    values.OperatingSystem = "Linux";
+#elif defined(__APPLE__) && defined(__MACH__)
+    //Apple Sucks
+    values.OperatingSystem = "OSX";
+    //I could add additonal stuff to see if iOS or OSX but I don't care.
+#elif defined(__sun) && defined(__SVR4)
+    values.OperatingSystem = "Solaris";
+#elif defined(__GYGWIN__) && !defined(_WIN32)
+    values.OperatingSystem = "Cygwin POSIX";
+#elif defined(_WIN64)
+    values.OperatingSystem = "Windows 64 bit";
+#elif defined(_WIN32)
+    values.OperatingSystem = "Windows 32 bit";
 #else
-    values.PathToImages = "ERROR! OS NOT SUPPORTED!";
-#endif // DEFINED_OS_WINDOWS
+    values.OperatingSystem = "UNDEFINED OS!";
+#endif // defined OS
 }
 /**********************************************************************************************************************************************/
 bool clsConfig::exists(void) {
@@ -47,7 +61,6 @@ void clsConfig::make(void) {
 /**********************************************************************************************************************************************/
 void clsConfig::load(void) {
 	//Loads all of the config values
-	/* TODO (GamerMan7799#6#): Consider expanding chrTempString in case of longer folder paths */
 	char chrTempString[50];
 	int intTempBool, intValuesScanned;
 

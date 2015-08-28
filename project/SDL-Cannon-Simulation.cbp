@@ -15,11 +15,13 @@
 					<Add option="-std=c++11" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-pg" />
 					<Add option="-g" />
 					<Add option="-DDEFINED_BUILD_MODE_PRIVATE" />
 					<Add directory="src/" />
 				</Compiler>
 				<Linker>
+					<Add option="-pg -lgmon" />
 					<Add library="mingw32" />
 					<Add library="SDL2main" />
 					<Add library="SDL2" />
@@ -37,6 +39,7 @@
 				<Compiler>
 					<Add option="-Os" />
 					<Add option="-std=c++11" />
+					<Add option="-w" />
 					<Add directory="src/" />
 				</Compiler>
 				<Linker>
@@ -82,6 +85,7 @@
 				<Compiler>
 					<Add option="-Os" />
 					<Add option="-std=c++11" />
+					<Add option="-w" />
 					<Add directory="src/" />
 				</Compiler>
 				<Linker>
@@ -117,6 +121,8 @@
 		<Unit filename="../src/cannonball.h" />
 		<Unit filename="../src/config.cpp" />
 		<Unit filename="../src/config.h" />
+		<Unit filename="../src/image_ball.xpm" />
+		<Unit filename="../src/image_sky.xpm" />
 		<Unit filename="../src/main.cpp" />
 		<Unit filename="../src/screen.cpp" />
 		<Unit filename="../src/screen.h" />

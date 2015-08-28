@@ -8,15 +8,23 @@ There are a few branches of this that use different programming languages.
 
 It has been released in the Public Domain meaning you can use it however you wish.
 
-I may or may not update this; because as I've said I'm trying to just put the random code bits I've made throughout the years all on GitHub as a central place to be able to reference them.
-
 # Running the program
 
-You will need to download the images folder. A zip should be included with every release.
+In order to run the program properly you will need to download SDL2-2.0.3 or higher AND SDL2-image (these are two different libraries). 
 
-Extract this so that the images folder is in the same place as the exe.
+A link for SDL2 can be found [here] (https://www.libsdl.org/download-2.0.php).
 
-In order to run the program properly you will need to download SDL2-2.0.3 or higher. 
+A link for SDL2 image can be found [here](https://www.libsdl.org/projects/SDL_image/) .
 
-A link can be found [here] (https://www.libsdl.org/download-2.0.php).
+You will want to download the Runtime Binaries (if you have windows I recommend 32 bit over 64 bit; even if you have a 64 bit computer).
 
+When all is said and done you should have the following files in your folder. (Also note that you should be able to put the dll files in your C drive).
+
+```
+FolderName\
+FolderName\Cannon.exe
+FolderName\SDL2.dll
+FolderName\SDL2_image.dll
+```
+
+Let me know if I am missing a dependences that I might have forgotten about due to my own system set up.

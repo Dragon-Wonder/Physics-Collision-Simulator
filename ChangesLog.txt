@@ -1,3 +1,12 @@
+28 August 2015
+   Released version 1.1.2-Beta
+
+     Change log:
+        -Applied: Embedded Images as XPMs
+        -Removed: All but 1 ball size (since I am now embedding the images it didn't make sense; nor was it really all that useful).
+        -Updated: Sky picture to be smaller (64x48 instead of 640x480) since I'm embedding so that file size will be smaller.
+		-Added: Config value that holds OS (kinda pointless at the moment; mostly just so I have a reference of how to do this in the future).
+
 27 August 2015
    Released version 1.1.1-Beta
 

@@ -18,7 +18,7 @@ struct ConfigValues {
 	uint uintScreenWidth;
 	uint uintScreenHeight;
 	bool blnLogging;
-	char* PathToImages;
+	char* OperatingSystem;
 };
 
 typedef struct ConfigValues Configures;
