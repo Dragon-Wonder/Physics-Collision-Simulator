@@ -9,17 +9,9 @@ This holds all the functions related to the config file, its loading, making, an
 clsConfig::clsConfig() {
     //Set default values
     values.blnLogging = false;
-    values.uintScreenWidth = 640;
+    values.uintScreenWidth = 680;
     values.uintScreenHeight = 480;
-#if defined(_WIN64) || defined(_WIN32)
     values.PathToImages = ".\\images\\";
-#elif defined(__linux__) || defined(__CYGWIN__)
-    values.PathToImages = "./images/";
-#elif defined(__APPLE__)
-    values.PathToImages = "Apple sucks :p";
-#else
-    values.PathToImages = "ERROR! OS NOT SUPPORTED!";
-#endif // DEFINED_OS_WINDOWS
 }
 /**********************************************************************************************************************************************/
 bool clsConfig::exists(void) {

@@ -2,7 +2,6 @@
 #define __MY_SCREEN_HEADER__
 /**********************************************************************************************************************************************************************/
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include <string>
 #include <cstdio>
 #include "cannonball.h"

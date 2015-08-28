@@ -49,7 +49,7 @@ clsScreen::clsScreen(uint ball_radius) {
     }
 
     std::string pathstring = Global::Config.values.PathToImages;
-    pathstring += "sky.png";
+    pathstring += "sky.bmp";
 
 	sky = loadIMG(pathstring);
     if (bln_SDL_started == false) {return;}
@@ -62,34 +62,34 @@ clsScreen::clsScreen(uint ball_radius) {
 
     switch (ball_radius) {
     case 1:
-        ballpath += "ball_1.png";
+        ballpath += "ball_1.bmp";
         break;
     case 2:
-        ballpath += "ball_2.png";
+        ballpath += "ball_2.bmp";
         break;
     case 3:
-        ballpath += "ball_3.png";
+        ballpath += "ball_3.bmp";
         break;
     case 4:
-        ballpath += "ball_4.png";
+        ballpath += "ball_4.bmp";
         break;
     case 5:
-        ballpath += "ball_5.png";
+        ballpath += "ball_5.bmp";
         break;
     case 6:
-        ballpath += "ball_6.png";
+        ballpath += "ball_6.bmp";
         break;
     case 7:
-        ballpath += "ball_7.png";
+        ballpath += "ball_7.bmp";
         break;
     case 8:
-        ballpath += "ball_8.png";
+        ballpath += "ball_8.bmp";
         break;
     case 9:
-        ballpath += "ball_9.png";
+        ballpath += "ball_9.bmp";
         break;
     default :
-        ballpath += "ball_10.png";
+        ballpath += "ball_10.bmp";
         break;
     };
 
@@ -170,7 +170,7 @@ void clsScreen::error(void) {
 }
 /**********************************************************************************************************************************************************************/
 SDL_Texture* clsScreen::loadIMG(std::string filename) {
-    SDL_Surface* temp = IMG_Load(filename.c_str());
+    SDL_Surface* temp = SDL_LoadBMP(filename.c_str());
 
 	if (temp == nullptr) {
         printf("Failed to load img.\n");
