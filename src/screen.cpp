@@ -60,6 +60,13 @@ clsScreen::clsScreen(uint ball_radius) {
         blnBall = true;
         if (Global::blnDebugMode) {printf("Ball loading successful\n");}
     }
+
+    cannon = loadIMG("cannon");
+    if (bln_SDL_started == false) {return;}
+    else {
+        blnCannon = true;
+        if (Global::blnDebugMode) {printf("Cannon loading successful\n");}
+    }
 }
 /**********************************************************************************************************************************************************************/
 clsScreen::~clsScreen() {
@@ -84,11 +91,14 @@ void clsScreen::updateBall(LOC newplace) {
     SDL_RenderClear(ren);
     //Copy sky
     SDL_RenderCopy(ren,sky,NULL,NULL);
+    SDL_Rect dst;
+    dst.x = 0;
+    dst.y = height - 48 - 5;
+    SDL_QueryTexture(cannon,NULL,NULL, &dst.w, &dst.h);
+    SDL_RenderCopy(ren,cannon,NULL,&dst);
 
     //Because the top left is 0,0 I have to change the y value to match this
     newplace.y = height - newplace.y;
-
-    SDL_Rect dst;
     dst.x = newplace.x;
     dst.y = newplace.y;
     //Query ball texture to get its width and height
@@ -109,6 +119,11 @@ void clsScreen::cleanup(void) {
         SDL_DestroyTexture(sky);
         blnSky = false;
         if (Global::blnDebugMode) {printf("Sky texture destroyed\n");}
+    }
+    if (blnCannon) {
+        SDL_DestroyTexture(cannon);
+        blnCannon = false;
+        if (Global::blnDebugMode) {printf("Cannon texture destroyed\n");}
     }
 	if (blnRenderer) {
         SDL_DestroyRenderer(ren);
@@ -133,6 +148,7 @@ SDL_Texture* clsScreen::loadIMG(std::string filename) {
 
     if (filename == "ball") {temp = IMG_ReadXPMFromArray(image_ball_xpm);}
     else if (filename == "sky") {temp = IMG_ReadXPMFromArray(image_sky_xpm);}
+    else if (filename == "cannon") {temp = IMG_ReadXPMFromArray(image_cannon_xpm);}
     else {
         printf("Failed to find specified xpm array.\n");
         cleanup();

@@ -17,10 +17,10 @@ namespace Global {
     clsConfig Config;
 }
 /**********************************************************************************************************************************************************************/
-/* TODO (GamerMan7799#1#): Find and implement Cannon image */
 /* TODO (GamerMan7799#1#): Allow changing starting points */
 /* TODO (GamerMan7799#1#): Figure out how to detect the edges of the images */
 /* TODO (GamerMan7799#9#): Multiple cannonballs ??!?? */
+/* TODO (GamerMan7799#1#): Get Highest height and Distance from fire at end of run. */
 /**********************************************************************************************************************************************************************/
 //Structs and type defs
 typedef unsigned char uchar;

@@ -77,7 +77,7 @@ void clsCannonball::update(void) {
 	if (Global::blnDebugMode) {printf("Ball updated, new position (%f, %f)\n",dblLOC.x,dblLOC.y);}
 	if (Global::Config.values.blnLogging) {
         FILE* logfile = fopen("logfile.log","a");
-        fprintf(logfile,"new position (%d, %d)\n",place.x,place.y);
+        fprintf(logfile,"(%.5f, %.5f)\n",dblLOC.x,dblLOC.y);
         fclose(logfile);
 	}
 }

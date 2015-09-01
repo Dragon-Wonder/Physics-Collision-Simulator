@@ -122,6 +122,7 @@
 		<Unit filename="../src/config.cpp" />
 		<Unit filename="../src/config.h" />
 		<Unit filename="../src/image_ball.xpm" />
+		<Unit filename="../src/image_cannon.xpm" />
 		<Unit filename="../src/image_sky.xpm" />
 		<Unit filename="../src/main.cpp" />
 		<Unit filename="../src/screen.cpp" />

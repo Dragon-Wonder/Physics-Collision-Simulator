@@ -63,8 +63,6 @@ class clsCannonball {
 
         void Drag_calcvalues(void);
         void Drag_updateacc(void);
-
-
 };
 /**********************************************************************************************************************************************/
 #endif // __CANNONBALL_HEADER__

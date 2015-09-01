@@ -11,6 +11,7 @@
 //Include the xpm files which present the images.
 #include "image_ball.xpm"
 #include "image_sky.xpm"
+#include "image_cannon.xpm"
 /**********************************************************************************************************************************************************************/
 //typedefs because reasons
 typedef unsigned int uint;
@@ -37,6 +38,7 @@ class clsScreen {
     private:
         SDL_Texture *ball;
         SDL_Texture *sky;
+        SDL_Texture *cannon;
         SDL_Window *win;
         SDL_Renderer *ren;
 
@@ -50,6 +52,7 @@ class clsScreen {
         bool blnRenderer;
         bool blnSky;
         bool blnBall;
+        bool blnCannon;
 
         SDL_Texture* loadIMG(std::string);
         void error(void);
