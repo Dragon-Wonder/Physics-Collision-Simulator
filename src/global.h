@@ -19,6 +19,8 @@ namespace Global {
         extern const float fDensityAir;
         extern const float fRecoil;
         extern const float fVelocityScalar;
+        extern const float fMinVelocity;
+        extern const float fMomentumLoss;
     }
 }
 /**********************************************************************************************************************************************/

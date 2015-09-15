@@ -62,11 +62,18 @@ void clsCannonball::update(double newdeltat) {
 
     dblLOC.x = dblLOC.x + vel.x * deltat + 0.5 * acc.x * pow(deltat,2);
 	vel.x = (vel.x + acc.x * deltat);
-	if (dblLOC.x <= 0.0 || dblLOC.x >= window.width - dst.w) {vel.x *= Global::Physics::fRecoil;}
-    /* FIXME (GamerMan7799#1#): Ball going into negative values */
+	if (dblLOC.x <= 0.0 || dblLOC.x >= window.width - dst.w) {
+            vel.x *= Global::Physics::fRecoil;
+            if (dblLOC.x <= 0.0) {dblLOC.x++;}
+            else {dblLOC.x--;}
+    } //end if hitting x edges
 	dblLOC.y = dblLOC.y + vel.y * deltat + 0.5 * acc.y * pow(deltat,2);
 	vel.y = (vel.y + acc.y * deltat);
-	if (dblLOC.y <= 0.0 || dblLOC.y >= window.height - dst.h) {vel.y *= Global::Physics::fRecoil;}
+	if (dblLOC.y <= dst.h || dblLOC.y >= window.height) {
+            vel.y *= Global::Physics::fRecoil;
+            if (dblLOC.y <= dst.h) {dblLOC.y++;}
+            else {dblLOC.y--;}
+    }//end if hitting y edges
 
     if (dblLOC.x < 0.0) {place.x = 0;}
     else {place.x = round(dblLOC.x);}
@@ -74,13 +81,16 @@ void clsCannonball::update(double newdeltat) {
     if (dblLOC.y < 0.0) {place.y = 0;}
     else {place.y = round(dblLOC.y);}
 
-	if (Global::blnDebugMode) {printf("Ball updated, new position (%f, %f)\n",dblLOC.x,dblLOC.y);}
+	//if (Global::blnDebugMode) {printf("Ball updated, new position (%f, %f)\n",dblLOC.x,dblLOC.y);}
 	if (Global::Config.values.blnLogging) {
         FILE* logfile = fopen("logfile.log","a");
         fprintf(logfile,"(%.5f, %.5f)\n",dblLOC.x,dblLOC.y);
         fclose(logfile);
 	}
 
+    double total_v;
+    total_v = sqrt( pow(vel.x,2) + pow(vel.y,2) );
+    if (total_v < Global::Physics::fMinVelocity) {blnstarted = false;}
 	show();
 }
 /**********************************************************************************************************************************************/

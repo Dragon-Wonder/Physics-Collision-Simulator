@@ -26,14 +26,17 @@ namespace Global {
         const float fDensityAir = 1.2754; //Density of air
         const float fRecoil = -0.56;
         const float fVelocityScalar = 1;
+        const float fMinVelocity = 15; //If a ball has less velocity than the it will "die"
+        const float fMomentumLoss = 0.89; //How much total momentum stays after a collisions
     }
 }
 /**********************************************************************************************************************************************************************/
 /* TODO (GamerMan7799#1#): Figure out how to detect the edges of the images */
 /* TODO (GamerMan7799#1#): Get Highest height and Distance from fire at end of run. */
 /**********************************************************************************************************************************************************************/
-clsCannonball Cannonballs[1];
-uint uNumberCannonballs = 1;
+#define DEFINED_CANNONBALL_LIMIT 10
+/**********************************************************************************************************************************************************************/
+clsCannonball Cannonballs[DEFINED_CANNONBALL_LIMIT];
 WINATT tempwin;
 SDL_Texture* tempball;
 /**********************************************************************************************************************************************************************/
@@ -75,7 +78,7 @@ int main(int argc, char *argv[]) {
         if (holding) {CannonWindow.drawline(CurrentMouse, OldMouse);}
         //Update every ball
         tempdeltat = Tick.getTimeDifference();
-		for (uint i = 0; i < uNumberCannonballs; i++) {
+		for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {
             if (Cannonballs[i].blnstarted) {
                 Cannonballs[i].update(tempdeltat);
             } //end if started
@@ -95,8 +98,8 @@ void addNewCannonball(LOC mouseC, LOC mouseO ) {
     fire_v /= Global::Physics::fVelocityScalar;
 
     if (mouseC.x == mouseO.x) {
-        if (mouseC.y > mouseO.y) {angle = 90.0;}
-        else if (mouseC.y < mouseO.y) {angle = -90.0;}
+        if (mouseC.y > mouseO.y) {angle = -90.0;}
+        else if (mouseC.y < mouseO.y) {angle = 90.0;}
         else {angle = 0;}
     } else {
         angle = atan( (mouseC.y - mouseO.y) / (mouseC.x - mouseO.x) );
@@ -107,12 +110,25 @@ void addNewCannonball(LOC mouseC, LOC mouseO ) {
     //mod mouse start
     mouseO.y = tempwin.height - mouseO.y;
 
-    //Add a new element to the array
-    if (uNumberCannonballs == 1) {
-        Cannonballs[0].setValues(2.0, mouseO, fire_v, angle);
-        Cannonballs[0].setSDLScreen(tempball, tempwin);
-    } else {
-        uNumberCannonballs++;
-    }//end if number
+    //loop through array to find next available cannonball slot
+    for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {
+        if (!Cannonballs[i].blnstarted) {
+            Cannonballs[i].setValues(2.0, mouseO, fire_v, angle);
+            Cannonballs[i].setSDLScreen(tempball, tempwin);
+            return;
+        } //end if not started
+    } //end for cannonballs.
+
+    //since the program would have exited this function if a spot was open
+    //below we tell the use they have to wait
+    printf("You cannot add more cannonballs, please wait for some to decay.\n");
+}
+/**********************************************************************************************************************************************************************/
+void checkCollide(LOC place1, LOC place2) {
+
+}
+/**********************************************************************************************************************************************************************/
+void doCollision(uint num1, uint num2) {
+
 }
 /**********************************************************************************************************************************************************************/

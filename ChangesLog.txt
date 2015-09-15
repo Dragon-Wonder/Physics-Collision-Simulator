@@ -1,4 +1,15 @@
 15 September 2015
+   Released version 1.1.6-Beta
+
+     Change log:
+        -Fixed: Y velocity being flipped
+		-Added: Support for adding multiple cannonballs (no collision between them yet)
+		-Note: Currently the array holding multiple cannonball is NOT dynamic I still have to figure that out.
+		-Removed: Ball position updating on debug mode (too many balls)
+		-Fixed: Bug with balls not correctly bouncing at certain velocities
+		-Updated: Ball will now be removed if thier velocity drops below a certain value.
+
+15 September 2015
    Released version 1.1.5-Beta
 
      Change log:
@@ -43,7 +54,7 @@
         -Added: Linux Build options
         -Updated: Build options for Windows Versions
         -Added: General Linux support
-        -Fixed: Various issues on linux systems
+        -Fixed: Various issues on lynx systems
 		-Added: SDL Images
 		-Updated: Pictures from BMP to PNG
 		
