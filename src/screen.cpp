@@ -1,12 +1,9 @@
 /**********************************************************************************************************************************************************************/
 #include "screen.h"
 /**********************************************************************************************************************************************************************/
-//These are the paths to the images needed for the program
-//They are relative to the exe
-/**********************************************************************************************************************************************************************/
-clsScreen::clsScreen(uint ball_radius) {
-    width = Global::Config.values.uintScreenWidth;
-    height = Global::Config.values.uintScreenHeight;
+clsScreen::clsScreen() {
+    window.width = Global::Config.values.uintScreenWidth;
+    window.height = Global::Config.values.uintScreenHeight;
 
     blnWindow = false;
     blnRenderer = false;
@@ -23,8 +20,8 @@ clsScreen::clsScreen(uint ball_radius) {
 	    if (Global::blnDebugMode) {printf("SDL init successful\n");}
     }
 
-	win = SDL_CreateWindow("Cannon Simulation",100,100,width, height, SDL_WINDOW_SHOWN);
-	if (win == nullptr) {
+	window.win = SDL_CreateWindow("Cannon Simulation",100,100, window.width, window.height, SDL_WINDOW_SHOWN);
+	if (window.win == nullptr) {
         printf("SDL Failed to create window.\n");
         cleanup();
         error();
@@ -35,8 +32,8 @@ clsScreen::clsScreen(uint ball_radius) {
 	    if (Global::blnDebugMode) {printf("Window creation successful\n");}
 	}
 
-	ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (ren == nullptr) {
+	window.ren = SDL_CreateRenderer(window.win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (window.ren == nullptr) {
         printf("SDL Failed to create renderer.\n");
         cleanup();
         error();
@@ -61,12 +58,13 @@ clsScreen::clsScreen(uint ball_radius) {
         if (Global::blnDebugMode) {printf("Ball loading successful\n");}
     }
 
-    cannon = loadIMG("cannon");
+    pixel = loadIMG("pixel");
     if (bln_SDL_started == false) {return;}
     else {
-        blnCannon = true;
-        if (Global::blnDebugMode) {printf("Cannon loading successful\n");}
+        blnPixel = true;
+        if (Global::blnDebugMode) {printf("Pixel loading successful\n");}
     }
+
 }
 /**********************************************************************************************************************************************************************/
 clsScreen::~clsScreen() {
@@ -78,35 +76,13 @@ clsScreen::~clsScreen() {
 void clsScreen::update(void) {
     //function for just updating the screen, nothing else
     //on its own in case I want to just update the screen at some point
-    SDL_RenderPresent(ren);
+    SDL_RenderPresent(window.ren);
 }
 /**********************************************************************************************************************************************************************/
-void clsScreen::updateBall(LOC newplace) {
-    //Make sure the values aren't going off screen
-    //not sure if that would cause an error, but I feel like
-    //dealing with it if it does.
-    if (newplace.x > width) {newplace.x = width;}
-    if (newplace.y > height) {newplace.y = 0;}
-    //Clear renderer
-    SDL_RenderClear(ren);
+void clsScreen::clearscreen() {
+    SDL_RenderClear(window.ren);
     //Copy sky
-    SDL_RenderCopy(ren,sky,NULL,NULL);
-    SDL_Rect dst;
-    dst.x = 0;
-    dst.y = height - 48 - 5;
-    SDL_QueryTexture(cannon,NULL,NULL, &dst.w, &dst.h);
-    SDL_RenderCopy(ren,cannon,NULL,&dst);
-
-    //Because the top left is 0,0 I have to change the y value to match this
-    newplace.y = height - newplace.y;
-    dst.x = newplace.x;
-    dst.y = newplace.y;
-    //Query ball texture to get its width and height
-    SDL_QueryTexture(ball,NULL,NULL, &dst.w, &dst.h);
-    //Place the ball
-    SDL_RenderCopy(ren,ball,NULL,&dst);
-
-    update(); //update screen
+    SDL_RenderCopy(window.ren,sky,NULL,NULL);
 }
 /**********************************************************************************************************************************************************************/
 void clsScreen::cleanup(void) {
@@ -115,23 +91,23 @@ void clsScreen::cleanup(void) {
         blnBall = false;
         if (Global::blnDebugMode) {printf("Ball texture destroyed\n");}
     }
+    if (blnBall) {
+        SDL_DestroyTexture(pixel);
+        blnPixel = false;
+        if (Global::blnDebugMode) {printf("Ball texture destroyed\n");}
+    }
 	if (blnSky) {
         SDL_DestroyTexture(sky);
         blnSky = false;
         if (Global::blnDebugMode) {printf("Sky texture destroyed\n");}
     }
-    if (blnCannon) {
-        SDL_DestroyTexture(cannon);
-        blnCannon = false;
-        if (Global::blnDebugMode) {printf("Cannon texture destroyed\n");}
-    }
 	if (blnRenderer) {
-        SDL_DestroyRenderer(ren);
+        SDL_DestroyRenderer(window.ren);
         blnRenderer = false;
         if (Global::blnDebugMode) {printf("Renderer destroyed\n");}
     }
 	if (blnWindow) {
-        SDL_DestroyWindow(win);
+        SDL_DestroyWindow(window.win);
         blnWindow = false;
         if (Global::blnDebugMode) {printf("Window destroyed\n");}
     }
@@ -148,7 +124,7 @@ SDL_Texture* clsScreen::loadIMG(std::string filename) {
 
     if (filename == "ball") {temp = IMG_ReadXPMFromArray(image_ball_xpm);}
     else if (filename == "sky") {temp = IMG_ReadXPMFromArray(image_sky_xpm);}
-    else if (filename == "cannon") {temp = IMG_ReadXPMFromArray(image_cannon_xpm);}
+    else if (filename == "pixel") {temp = IMG_ReadXPMFromArray(image_pixel_xpm);}
     else {
         printf("Failed to find specified xpm array.\n");
         cleanup();
@@ -167,7 +143,7 @@ SDL_Texture* clsScreen::loadIMG(std::string filename) {
 	    if (Global::blnDebugMode) {printf("img to surface successful\n");}
     }
 
-	SDL_Texture *tex = SDL_CreateTextureFromSurface(ren,temp);
+	SDL_Texture *tex = SDL_CreateTextureFromSurface(window.ren,temp);
 	SDL_FreeSurface(temp);
 	if (tex == nullptr) {
         printf("Failed to create texture.\n");
@@ -179,5 +155,45 @@ SDL_Texture* clsScreen::loadIMG(std::string filename) {
     }
 
 	return tex;
+}
+/**********************************************************************************************************************************************************************/
+SDL_Texture* clsScreen::getBallTexture() {
+    return ball;
+}
+/**********************************************************************************************************************************************************************/
+WINATT clsScreen::getWindow() {
+    return window;
+}
+/**********************************************************************************************************************************************************************/
+bool clsScreen::getSDLStarted() {
+    return bln_SDL_started;
+}
+/**********************************************************************************************************************************************************************/
+void clsScreen::drawline(LOC Current, LOC Old) {
+    double slope;
+    SDL_Rect dst;
+    SDL_QueryTexture(pixel, NULL, NULL, &dst.w, &dst.h);
+    uint length;
+    /* FIXME (GamerMan7799#1#): Line gets really faint the closer to vertical the line gets */
+    //length = (uint) round( sqrt( pow(Current.x - Old.x, 2) + pow(Current.y - Old.y, 2) ) );
+    if (Current.x - Old.x == 0) {
+        length = abs(Current.y - Old.y);
+        dst.x = Current.x;
+        for (uint i = 0; i < length; i++) {
+            if (Current.y > Old.y) {dst.y = Old.y + i;}
+            else {dst.y = Current.y + i;}
+            SDL_RenderCopy(window.ren, pixel, NULL, &dst);
+        } //end for length
+    } else {
+        slope = ((double)Current.y - (double)Old.y) / ((double)Current.x - (double)Old.x);
+        length = abs(Current.x - Old.x);
+        for (uint i = 0; i < length; i++) {
+            if (Current.x > Old.x) {dst.x = Old.x + i;}
+            else {dst.x = Current.x + i;}
+            dst.y = Old.y;
+            dst.y += (uint) round( slope * (double) (dst.x - Old.x) );
+            SDL_RenderCopy(window.ren, pixel, NULL, &dst);
+        } //end for length
+    } //end if
 }
 /**********************************************************************************************************************************************************************/

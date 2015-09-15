@@ -5,45 +5,53 @@
 #include <SDL2/SDL_image.h>
 #include <string>
 #include <cstdio>
-#include "cannonball.h"
 #include "config.h"
+#include "global.h"
 /**********************************************************************************************************************************************************************/
 //Include the xpm files which present the images.
 #include "image_ball.xpm"
 #include "image_sky.xpm"
-#include "image_cannon.xpm"
+#include "image_pixel.xpm"
 /**********************************************************************************************************************************************************************/
-//typedefs because reasons
-typedef unsigned int uint;
-typedef unsigned char uchar;
+struct stcWinAtt { //Attribute of the window
+    uint width;
+    uint height;
+    SDL_Window *win;
+    SDL_Renderer *ren;
+};
+
+struct stcLocation {
+    int x;
+    int y;
+};
+
+typedef struct stcWinAtt WINATT;
+typedef struct stcLocation LOC;
 /**********************************************************************************************************************************************************************/
-namespace Global {
-    extern const bool blnDebugMode;
-    extern clsConfig Config;
-}
+#include "cannonball.h"
 /**********************************************************************************************************************************************************************/
 class clsScreen {
     public:
         /** Default constructor */
-        clsScreen(uint);
+        clsScreen();
         /** Default destructor */
         ~clsScreen();
 
         void update(void);
-        void updateBall(LOC);
         void cleanup(void);
+        void clearscreen(void);
+        bool getSDLStarted(void);
+        void drawline(LOC, LOC);
 
-        bool bln_SDL_started;
+        SDL_Texture* getBallTexture(void);
+        WINATT getWindow(void);
 
     private:
         SDL_Texture *ball;
         SDL_Texture *sky;
-        SDL_Texture *cannon;
-        SDL_Window *win;
-        SDL_Renderer *ren;
+        SDL_Texture *pixel; //used for drawing the line
 
-        uint width;
-        uint height;
+        WINATT window;
 
         //Keeps track of which parts have been loaded
         //so when ending only the ones that are open
@@ -52,7 +60,8 @@ class clsScreen {
         bool blnRenderer;
         bool blnSky;
         bool blnBall;
-        bool blnCannon;
+        bool blnPixel;
+        bool bln_SDL_started;
 
         SDL_Texture* loadIMG(std::string);
         void error(void);

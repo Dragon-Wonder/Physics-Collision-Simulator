@@ -1,25 +1,14 @@
 #ifndef __CANNONBALL_HEADER__
 #define __CANNONBALL_HEADER__
 /**********************************************************************************************************************************************/
+#include <SDL2/SDL.h>
 #include <math.h>
 #include <cstdio>
 #include <cstdlib>
 #include "config.h"
+#include "global.h"
+#include "screen.h"
 /**********************************************************************************************************************************************/
-//typedefs because reasons
-typedef unsigned int uint;
-typedef unsigned char uchar;
-/**********************************************************************************************************************************************/
-namespace Global {
-    extern const bool blnDebugMode;
-    extern clsConfig Config;
-}
-/**********************************************************************************************************************************************/
-struct stcLocation {
-    uint x;
-    uint y;
-};
-
 struct stcDoubleValues {
     double x;
     double y;
@@ -32,26 +21,24 @@ struct stcPhysicalProperties {
     double volume;
     double density;
 };
-typedef struct stcLocation LOC;
 typedef struct stcDoubleValues dblXY;
 typedef struct stcPhysicalProperties PP;
-/**********************************************************************************************************************************************/
-namespace Global {
-    extern const bool blnDebugMode;
-    extern clsConfig Config;
-}
 /**********************************************************************************************************************************************/
 class clsCannonball {
     public:
         /** Default constructor */
-        clsCannonball(double, LOC, uint, double);
+        clsCannonball();
+        bool blnstarted;
+        void setValues(double, LOC, double, double);
 
         void enableDrag(void);
-        void setdeltat(double);
-        void update(void);
-        LOC getPlace(void);
+        void update(double);
+        void setSDLScreen(SDL_Texture*, WINATT);
     private:
         bool blnDragEnabled;
+
+        SDL_Texture* ball;
+        WINATT window;
 
         LOC place;
         dblXY vel;
@@ -60,7 +47,7 @@ class clsCannonball {
         PP props;
 
         double deltat;
-
+        void show(void);
         void Drag_calcvalues(void);
         void Drag_updateacc(void);
 };

@@ -46,6 +46,7 @@ sdl2-config
 *.rar
 *.zip
 *.tmp
+*.gz
 
 # Config File
 *.ini
@@ -55,3 +56,5 @@ sdl2-config
 
 Cannon
 Cannon-PRIVATE
+
+/RandomCrap/

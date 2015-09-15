@@ -9,6 +9,7 @@ This holds all the functions related to the config file, its loading, making, an
 clsConfig::clsConfig() {
     //Set default values
     values.blnLogging = false;
+    values.blnDragMode = false;
     values.uintScreenWidth = 640;
     values.uintScreenHeight = 480;
 #if defined(_AIX)
@@ -22,10 +23,10 @@ clsConfig::clsConfig() {
 #elif defined(__APPLE__) && defined(__MACH__)
     //Apple Sucks
     values.OperatingSystem = "OSX";
-    //I could add additonal stuff to see if iOS or OSX but I don't care.
+    //I could add additional stuff to see if iOS or OSX but I don't care.
 #elif defined(__sun) && defined(__SVR4)
     values.OperatingSystem = "Solaris";
-#elif defined(__GYGWIN__) && !defined(_WIN32)
+#elif defined(__CYGWIN__) && !defined(_WIN32)
     values.OperatingSystem = "Cygwin POSIX";
 #elif defined(_WIN64)
     values.OperatingSystem = "Windows 64 bit";
@@ -55,7 +56,7 @@ void clsConfig::make(void) {
     fprintf(configFile,"Screen Width: %u\n",values.uintScreenWidth);
     fprintf(configFile,"Screen Height: %u\n",values.uintScreenHeight);
     fprintf(configFile,"Log Ball's path: 0\n");
-    //fprintf(configFile,"Path to image folder: %s\n",values.PathToImages);
+    fprintf(configFile,"Enable Drag Mode (experimental): 0\n");
 	fclose(configFile);
 }
 /**********************************************************************************************************************************************/
@@ -84,11 +85,12 @@ void clsConfig::load(void) {
 	if(intTempBool == 1) {values.blnLogging = true;}
 	else {values.blnLogging = false;}
 
-    //Get Images Path
-    /*fgets(chrTempString,50,configFile);
-    intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %*s %s", &values.PathToImages);
-    if (intValuesScanned < 1) {printf("ERROR!"); values.PathToImages = ".\\images\\";}
-    if(Global::blnDebugMode) {printf("Images Path \t \t %s\n",values.PathToImages);}*/
+    fgets(chrTempString,50,configFile);
+	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %*s %d",&intTempBool);
+	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
+	if(Global::blnDebugMode) {printf("Enable Drag \t %d\n",intTempBool);}
+	if(intTempBool == 1) {values.blnDragMode = true;}
+	else {values.blnDragMode = false;}
 
 	fclose(configFile);
 	printf("\n\n");

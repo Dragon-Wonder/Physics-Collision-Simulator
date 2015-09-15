@@ -1,3 +1,23 @@
+15 September 2015
+   Released version 1.1.5-Beta
+
+     Change log:
+        -Cleaned: General code
+        -Updated: Drag mode now enabled in config file.
+        -Updated: Method to add cannonballs
+        -Updated: How cannonballs are applied to screen
+        -Removed: Cannon image
+        -Added: Global.h to hold the externs of the globals
+        -Applied: Balls with bounce off of screen edges
+		-Changed: You add a ball by clicking and dragging then releasing the button. (Only one ball supported at the moment)
+
+15 September 2015
+   Released version 1.1.4-Beta
+
+     Change log:
+        -Added: Proper quitting by click X on SDL window
+        -Fixed: Some build issues between Windows and Unix
+
 01 September 2015
    Released version 1.1.3-Beta
 

@@ -3,11 +3,14 @@
 	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="SDL-Cannon-Simulation" />
+		<Option makefile="../Makefile" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug-Windows">
+				<Option platforms="Windows;" />
 				<Option output="../Cannon-PRIVATE" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -32,7 +35,9 @@
 				</Environment>
 			</Target>
 			<Target title="Release-Windows">
+				<Option platforms="Windows;" />
 				<Option output="../Cannon" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -54,7 +59,9 @@
 				</Environment>
 			</Target>
 			<Target title="Debug-Linux">
+				<Option platforms="Unix;" />
 				<Option output="../Cannon-PRIVATE" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -78,7 +85,9 @@
 				</Environment>
 			</Target>
 			<Target title="Release-Linux">
+				<Option platforms="Unix;" />
 				<Option output="../Cannon" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -133,7 +142,7 @@
 		<Extensions>
 			<AutoVersioning>
 				<Scheme minor_max="10" build_max="999" rev_max="999" rev_rand_max="1" build_times_to_increment_minor="1000" />
-				<Settings autoincrement="1" date_declarations="1" use_define="1" update_manifest="0" do_auto_increment="1" ask_to_increment="1" language="C++" svn="0" svn_directory="" header_path="..\src\version.h" />
+				<Settings autoincrement="1" date_declarations="1" use_define="1" update_manifest="0" do_auto_increment="1" ask_to_increment="1" language="C" svn="0" svn_directory="" header_path="..\src\version.h" />
 				<Changes_Log show_changes_editor="1" app_title="Released version %M.%m.%b-%T" changeslog_path="..\ChangesLog.txt" />
 				<Code header_guard="__VERSION_HEADER__" namespace="Version" prefix="DEFINED_VER" />
 			</AutoVersioning>
