@@ -90,7 +90,10 @@ void clsCannonball::update(double newdeltat) {
 
     double total_v;
     total_v = sqrt( pow(vel.x,2) + pow(vel.y,2) );
-    if (total_v < Global::Physics::fMinVelocity) {blnstarted = false;}
+    if (total_v < Global::Physics::fMinVelocity) {
+            blnstarted = false;
+            if (Global::blnDebugMode) {printf("Ball moving too slow; killing it\n");}
+    }
 	show();
 }
 /**********************************************************************************************************************************************/
@@ -127,4 +130,21 @@ LOC clsCannonball::getplace() {
     return place;
 }
 /**********************************************************************************************************************************************/
-
+dblXY clsCannonball::getVelocity() {
+    return vel;
+}
+/**********************************************************************************************************************************************/
+void clsCannonball::setVelocity(dblXY newvel) {
+    vel.x = newvel.x;
+    vel.y = newvel.y;
+}
+/**********************************************************************************************************************************************/
+double clsCannonball::getmass() {
+    return props.mass;
+}
+/**********************************************************************************************************************************************/
+void clsCannonball::setplace(LOC newplace) {
+    dblLOC.x = newplace.x;
+    dblLOC.y = newplace.y;
+}
+/**********************************************************************************************************************************************/

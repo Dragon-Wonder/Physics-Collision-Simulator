@@ -3,6 +3,8 @@
 
      Change log:
         -Added: Collisons
+		-Fixed: Bug with mouse keeping old coordinates
+		-Fixed: X Fire velocity not being right
 
 15 September 2015
    Released version 1.1.6-Beta

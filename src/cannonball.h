@@ -31,10 +31,14 @@ class clsCannonball {
         bool blnstarted;
         void setValues(double, LOC, double, double);
         LOC getplace(void);
+        void setplace(LOC);
 
         void enableDrag(void);
         void update(double);
         void setSDLScreen(SDL_Texture*, WINATT);
+        dblXY getVelocity(void);
+        void setVelocity(dblXY);
+        double getmass(void);
     private:
         bool blnDragEnabled;
 

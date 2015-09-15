@@ -19,7 +19,7 @@ struct stcBox {
 typedef struct stcBox BOX;
 /**********************************************************************************************************************************************************************/
 void addNewCannonball(LOC, LOC);
-void checkForCollisons(void);
+void checkForCollisons(uint);
 bool checkCollide(BOX, BOX);
 void doCollision(uint, uint);
 BOX boxMaker(LOC);
@@ -37,9 +37,9 @@ namespace Global {
         const float fDragCofficient = 0.47;
         const float fDensityAir = 1.2754; //Density of air
         const float fRecoil = -0.56;
-        const float fVelocityScalar = 1;
-        const float fMinVelocity = 15; //If a ball has less velocity than the it will "die"
-        const float fMomentumLoss = 0.89; //How much total momentum stays after a collisions
+        const float fVelocityScalar = 1; //Changing this effects the fire velocity
+        const float fMinVelocity = 0.005; //If a ball has less velocity than the it will "die"
+        const float fMomentumLoss = 1; //How much total momentum stays after a collisions
     }
 }
 /**********************************************************************************************************************************************************************/
@@ -84,6 +84,7 @@ int main(int argc, char *argv[]) {
             } else if ( event.type == SDL_MOUSEBUTTONDOWN ) {
                 holding = true;
                 SDL_GetMouseState(&OldMouse.x, &OldMouse.y);
+                CurrentMouse = OldMouse;
                 if (Global::blnDebugMode) {printf("Mouse Button down at (%d,%d)\n",OldMouse.x,OldMouse.y);}
             } //end check of event
         } //end if event
@@ -93,9 +94,9 @@ int main(int argc, char *argv[]) {
 		for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {
             if (Cannonballs[i].blnstarted) {
                 Cannonballs[i].update(tempdeltat);
+                checkForCollisons(i);
             } //end if started
 		} //end for loop
-        checkForCollisons();
 		CannonWindow.update();
 	} while (!quit);
 	return 0;
@@ -106,17 +107,17 @@ void addNewCannonball(LOC mouseC, LOC mouseO ) {
     double fire_v;
     double angle;
 
-    fire_v = sqrt( pow(mouseC.x - mouseO.x, 2) + pow(mouseC.y - mouseO.y, 2) );
-    fire_v /= Global::Physics::fVelocityScalar;
+    fire_v = -1 * sqrt( pow(mouseC.x - mouseO.x, 2) + pow(mouseC.y - mouseO.y, 2) );
+    fire_v /= (double) Global::Physics::fVelocityScalar;
 
     if (mouseC.x == mouseO.x) {
         if (mouseC.y > mouseO.y) {angle = -90.0;}
         else if (mouseC.y < mouseO.y) {angle = 90.0;}
         else {angle = 0;}
     } else {
-        angle = atan( (mouseC.y - mouseO.y) / (mouseC.x - mouseO.x) );
-        if (mouseC.x < mouseO.x) {angle = -1 * angle;}
-        angle *= (180/3.1415926535);
+        angle = (double)-1.0 * atan( (mouseC.y - mouseO.y) / (mouseC.x - mouseO.x) );
+        angle *= (double)(180/3.1415926535);
+        if (mouseC.x < mouseO.x) {angle *= (double)-1.0;}
     } //end if x = x
 
     //mod mouse start
@@ -136,17 +137,15 @@ void addNewCannonball(LOC mouseC, LOC mouseO ) {
     printf("You cannot add more cannonballs, please wait for some to decay.\n");
 }
 /**********************************************************************************************************************************************************************/
-void checkForCollisons() { //Checks every cannonball against every other cannonball to see if they collide
+void checkForCollisons(uint j) { //Checks every cannonball against every other cannonball to see if they collide
     BOX A, B;
-    for(uint j = 0; j < DEFINED_CANNONBALL_LIMIT; j++) {
-        A = boxMaker( Cannonballs[j].getplace() );
-        for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {
-            if (Cannonballs[i].blnstarted && i != j) {
-                B = boxMaker( Cannonballs[i].getplace() );
-                if ( checkCollide(A, B) ) { doCollision(j, i); }
-            } //end if started and not same ball
-        } //end for loop inner
-    } //end for loop outer
+    A = boxMaker( Cannonballs[j].getplace() );
+    for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {
+        if (Cannonballs[i].blnstarted && i != j) {
+            B = boxMaker( Cannonballs[i].getplace() );
+            if ( checkCollide(A, B) ) { doCollision(j, i); }
+        } //end if started and not same ball
+    } //end for loop inner
 }
 /**********************************************************************************************************************************************************************/
 bool checkCollide(BOX A, BOX B) { //checks if two objects (made with the BOXES collide)
@@ -158,8 +157,34 @@ bool checkCollide(BOX A, BOX B) { //checks if two objects (made with the BOXES c
     return true;
 }
 /**********************************************************************************************************************************************************************/
-void doCollision(uint num1, uint num2) {
+void doCollision(uint numA, uint numB) {
+    dblXY Avel, Bvel, NewVel;
+    double Amass, Bmass;
+    Avel = Cannonballs[numA].getVelocity();
+    Bvel = Cannonballs[numB].getVelocity();
+    Amass = Cannonballs[numA].getmass();
+    Bmass = Cannonballs[numB].getmass();
 
+    double totalMomX = Amass * Avel.x - Bmass * Bvel.x;
+    double totalMomY = Amass * Avel.y - Bmass * Bvel.y;
+    totalMomX *= (double)Global::Physics::fMomentumLoss;
+    totalMomY *= (double)Global::Physics::fMomentumLoss;
+
+    //I know that this is not a true Momentum equation
+    //I'm just trying to get something up to test things out.
+    NewVel.x = totalMomX / (Amass + Bmass);
+    NewVel.y = totalMomY / (Amass + Bmass);
+
+    Cannonballs[numA].setVelocity(NewVel);
+    NewVel.y *= -1;
+    NewVel.x *= -1;
+    Cannonballs[numB].setVelocity(NewVel);
+
+
+    /*LOC Aplace = Cannonballs[numA].getplace();
+    Aplace.x ++;
+    Aplace.y --;
+    Cannonballs[numA].setplace(Aplace);*/
 }
 /**********************************************************************************************************************************************************************/
 BOX boxMaker(LOC place) {
