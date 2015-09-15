@@ -30,6 +30,7 @@ class clsCannonball {
         clsCannonball();
         bool blnstarted;
         void setValues(double, LOC, double, double);
+        LOC getplace(void);
 
         void enableDrag(void);
         void update(double);

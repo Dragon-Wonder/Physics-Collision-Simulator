@@ -14,17 +14,17 @@
 	//Standard Version Type
 	#define DEFINED_VER_MAJOR  1
 	#define DEFINED_VER_MINOR  1
-	#define DEFINED_VER_BUILD  6
-	#define DEFINED_VER_REVISION  5
+	#define DEFINED_VER_BUILD  7
+	#define DEFINED_VER_REVISION  6
 	
 	//Miscellaneous Version Types
-	#define DEFINED_VER_BUILDS_COUNT  142
-	#define DEFINED_VER_RC_FILEVERSION 1,1,6,5
-	#define DEFINED_VER_RC_FILEVERSION_STRING "1, 1, 6, 5\0"
-	#define DEFINED_VER_FULLVERSION_STRING  "1.1.6.5"
+	#define DEFINED_VER_BUILDS_COUNT  160
+	#define DEFINED_VER_RC_FILEVERSION 1,1,7,6
+	#define DEFINED_VER_RC_FILEVERSION_STRING "1, 1, 7, 6\0"
+	#define DEFINED_VER_FULLVERSION_STRING  "1.1.7.6"
 	
 	//These values are to keep track of your versioning state, don't modify them.
-	#define DEFINED_VER_BUILD_HISTORY  3
+	#define DEFINED_VER_BUILD_HISTORY  4
 	
 
 #endif //__VERSION_HEADER__

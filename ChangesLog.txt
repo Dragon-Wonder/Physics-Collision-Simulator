@@ -1,4 +1,10 @@
 15 September 2015
+   UNFINISHED Released version 1.1.7-Beta
+
+     Change log:
+        -Added: Collisons
+
+15 September 2015
    Released version 1.1.6-Beta
 
      Change log:

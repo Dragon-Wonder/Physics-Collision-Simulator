@@ -10,7 +10,19 @@
 #include "tick.h"
 #include "config.h"
 /**********************************************************************************************************************************************************************/
+struct stcBox {
+    uint left;
+    uint right;
+    uint top;
+    uint bottom;
+};
+typedef struct stcBox BOX;
+/**********************************************************************************************************************************************************************/
 void addNewCannonball(LOC, LOC);
+void checkForCollisons(void);
+bool checkCollide(BOX, BOX);
+void doCollision(uint, uint);
+BOX boxMaker(LOC);
 /**********************************************************************************************************************************************************************/
 namespace Global {
 #ifdef DEFINED_BUILD_MODE_PRIVATE
@@ -83,7 +95,7 @@ int main(int argc, char *argv[]) {
                 Cannonballs[i].update(tempdeltat);
             } //end if started
 		} //end for loop
-
+        checkForCollisons();
 		CannonWindow.update();
 	} while (!quit);
 	return 0;
@@ -124,11 +136,38 @@ void addNewCannonball(LOC mouseC, LOC mouseO ) {
     printf("You cannot add more cannonballs, please wait for some to decay.\n");
 }
 /**********************************************************************************************************************************************************************/
-void checkCollide(LOC place1, LOC place2) {
-
+void checkForCollisons() { //Checks every cannonball against every other cannonball to see if they collide
+    BOX A, B;
+    for(uint j = 0; j < DEFINED_CANNONBALL_LIMIT; j++) {
+        A = boxMaker( Cannonballs[j].getplace() );
+        for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {
+            if (Cannonballs[i].blnstarted && i != j) {
+                B = boxMaker( Cannonballs[i].getplace() );
+                if ( checkCollide(A, B) ) { doCollision(j, i); }
+            } //end if started and not same ball
+        } //end for loop inner
+    } //end for loop outer
+}
+/**********************************************************************************************************************************************************************/
+bool checkCollide(BOX A, BOX B) { //checks if two objects (made with the BOXES collide)
+    if( A.bottom <= B.top ){return false;}
+    if( A.top >= B.bottom ){return false;}
+    if( A.right <= B.left ){return false;}
+    if( A.left >= B.right ){return false;}
+    //If none of the sides from A are outside B
+    return true;
 }
 /**********************************************************************************************************************************************************************/
 void doCollision(uint num1, uint num2) {
 
+}
+/**********************************************************************************************************************************************************************/
+BOX boxMaker(LOC place) {
+    BOX tempBOX;
+    tempBOX.left = place.x;
+    tempBOX.top = place.y;
+    tempBOX.bottom = tempBOX.top + 10;
+    tempBOX.right = tempBOX.left + 10;
+    return tempBOX;
 }
 /**********************************************************************************************************************************************************************/
