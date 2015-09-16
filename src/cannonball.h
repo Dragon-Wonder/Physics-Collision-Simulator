@@ -30,7 +30,7 @@ class clsCannonball {
     public:
         /** Default constructor */
         clsCannonball();
-        void setValues(double, LOC, double, double);
+        void setValues(double, LOC, double, double, uint);
         LOC getplace(void);
         void setplace(LOC);
 
@@ -43,6 +43,7 @@ class clsCannonball {
 
         bool blnstarted;
     private:
+        uint ballID;
         bool blnDragEnabled;
 
         SDL_Texture* ball;

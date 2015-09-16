@@ -60,6 +60,10 @@ SDL_Texture* tempball;
 /**********************************************************************************************************************************************************************/
 int main(int argc, char *argv[]) {
     Global::Config.Check(); //Load Config file and all its values.
+    if (Global::Config.values.blnLogging) { //Open log file to clear it, if it exists
+        FILE* logfile = fopen("logfile.log","w");
+        fclose(logfile);
+	}
 
     if (Global::blnDebugMode) {printf("OS: %s\n",Global::Config.values.OperatingSystem);}
     clsTick Tick; //create tick object
@@ -139,7 +143,7 @@ void addNewCannonball(LOC mouseC, LOC mouseO ) {
     //loop through array to find next available cannonball slot
     for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {
         if (!Cannonballs[i].blnstarted) {
-            Cannonballs[i].setValues(2.0, mouseO, fire_v, angle);
+            Cannonballs[i].setValues(2.0, mouseO, fire_v, angle, i);
             Cannonballs[i].setSDLScreen(tempball, tempwin);
             return;
         } //end if not started
@@ -178,6 +182,32 @@ void doCollision(uint numA, uint numB) {
     Bvel = Cannonballs[numB].getVelocity();
     Aprops = Cannonballs[numA].getPhysicalProps();
     Bprops = Cannonballs[numB].getPhysicalProps();
+
+    //This part here has no actual basis on real life,
+    //it is just my attempt at preventing the cannonballs from sticking together
+    LOC CenterA, CenterB, DeltaCenters;
+    double VelModder;
+    CenterA = Cannonballs[numA].getplace();
+    CenterB = Cannonballs[numB].getplace();
+
+    CenterA.x += 5;
+    CenterA.y += 5;
+    CenterB.x += 5;
+    CenterB.y += 5;
+
+    DeltaCenters.x = abs(CenterA.x - CenterB.x);
+    DeltaCenters.y = abs(CenterA.y - CenterB.y);
+    //Since it is r^2 and the sqrt of this give us r, we just drop the sqrt part to save time
+    VelModder = pow((double)DeltaCenters.x,2) + pow((double)DeltaCenters.y,2);
+    VelModder = 200.0 / VelModder; //200 is the highest value possible
+    if (VelModder < 1.0) {VelModder = 1.0;}
+    //else if (VelModder > 0.05) {VelModder = 0.05;}
+
+    Avel.x *= (double) VelModder;
+    Avel.y *= (double) VelModder;
+    Bvel.x *= (double) VelModder;
+    Bvel.y *= (double) VelModder;
+    //End of non real stuff
 
     double Aangle, Bangle, ContactAngle;
     double Atotal_v, Btotal_v;

@@ -61,16 +61,16 @@ void clsCannonball::update(double newdeltat) {
     dblLOC.x = dblLOC.x + vel.x * deltat + 0.5 * acc.x * pow(deltat,2);
 	vel.x = (vel.x + acc.x * deltat);
 	if (dblLOC.x <= 0.0 || dblLOC.x >= window.width - dst.w) {
-            vel.x *= Global::Physics::fRecoil;
-            if (dblLOC.x <= 0.0) {dblLOC.x++;}
-            else {dblLOC.x--;}
+        vel.x *= Global::Physics::fRecoil;
+        if (dblLOC.x <= 0.0) {dblLOC.x++;}
+        else {dblLOC.x--;}
     } //end if hitting x edges
 	dblLOC.y = dblLOC.y + vel.y * deltat + 0.5 * acc.y * pow(deltat,2);
 	vel.y = (vel.y + acc.y * deltat);
 	if (dblLOC.y <= dst.h || dblLOC.y >= window.height) {
-            vel.y *= Global::Physics::fRecoil;
-            if (dblLOC.y <= dst.h) {dblLOC.y++;}
-            else {dblLOC.y--;}
+        vel.y *= Global::Physics::fRecoil;
+        if (dblLOC.y <= dst.h) {dblLOC.y++;}
+        else {dblLOC.y--;}
     }//end if hitting y edges
 
     if (dblLOC.x < 0.0) {place.x = 0;}
@@ -82,16 +82,19 @@ void clsCannonball::update(double newdeltat) {
 	//if (Global::blnDebugMode) {printf("Ball updated, new position (%f, %f)\n",dblLOC.x,dblLOC.y);}
 	if (Global::Config.values.blnLogging) {
         FILE* logfile = fopen("logfile.log","a");
-        fprintf(logfile,"(%.5f, %.5f)\n",dblLOC.x,dblLOC.y);
+        fprintf(logfile,"Ball %3u \t (%.3f, %.3f)\n",ballID, dblLOC.x,dblLOC.y);
         fclose(logfile);
 	}
 
     double total_v;
     total_v = sqrt( pow(vel.x,2) + pow(vel.y,2) );
     if (total_v < Global::Physics::fMinVelocity || isnan(total_v) ) {
-            blnstarted = false;
-            if (Global::blnDebugMode) {printf("Ball moving too slow; killing it\n");}
-    }
+        blnstarted = false;
+        if (Global::blnDebugMode) {
+            if ( isnan(total_v) ) {printf("Ball vel is Nan; killing it\n");}
+            else {printf("Ball moving too slow; killing it\n");}
+        } //end if debug mode
+    } //end if should kill
 	show();
 }
 /**********************************************************************************************************************************************/
@@ -109,7 +112,7 @@ void clsCannonball::show() {
     SDL_RenderCopy(window.ren,ball,NULL,&dst);
 }
 /**********************************************************************************************************************************************/
-void clsCannonball::setValues(double r, LOC init_place, double init_vel, double init_angle) {
+void clsCannonball::setValues(double r, LOC init_place, double init_vel, double init_angle, uint ID) {
     props.radius = r; //in meters
     props.density = Global::Physics::uBallDensity; //density of steel in kg/m^3
 
@@ -119,7 +122,10 @@ void clsCannonball::setValues(double r, LOC init_place, double init_vel, double 
 
     vel.x = (double)(init_vel) * (cos(init_angle * Rad_Convert));
 	vel.y = (double)(init_vel) * (sin(init_angle * Rad_Convert));
+
+	ballID = ID;
 	blnstarted = true;
+
 
 	if (Global::Config.values.blnDragMode) { enableDrag(); }
 }

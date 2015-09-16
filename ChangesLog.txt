@@ -1,8 +1,19 @@
 16 September 2015
+   Released version 1.1.9-Beta
+
+     Change log:
+        -Added: Cannonballs now keep track of ID for logging purposes
+		-Fixed: Log file is now cleared at start
+		-Added: Clearer Debug Message if a ball was killed because of speed or NaN
+		-Added: Unrealistic method where velocity is modified with the inverse root of the distance between the points
+				(this was an attempt to prevent the balls from sticking together as they have been)
+		
+
+16 September 2015
    Released version 1.1.8-Beta
 
      Change log:
-        -Added: More collision methods (Inelastic, Elastic, Perfect Inelastic, and No Collisons)
+        -Added: More collision methods (Inelastic, Elastic, Perfect Inelastic, and No Collisions)
 		-Improved: Collision equations
 		-Fixed: You can now properly fire a cannonball in all directions
 		-Fixed: Balls that have velocity as NaN will be removed 
@@ -12,7 +23,7 @@
    Released version 1.1.7-Beta
 
      Change log:
-        -Added: Collisons
+        -Added: Collisions
 		-Fixed: Bug with mouse keeping old coordinates
 		-Fixed: X Fire velocity not being right
 
@@ -25,7 +36,7 @@
 		-Note: Currently the array holding multiple cannonball is NOT dynamic I still have to figure that out.
 		-Removed: Ball position updating on debug mode (too many balls)
 		-Fixed: Bug with balls not correctly bouncing at certain velocities
-		-Updated: Ball will now be removed if thier velocity drops below a certain value.
+		-Updated: Ball will now be removed if their velocity drops below a certain value.
 
 15 September 2015
    Released version 1.1.5-Beta
@@ -99,7 +110,7 @@
 
      Change log:
         -Added: Config file
-        -Applied: Software state being added to boilerplater
+        -Applied: Software state being added to boilerplate
         -Added: Logging of ball location to a file
         -Applied: Easier way to change images path (config file)
 
