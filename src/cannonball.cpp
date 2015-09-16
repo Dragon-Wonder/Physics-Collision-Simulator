@@ -2,8 +2,6 @@
 #include "cannonball.h"
 #include "screen.h"
 /**********************************************************************************************************************************************/
-#define PI 3.1415926535897
-/**********************************************************************************************************************************************/
 //Constants
 const double Rad_Convert = PI / 180.0;
 /**********************************************************************************************************************************************/
@@ -90,7 +88,7 @@ void clsCannonball::update(double newdeltat) {
 
     double total_v;
     total_v = sqrt( pow(vel.x,2) + pow(vel.y,2) );
-    if (total_v < Global::Physics::fMinVelocity) {
+    if (total_v < Global::Physics::fMinVelocity || isnan(total_v) ) {
             blnstarted = false;
             if (Global::blnDebugMode) {printf("Ball moving too slow; killing it\n");}
     }
@@ -139,12 +137,16 @@ void clsCannonball::setVelocity(dblXY newvel) {
     vel.y = newvel.y;
 }
 /**********************************************************************************************************************************************/
-double clsCannonball::getmass() {
-    return props.mass;
+PP clsCannonball::getPhysicalProps() {
+    return props;
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::setplace(LOC newplace) {
     dblLOC.x = newplace.x;
     dblLOC.y = newplace.y;
+}
+/**********************************************************************************************************************************************/
+void clsCannonball::setPhysicalProps(PP newprops) {
+    props = newprops;
 }
 /**********************************************************************************************************************************************/

@@ -1,5 +1,15 @@
+16 September 2015
+   Released version 1.1.8-Beta
+
+     Change log:
+        -Added: More collision methods (Inelastic, Elastic, Perfect Inelastic, and No Collisons)
+		-Improved: Collision equations
+		-Fixed: You can now properly fire a cannonball in all directions
+		-Fixed: Balls that have velocity as NaN will be removed 
+		   (I should have fixed the equations so this doesn't happen, but just is cause)
+
 15 September 2015
-   UNFINISHED Released version 1.1.7-Beta
+   Released version 1.1.7-Beta
 
      Change log:
         -Added: Collisons

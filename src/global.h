@@ -11,7 +11,7 @@ typedef unsigned long ulong;
 //Global namespace
 namespace Global {
     extern const bool blnDebugMode;
-    extern clsConfig Config;
+    extern clsConfig Config; //Hold the config file globally so configure options can be referenced everywhere
     namespace Physics { //hold physics values in one place for future reference
         extern const uint uBallDensity;
         extern const float fGravity;
@@ -21,6 +21,7 @@ namespace Global {
         extern const float fVelocityScalar;
         extern const float fMinVelocity;
         extern const float fMomentumLoss;
+        extern const uchar CollisionMethod;
     }
 }
 /**********************************************************************************************************************************************/

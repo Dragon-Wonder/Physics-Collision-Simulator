@@ -9,6 +9,8 @@
 #include "global.h"
 #include "screen.h"
 /**********************************************************************************************************************************************/
+#define PI 3.1415926535897
+/**********************************************************************************************************************************************/
 struct stcDoubleValues {
     double x;
     double y;
@@ -28,17 +30,18 @@ class clsCannonball {
     public:
         /** Default constructor */
         clsCannonball();
-        bool blnstarted;
         void setValues(double, LOC, double, double);
         LOC getplace(void);
         void setplace(LOC);
 
-        void enableDrag(void);
         void update(double);
         void setSDLScreen(SDL_Texture*, WINATT);
         dblXY getVelocity(void);
         void setVelocity(dblXY);
-        double getmass(void);
+        PP getPhysicalProps(void);
+        void setPhysicalProps(PP);
+
+        bool blnstarted;
     private:
         bool blnDragEnabled;
 
@@ -51,6 +54,7 @@ class clsCannonball {
         dblXY acc;
         PP props;
 
+        void enableDrag(void);
         double deltat;
         void show(void);
         void Drag_calcvalues(void);
