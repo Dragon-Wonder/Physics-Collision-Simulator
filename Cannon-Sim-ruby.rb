@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 
 # Make some global variables for later use.
-$Program_version = "1.0.0"
+$Program_version = "1.1.0"
 $Debug_Mode = 0 # Enables Debug mode which prints more messages to the console.
 $Rad_Convert = Math::PI / 180 # Converts Degrees to radians
 
@@ -184,16 +184,18 @@ BEGIN {
 			_rho_air = 1.2754 #density of air in kg/m^3
 			_flow_vel = Math.sqrt(@vel.x**2 + @vel.y**2)
 			_drag_force = 0.5 * _rho_air * _flow_vel * Drag_Cofficient * @props.area
-			_drag_acc = _drag_force / @props.mass
+			_drag_acc = _drag_force / @props.mass if @props.mass != 0
 			
-			_angle = Math.atan2(@vel.y, @vel.x)
-			
-			_temp_acc_x = @acc.x - _drag_acc * Math.cos(_angle)
-			if @vel.y < 0 then
-				_temp_acc_y = @acc.y + _drag_acc * Math.sin(_angle)
-			else
-				_temp_acc_y = @acc.y - _drag_acc * Math.sin(_angle)
+			if @vel.x != then
+				_angle = Math.atan2(@vel.y, @vel.x)
+			else 
+				_angle = Math::PI / 2.0
 			end
+			
+			_angle += Math::PI if @vel.x < 0.0
+			
+			_temp_acc_x = @acc.x + _drag_acc * Math.cos(_angle)
+			_temp_acc_y = @acc.y + _drag_acc * Math.sin(_angle)
 			
 			@acc.setXY(_temp_acc_x, _temp_acc_y)
 			end #ned doDragUpdate

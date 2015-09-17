@@ -38,3 +38,8 @@ build/
 # My stuff
 *.zip
 *.dll
+*.ini
+*.exe
+*.o
+/project/
+
