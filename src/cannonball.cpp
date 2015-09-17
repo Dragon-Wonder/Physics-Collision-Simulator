@@ -40,51 +40,77 @@ void clsCannonball::Drag_calcvalues(void) {
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::Drag_updateacc(void) {
-	double flow_velocity = sqrt(pow(vel.x,2) + pow(vel.y,2));
-	double Drag_Force = (double) (0.5 * Global::Physics::fDensityAir * flow_velocity * Global::Physics::fDragCofficient * props.area);
-	double Drag_Acc = (double) (Drag_Force / props.mass);
+    acc.x = 0.0;
+    acc.y = Global::Physics::fGravity;
+    if (vel.x != 0.0 && vel.y != 0.0 && props.mass != 0.0) {
+        double flow_velocity = sqrt(pow(vel.x,2) + pow(vel.y,2));
+        double Drag_Force = (double) (0.5 * Global::Physics::fDensityAir * flow_velocity * Global::Physics::fDragCofficient * props.area);
+        double Drag_Acc = (double) (Drag_Force / props.mass);
+        double angle;
 
-	double angle = atan(vel.y / vel.x);
+        if (vel.x != 0.0) {angle = atan(vel.y / vel.x);}
+        else {angle = PI / 2.0;}
 
-	acc.x -= Drag_Acc * cos (angle);
-	if (vel.y < 0) {acc.y += Drag_Acc * sin (angle);}
-	else {acc.y -= Drag_Acc * sin (angle);}
+        if (vel.x < 0.0) {angle += PI;}
+
+        acc.x += Drag_Acc * cos (angle);
+        acc.y += Drag_Acc * sin (angle);
+
+        double Friction = (double)Global::Physics::fKineticFriction * (double)-1.0 * (double)Global::Physics::fGravity;
+
+        //Update acc for Friction values
+        if ( dblLOC.y <= Screen_place.h || dblLOC.y >= window.height ) {
+            //Ball is in contact with floor or ceiling update x acc
+            if (vel.x < 0.0){acc.x += Friction;}
+            else {acc.x -= Friction;}
+        }
+
+        if ( dblLOC.x <= 0.0 || dblLOC.x >= window.width - Screen_place.w ) {
+            //Ball is in contact with the wall update y acc.
+            if (vel.y < 0.0) {acc.y += Friction;}
+            else {acc.y -= Friction;}
+        }
+    } //end if things don't equal 0
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::update(double newdeltat) {
     deltat = newdeltat;
-    SDL_Rect dst;
-    SDL_QueryTexture(ball,NULL,NULL, &dst.w, &dst.h);
 
     if (blnDragEnabled) {Drag_updateacc();}
 
     dblLOC.x = dblLOC.x + vel.x * deltat + 0.5 * acc.x * pow(deltat,2);
 	vel.x = (vel.x + acc.x * deltat);
-	if (dblLOC.x <= 0.0 || dblLOC.x >= window.width - dst.w) {
+	if (dblLOC.x <= 0.0 || dblLOC.x >= window.width - Screen_place.w) {
         vel.x *= Global::Physics::fRecoil;
         if (dblLOC.x <= 0.0) {dblLOC.x++;}
         else {dblLOC.x--;}
     } //end if hitting x edges
+
 	dblLOC.y = dblLOC.y + vel.y * deltat + 0.5 * acc.y * pow(deltat,2);
 	vel.y = (vel.y + acc.y * deltat);
-	if (dblLOC.y <= dst.h || dblLOC.y >= window.height) {
+	if (dblLOC.y <= Screen_place.h || dblLOC.y >= window.height) {
         vel.y *= Global::Physics::fRecoil;
-        if (dblLOC.y <= dst.h) {dblLOC.y++;}
+        if (dblLOC.y <= Screen_place.h) {dblLOC.y++;}
         else {dblLOC.y--;}
     }//end if hitting y edges
 
-    if (dblLOC.x < 0.0) {place.x = 0;}
+    if (dblLOC.x < 0.0) {place.x = 0; dblLOC.x = 0;}
     else {place.x = round(dblLOC.x);}
 
-    if (dblLOC.y < 0.0) {place.y = 0;}
+    if (dblLOC.y < 0.0) {place.y = 0; dblLOC.y = 0;}
     else {place.y = round(dblLOC.y);}
 
-	//if (Global::blnDebugMode) {printf("Ball updated, new position (%f, %f)\n",dblLOC.x,dblLOC.y);}
 	if (Global::Config.values.blnLogging) {
         FILE* logfile = fopen("logfile.log","a");
         fprintf(logfile,"Ball %3u \t (%.3f, %.3f)\n",ballID, dblLOC.x,dblLOC.y);
         fclose(logfile);
 	}
+
+	//Update the collision box for the new location
+	CollisionBox.left = place.x;
+	CollisionBox.top = window.height - place.y;
+	CollisionBox.right = CollisionBox.left + Screen_place.w;
+	CollisionBox.bottom = CollisionBox.top + Screen_place.h;
 
     double total_v;
     total_v = sqrt( pow(vel.x,2) + pow(vel.y,2) );
@@ -100,21 +126,23 @@ void clsCannonball::update(double newdeltat) {
 /**********************************************************************************************************************************************/
 void clsCannonball::setSDLScreen(SDL_Texture* SDLball, WINATT SDLwindow) {
     ball = SDLball;
+    SDL_QueryTexture(ball,NULL,NULL, &Screen_place.w, &Screen_place.h);
     window = SDLwindow;
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::show() {
-    SDL_Rect dst;
-    SDL_QueryTexture(ball,NULL,NULL, &dst.w, &dst.h);
-    dst.x = place.x;
-    dst.y = window.height - place.y;
+    Screen_place.x = place.x;
+    Screen_place.y = window.height - place.y;
     //Place the ball
-    SDL_RenderCopy(window.ren,ball,NULL,&dst);
+    SDL_RenderCopy(window.ren,ball,NULL,&Screen_place);
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::setValues(double r, LOC init_place, double init_vel, double init_angle, uint ID) {
     props.radius = r; //in meters
     props.density = Global::Physics::uBallDensity; //density of steel in kg/m^3
+
+    acc.x = 0.00;
+    acc.y = Global::Physics::fGravity;
 
     place = init_place;
     dblLOC.x = (double) place.x;
@@ -154,5 +182,9 @@ void clsCannonball::setplace(LOC newplace) {
 /**********************************************************************************************************************************************/
 void clsCannonball::setPhysicalProps(PP newprops) {
     props = newprops;
+}
+/**********************************************************************************************************************************************/
+BOX clsCannonball::getBOX() {
+    return CollisionBox;
 }
 /**********************************************************************************************************************************************/

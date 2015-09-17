@@ -1,3 +1,20 @@
+17 September 2015
+   Released version 1.2.0-Beta
+
+     Change log:
+        -Fixed: The Collision equations a bit more
+		-Added: Cannonball now holds its own box
+		-Changed: Attempted to make the code more efficient 
+		-Added: Keyboard Press events, (Q/ESC to quit, K to kill all balls, and R to stop all motion)
+		-Updated: Readme
+		-Changed: Default Min Velocity from 0.5 to 0.0 (basically disabling it)
+		-Changed: Disabled the Unrealistic method I added in 1.1.9-beta as it did not help.
+		-Fixed: Drag update acc would sometimes divide by 0
+		-Changed: Default Collision Method from Elastic to Ineleastic
+		-Changed: fMomentumLoss name to fCoefficientRestitution to be named after its real life counter part
+		-Added: Friction between the ball and floor / wall
+		
+
 16 September 2015
    Released version 1.1.9-Beta
 

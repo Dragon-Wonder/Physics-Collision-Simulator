@@ -10,19 +10,10 @@
 #include "tick.h"
 #include "config.h"
 /**********************************************************************************************************************************************************************/
-struct stcBox {
-    uint left;
-    uint right;
-    uint top;
-    uint bottom;
-};
-typedef struct stcBox BOX;
-/**********************************************************************************************************************************************************************/
 void addNewCannonball(LOC, LOC);
 void checkForCollisons(uint);
 bool checkCollide(BOX, BOX);
 void doCollision(uint, uint);
-BOX boxMaker(LOC);
 /**********************************************************************************************************************************************************************/
 enum Collisions { //The method of the collision (I just wanted to play around with some options.
     CollideElastic = 0, //This is the normal way things collide, they hit and bounce off, no energy is lost
@@ -42,12 +33,15 @@ namespace Global {
         const uint uBallDensity = 7850; //Density of the ball in kg/m^3 (7850 is steel)
         const float fGravity = -9.81;
         const float fDragCofficient = 0.47;
+        //Friction values based on Concrete and Steel
+        const float fKineticFriction = 0.36;
         const float fDensityAir = 1.2754; //Density of air
-        const float fRecoil = -0.56;
+        const float fRecoil = -0.56; //the mulitplier of the velocity when a ball hits the walls / floor
         const float fVelocityScalar = 1; //Changing this effects the fire velocity
-        const float fMinVelocity = 0.5; //If a ball has less velocity than the it will "die"
-        const float fMomentumLoss = 0.76; //How much total momentum stays after a collisions
-        const uchar CollisionMethod = CollideElastic;
+        const float fMinVelocity = 0.0; //If a ball has less velocity than the it will "die"
+        const float fCoefficientRestitution = 0.76; //How much total energy remains after a collision
+        //(see https://en.wikipedia.org/wiki/Coefficient_of_restitution for more info
+        const uchar CollisionMethod = CollideInelastic;
     }
 }
 /**********************************************************************************************************************************************************************/
@@ -55,23 +49,21 @@ namespace Global {
 #define DEFINED_CANNONBALL_LIMIT 10
 /**********************************************************************************************************************************************************************/
 clsCannonball Cannonballs[DEFINED_CANNONBALL_LIMIT];
-WINATT tempwin;
-SDL_Texture* tempball;
 /**********************************************************************************************************************************************************************/
 int main(int argc, char *argv[]) {
     Global::Config.Check(); //Load Config file and all its values.
     if (Global::Config.values.blnLogging) { //Open log file to clear it, if it exists
         FILE* logfile = fopen("logfile.log","w");
         fclose(logfile);
-	}
+	} //end if logging
 
     if (Global::blnDebugMode) {printf("OS: %s\n",Global::Config.values.OperatingSystem);}
     clsTick Tick; //create tick object
     clsScreen CannonWindow; //Start the screen
 	if ( !CannonWindow.getSDLStarted() ) {return 1;} //exit program if there was an error
-	//Place get needed values from screen
-    tempwin = CannonWindow.getWindow();
-    tempball = CannonWindow.getBallTexture();
+
+    //Since all the Cannonballs will share the same SDL screen stuff place them all together
+    for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) { Cannonballs[i].setSDLScreen( CannonWindow.getBallTexture(), CannonWindow.getWindow() ); }
 
     bool quit = false;
     bool holding = false;
@@ -97,7 +89,26 @@ int main(int argc, char *argv[]) {
                 SDL_GetMouseState(&OldMouse.x, &OldMouse.y);
                 CurrentMouse = OldMouse;
                 if (Global::blnDebugMode) {printf("Mouse Button down at (%d,%d)\n",OldMouse.x,OldMouse.y);}
-            } //end check of event
+            } else if ( event.type == SDL_KEYDOWN ) {
+                switch ( event.key.keysym.sym ) {
+                case SDLK_k:
+                    //kill all the balls
+                    for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {Cannonballs[i].blnstarted = false;}
+                    break;
+                case SDLK_q:
+                case SDLK_ESCAPE:
+                    //quit
+                    quit = true;
+                    break;
+                case SDLK_r:
+                    //stop all motion of balls
+                    dblXY StopVel;
+                    StopVel.x = 0.0;
+                    StopVel.y = 0.0;
+                    for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) { Cannonballs[i].setVelocity(StopVel); }
+                    break;
+                } //end switch key
+            } //end if event
         } //end if event
         if (holding) {CannonWindow.drawline(CurrentMouse, OldMouse);}
         //Update every ball
@@ -105,9 +116,9 @@ int main(int argc, char *argv[]) {
 
 		for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) { //Loop through each cannonball
             if (Cannonballs[i].blnstarted) { //only update cannonball if it is "alive"
-                Cannonballs[i].update(tempdeltat);
                 //Check for collisions if no collide is not on
                 if (Global::Physics::CollisionMethod != CollideNone) {checkForCollisons(i);}
+                Cannonballs[i].update(tempdeltat);
             } //end if started
 		} //end for loop
 
@@ -130,21 +141,20 @@ void addNewCannonball(LOC mouseC, LOC mouseO ) {
     if (mouseC.x == mouseO.x) {
         if (mouseC.y > mouseO.y) {angle = -90.0;}
         else if (mouseC.y < mouseO.y) {angle = 90.0;}
-        else {angle = 0;}
+        else {angle = 0.0;}
     } else {
         angle = (double)-1.0 * atan( (mouseC.y - mouseO.y) / (mouseC.x - mouseO.x) );
         if (mouseC.x < mouseO.x) {angle += (double)PI;}
-        angle *= (double)(180/PI);
+        angle *= (double)(180.0/PI);
     } //end if x = x
 
     //mod mouse start, once again because the top left is 0,0 to SDL
-    mouseO.y = tempwin.height - mouseO.y;
+    mouseO.y = Global::Config.values.uintScreenHeight - mouseO.y;
 
     //loop through array to find next available cannonball slot
     for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {
         if (!Cannonballs[i].blnstarted) {
             Cannonballs[i].setValues(2.0, mouseO, fire_v, angle, i);
-            Cannonballs[i].setSDLScreen(tempball, tempwin);
             return;
         } //end if not started
     } //end for cannonballs.
@@ -156,10 +166,10 @@ void addNewCannonball(LOC mouseC, LOC mouseO ) {
 /**********************************************************************************************************************************************************************/
 void checkForCollisons(uint j) { //Checks every cannonball against every other cannonball to see if they collide
     BOX A, B;
-    A = boxMaker( Cannonballs[j].getplace() );
+    A = Cannonballs[j].getBOX();
     for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {
         if (Cannonballs[i].blnstarted && i != j) {
-            B = boxMaker( Cannonballs[i].getplace() );
+            B = Cannonballs[i].getBOX();
             if ( checkCollide(A, B) ) { doCollision(j, i); }
         } //end if started and not same ball
     } //end for loop inner
@@ -185,7 +195,7 @@ void doCollision(uint numA, uint numB) {
 
     //This part here has no actual basis on real life,
     //it is just my attempt at preventing the cannonballs from sticking together
-    LOC CenterA, CenterB, DeltaCenters;
+    /*LOC CenterA, CenterB, DeltaCenters;
     double VelModder;
     CenterA = Cannonballs[numA].getplace();
     CenterB = Cannonballs[numB].getplace();
@@ -198,15 +208,14 @@ void doCollision(uint numA, uint numB) {
     DeltaCenters.x = abs(CenterA.x - CenterB.x);
     DeltaCenters.y = abs(CenterA.y - CenterB.y);
     //Since it is r^2 and the sqrt of this give us r, we just drop the sqrt part to save time
-    VelModder = pow((double)DeltaCenters.x,2) + pow((double)DeltaCenters.y,2);
-    VelModder = 200.0 / VelModder; //200 is the highest value possible
+    VelModder = sqrt(pow((double)DeltaCenters.x,2) + pow((double)DeltaCenters.y,2));
+    VelModder = sqrt(200.0) / VelModder; //200 is the highest value possible
     if (VelModder < 1.0) {VelModder = 1.0;}
-    //else if (VelModder > 0.05) {VelModder = 0.05;}
 
     Avel.x *= (double) VelModder;
     Avel.y *= (double) VelModder;
     Bvel.x *= (double) VelModder;
-    Bvel.y *= (double) VelModder;
+    Bvel.y *= (double) VelModder;*/
     //End of non real stuff
 
     double Aangle, Bangle, ContactAngle;
@@ -242,7 +251,9 @@ void doCollision(uint numA, uint numB) {
         //have to adjust it if xvel is negative.
         if (Avel.x < 0.0) {Aangle += PI;}
         if (Bvel.x < 0.0) {Bangle += PI;}
-        ContactAngle = Aangle + Bangle;
+        //The contact angle has to be the difference between the two angles but
+        //since sometimes one or the other is negative, we'll use abs to ensure the right number
+        ContactAngle = abs ( abs(Aangle) - abs(Bangle) );
 
         TotalAMomentum.x = Atotal_v * cos(Aangle - ContactAngle) * (Aprops.mass - Bprops.mass);
         TotalAMomentum.x += 2.0 * Bprops.mass * Btotal_v * cos(Bangle - ContactAngle);
@@ -290,10 +301,10 @@ void doCollision(uint numA, uint numB) {
         break;
     case CollideInelastic:
         //uses the same equations as below but some energy is lost.
-        TotalAMomentum.x *= (double)Global::Physics::fMomentumLoss;
-        TotalAMomentum.y *= (double)Global::Physics::fMomentumLoss;
-        TotalBMomentum.x *= (double)Global::Physics::fMomentumLoss;
-        TotalBMomentum.y *= (double)Global::Physics::fMomentumLoss;
+        TotalAMomentum.x *= (double)Global::Physics::fCoefficientRestitution;
+        TotalAMomentum.y *= (double)Global::Physics::fCoefficientRestitution;
+        TotalBMomentum.x *= (double)Global::Physics::fCoefficientRestitution;
+        TotalBMomentum.y *= (double)Global::Physics::fCoefficientRestitution;
 
     case CollideElastic:
         //The balls collide and bounce away from each other
@@ -306,14 +317,5 @@ void doCollision(uint numA, uint numB) {
         //Nothing Happens!
         break;
     } //end switch collide method
-}
-/**********************************************************************************************************************************************************************/
-BOX boxMaker(LOC place) {
-    BOX tempBOX;
-    tempBOX.left = place.x;
-    tempBOX.top = place.y;
-    tempBOX.bottom = tempBOX.top + 10;
-    tempBOX.right = tempBOX.left + 10;
-    return tempBOX;
 }
 /**********************************************************************************************************************************************************************/

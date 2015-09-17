@@ -2,7 +2,7 @@
 #define __VERSION_HEADER__
 
 	//Date Version Types
-	#define DEFINED_VER_DATE "16"
+	#define DEFINED_VER_DATE "17"
 	#define DEFINED_VER_MONTH "09"
 	#define DEFINED_VER_YEAR "2015"
 	#define DEFINED_VER_UBUNTU_VERSION_STYLE  "15.09"
@@ -13,18 +13,18 @@
 	
 	//Standard Version Type
 	#define DEFINED_VER_MAJOR  1
-	#define DEFINED_VER_MINOR  1
-	#define DEFINED_VER_BUILD  9
-	#define DEFINED_VER_REVISION  1
+	#define DEFINED_VER_MINOR  2
+	#define DEFINED_VER_BUILD  0
+	#define DEFINED_VER_REVISION  2
 	
 	//Miscellaneous Version Types
-	#define DEFINED_VER_BUILDS_COUNT  22
-	#define DEFINED_VER_RC_FILEVERSION 1,1,9,1
-	#define DEFINED_VER_RC_FILEVERSION_STRING "1, 1, 9, 1\0"
-	#define DEFINED_VER_FULLVERSION_STRING  "1.1.9.1"
+	#define DEFINED_VER_BUILDS_COUNT  50
+	#define DEFINED_VER_RC_FILEVERSION 1,2,0,2
+	#define DEFINED_VER_RC_FILEVERSION_STRING "1, 2, 0, 2\0"
+	#define DEFINED_VER_FULLVERSION_STRING  "1.2.0.2"
 	
 	//These values are to keep track of your versioning state, don't modify them.
-	#define DEFINED_VER_BUILD_HISTORY  1
+	#define DEFINED_VER_BUILD_HISTORY  2
 	
 
 #endif //__VERSION_HEADER__

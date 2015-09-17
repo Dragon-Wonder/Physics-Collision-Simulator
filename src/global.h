@@ -16,11 +16,12 @@ namespace Global {
         extern const uint uBallDensity;
         extern const float fGravity;
         extern const float fDragCofficient;
+        extern const float fKineticFriction;
         extern const float fDensityAir;
         extern const float fRecoil;
         extern const float fVelocityScalar;
         extern const float fMinVelocity;
-        extern const float fMomentumLoss;
+        extern const float fCoefficientRestitution;
         extern const uchar CollisionMethod;
     }
 }

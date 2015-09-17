@@ -23,8 +23,17 @@ struct stcPhysicalProperties {
     double volume;
     double density;
 };
+
+struct stcBox {
+    uint left;
+    uint right;
+    uint top;
+    uint bottom;
+};
+
 typedef struct stcDoubleValues dblXY;
 typedef struct stcPhysicalProperties PP;
+typedef struct stcBox BOX;
 /**********************************************************************************************************************************************/
 class clsCannonball {
     public:
@@ -40,6 +49,7 @@ class clsCannonball {
         void setVelocity(dblXY);
         PP getPhysicalProps(void);
         void setPhysicalProps(PP);
+        BOX getBOX(void);
 
         bool blnstarted;
     private:
@@ -48,6 +58,9 @@ class clsCannonball {
 
         SDL_Texture* ball;
         WINATT window;
+
+        BOX CollisionBox;
+        SDL_Rect Screen_place;
 
         LOC place;
         dblXY vel;
