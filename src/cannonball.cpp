@@ -29,7 +29,6 @@ clsCannonball::clsCannonball() {
 /**********************************************************************************************************************************************/
 void clsCannonball::enableDrag(void) {
     blnDragEnabled = true;
-    Drag_calcvalues();
     if (Global::blnDebugMode) {printf("Drag enabled.\n");}
 }
 /**********************************************************************************************************************************************/
@@ -117,7 +116,7 @@ void clsCannonball::update(double newdeltat) {
     if (total_v < Global::Physics::fMinVelocity || isnan(total_v) ) {
         blnstarted = false;
         if (Global::blnDebugMode) {
-            if ( isnan(total_v) ) {printf("Ball vel is Nan; killing it\n");}
+            if ( isnan(total_v) ) {printf("Ball vel is NaN; killing it\n");}
             else {printf("Ball moving too slow; killing it\n");}
         } //end if debug mode
     } //end if should kill
@@ -139,7 +138,6 @@ void clsCannonball::show() {
 /**********************************************************************************************************************************************/
 void clsCannonball::setValues(double r, LOC init_place, double init_vel, double init_angle, uint ID) {
     props.radius = r; //in meters
-    props.density = Global::Physics::uBallDensity; //density of steel in kg/m^3
 
     acc.x = 0.00;
     acc.y = Global::Physics::fGravity;
@@ -154,7 +152,7 @@ void clsCannonball::setValues(double r, LOC init_place, double init_vel, double 
 	ballID = ID;
 	blnstarted = true;
 
-
+    Drag_calcvalues();
 	if (Global::Config.values.blnDragMode) { enableDrag(); }
 }
 /**********************************************************************************************************************************************/
