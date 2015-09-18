@@ -22,6 +22,7 @@ namespace Global {
         extern const float fVelocityScalar;
         extern const float fMinVelocity;
         extern const float fCoefficientRestitution;
+        extern const float fTimetoSizeRatio;
         extern const uchar CollisionMethod;
     }
 }

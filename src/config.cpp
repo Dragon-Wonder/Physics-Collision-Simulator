@@ -40,8 +40,7 @@ clsConfig::clsConfig() {
 bool clsConfig::exists(void) {
 	//Returns true or false if config file exists
 	FILE* pTempFile = fopen(FileName, "r");
-	if (pTempFile == NULL) {return false;}
-	else {return true;}
+	return (pTempFile != NULL);
 }
 /**********************************************************************************************************************************************/
 void clsConfig::make(void) {
@@ -55,8 +54,8 @@ void clsConfig::make(void) {
 	//this way I only have to change the defaults in one place
     fprintf(configFile,"Screen Width: %u\n",values.uintScreenWidth);
     fprintf(configFile,"Screen Height: %u\n",values.uintScreenHeight);
-    fprintf(configFile,"Log Ball's path: 0\n");
-    fprintf(configFile,"Enable Drag Mode (experimental): 0\n");
+    fprintf(configFile,"Log Ball's path: %u\n", (values.blnLogging ? 1 : 0) ) ;
+    fprintf(configFile,"Enable Drag Mode (experimental): %u\n", (values.blnDragMode ? 1 : 0) );
 	fclose(configFile);
 }
 /**********************************************************************************************************************************************/
@@ -82,15 +81,13 @@ void clsConfig::load(void) {
 	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %d",&intTempBool);
 	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
 	if(Global::blnDebugMode) {printf("Log Path \t %d\n",intTempBool);}
-	if(intTempBool == 1) {values.blnLogging = true;}
-	else {values.blnLogging = false;}
+	values.blnLogging = (intTempBool == 1);
 
     fgets(chrTempString,50,configFile);
 	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %*s %d",&intTempBool);
 	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
 	if(Global::blnDebugMode) {printf("Enable Drag \t %d\n",intTempBool);}
-	if(intTempBool == 1) {values.blnDragMode = true;}
-	else {values.blnDragMode = false;}
+	values.blnDragMode = (intTempBool == 1);
 
 	fclose(configFile);
 	printf("\n\n");
@@ -116,7 +113,7 @@ char clsConfig::verisonCheck(const char *ConfigVerison) {
 void clsConfig::Check(void) {
 	char chrTempString[50], chrConfigVerison;
 
-	if (exists() != true) {
+	if ( !exists() ) {
 		printf("Config file was not found; creating now one\n");
 		make();
 	} else {

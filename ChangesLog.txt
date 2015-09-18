@@ -1,3 +1,13 @@
+18 September 2015
+   Released version 1.2.2-Beta
+
+     Change log:
+        -Fixed: Mouse line getting thinner the closer to vertical it gets
+		-Cleaned: Up a lot of code; made things simpler
+		-Changed: All angles are now in radians so I don't have to worry about converting
+		-Changed: Ball radius (and therefore mass) is now proportional to the amount of time you held down the mouse button for.
+		-Changed: Upped default allowable number of cannonballs from 10 to 20
+
 17 September 2015
    Released version 1.2.1-Beta
 
@@ -16,7 +26,7 @@
 		-Changed: Default Min Velocity from 0.5 to 0.0 (basically disabling it)
 		-Changed: Disabled the Unrealistic method I added in 1.1.9-beta as it did not help.
 		-Fixed: Drag update acc would sometimes divide by 0
-		-Changed: Default Collision Method from Elastic to Ineleastic
+		-Changed: Default Collision Method from Elastic to Inelastic
 		-Changed: fMomentumLoss name to fCoefficientRestitution to be named after its real life counter part
 		-Added: Friction between the ball and floor / wall
 		

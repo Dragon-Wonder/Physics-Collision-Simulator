@@ -1,3 +1,7 @@
+/* TODO (GamerMan7799#4#): Show path of each ball on the screen */
+/* FIXME (GamerMan7799#1#): The balls will become stuck together for seemingly random reasons */
+/* TODO (GamerMan7799#1#): Balls are different colors based on their IDS */
+/* TODO (GamerMan7799#1#): Balls are more transparent the less mass it has. */
 /**********************************************************************************************************************************************************************/
 #include <SDL2/SDL.h>
 #include <cstdio>
@@ -10,7 +14,7 @@
 #include "tick.h"
 #include "config.h"
 /**********************************************************************************************************************************************************************/
-void addNewCannonball(LOC, LOC);
+void addNewCannonball(LOC, LOC, double);
 void checkForCollisons(uint);
 bool checkCollide(BOX, BOX);
 void doCollision(uint, uint);
@@ -36,17 +40,18 @@ namespace Global {
         //Friction values based on Concrete and Steel
         const float fKineticFriction = 0.36;
         const float fDensityAir = 1.2754; //Density of air
-        const float fRecoil = -0.56; //the mulitplier of the velocity when a ball hits the walls / floor
+        const float fRecoil = -0.56; //the multiplier of the velocity when a ball hits the walls / floor
         const float fVelocityScalar = 1; //Changing this effects the fire velocity
         const float fMinVelocity = 0.0; //If a ball has less velocity than the it will "die"
         const float fCoefficientRestitution = 0.76; //How much total energy remains after a collision
         //(see https://en.wikipedia.org/wiki/Coefficient_of_restitution for more info
+        const float fTimetoSizeRatio = 1.2458; //One second of holding down the mouse button = this many meters for the ball
         const uchar CollisionMethod = CollideInelastic;
     }
 }
 /**********************************************************************************************************************************************************************/
 //This is the maximum number of cannonballs which can be "alive" at a time
-#define DEFINED_CANNONBALL_LIMIT 10
+#define DEFINED_CANNONBALL_LIMIT 20
 /**********************************************************************************************************************************************************************/
 clsCannonball Cannonballs[DEFINED_CANNONBALL_LIMIT];
 /**********************************************************************************************************************************************************************/
@@ -79,13 +84,14 @@ int main(int argc, char *argv[]) {
             else if ( event.type == SDL_MOUSEBUTTONUP ) {
                 holding = false;
                 if (Global::blnDebugMode) {printf("Mouse button up\n");}
-                addNewCannonball(CurrentMouse, OldMouse);
+                addNewCannonball(CurrentMouse, OldMouse, Tick.stopHolding() );
             } else if ( event.type == SDL_MOUSEMOTION && holding) {
                 //Draw the line
                 SDL_GetMouseState(&CurrentMouse.x, &CurrentMouse.y );
                 if (Global::blnDebugMode) {printf("Mouse found at (%d,%d)\n",CurrentMouse.x,CurrentMouse.y);}
             } else if ( event.type == SDL_MOUSEBUTTONDOWN ) {
                 holding = true;
+                Tick.startHolding();
                 SDL_GetMouseState(&OldMouse.x, &OldMouse.y);
                 CurrentMouse = OldMouse;
                 if (Global::blnDebugMode) {printf("Mouse Button down at (%d,%d)\n",OldMouse.x,OldMouse.y);}
@@ -93,7 +99,7 @@ int main(int argc, char *argv[]) {
                 switch ( event.key.keysym.sym ) {
                 case SDLK_k:
                     //kill all the balls
-                    for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {Cannonballs[i].blnstarted = false;}
+                    for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) { Cannonballs[i].blnstarted = false; }
                     break;
                 case SDLK_q:
                 case SDLK_ESCAPE:
@@ -103,8 +109,7 @@ int main(int argc, char *argv[]) {
                 case SDLK_r:
                     //stop all motion of balls
                     dblXY StopVel;
-                    StopVel.x = 0.0;
-                    StopVel.y = 0.0;
+                    StopVel.x = StopVel.y = 0.0;
                     for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) { Cannonballs[i].setVelocity(StopVel); }
                     break;
                 } //end switch key
@@ -113,7 +118,6 @@ int main(int argc, char *argv[]) {
         if (holding) {CannonWindow.drawline(CurrentMouse, OldMouse);}
         //Update every ball
         tempdeltat = Tick.getTimeDifference();
-
 		for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) { //Loop through each cannonball
             if (Cannonballs[i].blnstarted) { //only update cannonball if it is "alive"
                 //Check for collisions if no collide is not on
@@ -123,29 +127,26 @@ int main(int argc, char *argv[]) {
 		} //end for loop
 
 		CannonWindow.update(); //Update the screen
-	} while (!quit);
+	} while (!quit); //keep looping until we get a quit
 	return 0;
 }
 /**********************************************************************************************************************************************************************/
-void addNewCannonball(LOC mouseC, LOC mouseO ) {
+void addNewCannonball(LOC mouseC, LOC mouseO, double HoldTime ) {
     //Get location, vel, and angle
     double fire_v;
     double angle;
+    double radius = (double)Global::Physics::fTimetoSizeRatio * HoldTime;
 
     //Because y increasing is going down according to SDL we first negative the velocity
     fire_v = -1 * sqrt( pow(mouseC.x - mouseO.x, 2) + pow(mouseC.y - mouseO.y, 2) );
     fire_v /= (double) Global::Physics::fVelocityScalar;
 
     //if the mouse if pointing straight up or straight down make the angle 90
-    //Other calculate the angle with atan.
+    //Otherwise calculate the angle with atan.
     if (mouseC.x == mouseO.x) {
-        if (mouseC.y > mouseO.y) {angle = -90.0;}
-        else if (mouseC.y < mouseO.y) {angle = 90.0;}
-        else {angle = 0.0;}
+        angle = (PI / 2.0) * ( (mouseC.y > mouseO.y) ? -1.0 : 1.0 );
     } else {
-        angle = (double)-1.0 * atan( (mouseC.y - mouseO.y) / (mouseC.x - mouseO.x) );
-        if (mouseC.x < mouseO.x) {angle += (double)PI;}
-        angle *= (double)(180.0/PI);
+        angle = (double) -1.0 * atan( (double)(mouseC.y - mouseO.y) / (double)(mouseC.x - mouseO.x) ) + (double)( (mouseC.x < mouseO.x) ? PI : 0.0 );
     } //end if x = x
 
     //mod mouse start, once again because the top left is 0,0 to SDL
@@ -154,12 +155,12 @@ void addNewCannonball(LOC mouseC, LOC mouseO ) {
     //loop through array to find next available cannonball slot
     for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {
         if (!Cannonballs[i].blnstarted) {
-            Cannonballs[i].setValues(2.0, mouseO, fire_v, angle, i);
+            Cannonballs[i].setValues(radius, mouseO, fire_v, angle, i);
             return;
         } //end if not started
     } //end for cannonballs.
 
-    //since the program would have exited this function if a spot was open
+    //Since the program would have exited this function if a spot was open
     //below we tell the use they have to wait
     printf("You cannot add more cannonballs, please wait for some to decay.\n");
 }
@@ -200,11 +201,6 @@ void doCollision(uint numA, uint numB) {
     CenterA = Cannonballs[numA].getplace();
     CenterB = Cannonballs[numB].getplace();
 
-    CenterA.x += 5;
-    CenterA.y += 5;
-    CenterB.x += 5;
-    CenterB.y += 5;
-
     DeltaCenters.x = abs(CenterA.x - CenterB.x);
     DeltaCenters.y = abs(CenterA.y - CenterB.y);
     //Since it is r^2 and the sqrt of this give us r, we just drop the sqrt part to save time
@@ -234,23 +230,19 @@ void doCollision(uint numA, uint numB) {
         //get the angle for both A and B
         if (Avel.x != 0.0) {Aangle = atan(Avel.y/Avel.x);}
         else {
-            if (Avel.y > 0.0) {Aangle = PI / 2.0;}
-            else if (Avel.y < 0.0) {Aangle = - PI / 2.0;}
-            else {Aangle = 0.0;}
+            Aangle = (Avel.y >= 0.0) ? PI / 2.0 : -PI / 2.0;
         }
 
         if (Bvel.x != 0.0) {Bangle = atan(Bvel.y/Bvel.x);}
         else {
-            if (Bvel.y > 0.0) {Bangle = PI / 2.0;}
-            else if (Bvel.y < 0.0) {Bangle = - PI / 2.0;}
-            else {Bangle = 0.0;}
+            Bangle = (Bvel.y >= 0.0) ? PI / 2.0 : -PI / 2.0;
         }
 
         //Adjust the angle to be the right one.
         //Since atan will only yield a number between -PI/2 and PI/2 we
         //have to adjust it if xvel is negative.
-        if (Avel.x < 0.0) {Aangle += PI;}
-        if (Bvel.x < 0.0) {Bangle += PI;}
+        Aangle += Avel.x < 0.0 ? PI : 0;
+        Bangle += Bvel.x < 0.0 ? PI : 0;
         //The contact angle has to be the difference between the two angles but
         //since sometimes one or the other is negative, we'll use abs to ensure the right number
         ContactAngle = abs ( abs(Aangle) - abs(Bangle) );

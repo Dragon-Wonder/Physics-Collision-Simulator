@@ -2,9 +2,6 @@
 #include "cannonball.h"
 #include "screen.h"
 /**********************************************************************************************************************************************/
-//Constants
-const double Rad_Convert = PI / 180.0;
-/**********************************************************************************************************************************************/
 clsCannonball::clsCannonball() {
     //Put some default values in; on the off chance I forget to set them later
     blnDragEnabled = false;
@@ -47,27 +44,23 @@ void clsCannonball::Drag_updateacc(void) {
         double Drag_Acc = (double) (Drag_Force / props.mass);
         double angle;
 
-        if (vel.x != 0.0) {angle = atan(vel.y / vel.x);}
-        else {angle = PI / 2.0;}
-
-        if (vel.x < 0.0) {angle += PI;}
+        angle = (vel.x != 0.0) ? atan(vel.y / vel.x) : PI / 2.0;
+        angle += vel.x < 0.0 ? PI : 0.0;
 
         acc.x += Drag_Acc * cos (angle);
         acc.y += Drag_Acc * sin (angle);
-
-        double Friction = (double)Global::Physics::fKineticFriction * (double)-1.0 * (double)Global::Physics::fGravity;
+        //Please recall fGravity is negative
+        double Friction = (double)Global::Physics::fKineticFriction * (double)Global::Physics::fGravity;
 
         //Update acc for Friction values
         if ( dblLOC.y <= Screen_place.h || dblLOC.y >= window.height ) {
             //Ball is in contact with floor or ceiling update x acc
-            if (vel.x < 0.0){acc.x += Friction;}
-            else {acc.x -= Friction;}
+            acc.x += Friction * (vel.x < 0.0 ? 1.0 : -1.0);
         }
 
         if ( dblLOC.x <= 0.0 || dblLOC.x >= window.width - Screen_place.w ) {
             //Ball is in contact with the wall update y acc.
-            if (vel.y < 0.0) {acc.y += Friction;}
-            else {acc.y -= Friction;}
+            acc.y += Friction * (vel.y < 0.0 ? 1.0 : -1.0);
         }
     } //end if things don't equal 0
 }
@@ -81,23 +74,18 @@ void clsCannonball::update(double newdeltat) {
 	vel.x = (vel.x + acc.x * deltat);
 	if (dblLOC.x <= 0.0 || dblLOC.x >= window.width - Screen_place.w) {
         vel.x *= Global::Physics::fRecoil;
-        if (dblLOC.x <= 0.0) {dblLOC.x++;}
-        else {dblLOC.x--;}
+        dblLOC.x += dblLOC.x <= 0.0 ? 1.0 : -1.0;
     } //end if hitting x edges
 
 	dblLOC.y = dblLOC.y + vel.y * deltat + 0.5 * acc.y * pow(deltat,2);
 	vel.y = (vel.y + acc.y * deltat);
 	if (dblLOC.y <= Screen_place.h || dblLOC.y >= window.height) {
         vel.y *= Global::Physics::fRecoil;
-        if (dblLOC.y <= Screen_place.h) {dblLOC.y++;}
-        else {dblLOC.y--;}
+        dblLOC.y += dblLOC.y <= Screen_place.y ? 1.0 : -1.0;
     }//end if hitting y edges
 
-    if (dblLOC.x < 0.0) {place.x = 0; dblLOC.x = 0;}
-    else {place.x = round(dblLOC.x);}
-
-    if (dblLOC.y < 0.0) {place.y = 0; dblLOC.y = 0;}
-    else {place.y = round(dblLOC.y);}
+    place.x = dblLOC.x < 0.0 ? 0 : round(dblLOC.x);
+    place.y = dblLOC.y < 0.0 ? 0 : round(dblLOC.y);
 
 	if (Global::Config.values.blnLogging) {
         FILE* logfile = fopen("logfile.log","a");
@@ -146,8 +134,8 @@ void clsCannonball::setValues(double r, LOC init_place, double init_vel, double 
     dblLOC.x = (double) place.x;
     dblLOC.y = (double) place.y;
 
-    vel.x = (double)(init_vel) * (cos(init_angle * Rad_Convert));
-	vel.y = (double)(init_vel) * (sin(init_angle * Rad_Convert));
+    vel.x = (double)(init_vel) * (cos(init_angle));
+	vel.y = (double)(init_vel) * (sin(init_angle));
 
 	ballID = ID;
 	blnstarted = true;

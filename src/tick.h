@@ -17,15 +17,16 @@ class clsTick {
 	private:
 		//Members
 		clock_t lngTimerStart;
-
+		clock_t lngHoldingStart;
 	public:
 		//Default Constructor
 		clsTick();
-
 		//Functions
 		void startTimer(void);
 		double getTimeDifference(void);
-		void wait(void);
+
+		void startHolding(void);
+		double stopHolding(void);
 };
 /**********************************************************************************************************************************************/
 #endif
