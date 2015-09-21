@@ -35,11 +35,12 @@ The first time you run the program a Config.ini will be created it should look s
 
 ```
 Config File for the Cannon.exe
-1.2.0.25-b
+1.2.4.60-b
 Screen Width: 640
 Screen Height: 480
 Log Ball's path: 0
 Enable Drag Mode (experimental): 0
+Draw Ball path on screen: 0
 ```
 
 You can use this to change things like the screen height and width, and other stuff.
@@ -47,7 +48,9 @@ You can use this to change things like the screen height and width, and other st
 "Log Ball's Path" (if enabled with a 1 instead of 0), will cause a a file called "logfile.log", which will contain the placement of every ball on every update (it gets quite big as you can guess).
 
 "Enable drag Mode" (if enabled with a 1 instead of 0), will cause the cannonballs to be effected by drag. It is listed as experimental because I based the equations used off of several things I found 
-online and I cannot verify how accuate it is.
+online and I cannot verify how accurate it is.
+
+"Draw Ball path on Screen" (if enabled with a 1 instead of 0), will cause small pixels to trail after each ball.
 
 Once you start the program you will be greeted with a beautiful white screen. To create a new cannonball you click (and hold down the button) 
 you can now move your move around to change the angle that the new cannonball will be fired at; as well as the longer the line the faster it will go. 

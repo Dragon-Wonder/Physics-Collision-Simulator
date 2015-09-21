@@ -1,4 +1,13 @@
 21 September 2015
+   Released version 1.2.4-Beta
+
+     Change log:
+        -Added: Balls are different colors
+		-Changed: Ball ID is now set in Screen set
+		-Changed: Unrealistic method added in 1.1.9-Beta can be toggled easier (with define)
+				  Its funny to enable and watch even if it doesn't do what it is supposed to
+
+21 September 2015
    Released version 1.2.3-Beta
 
      Change log:

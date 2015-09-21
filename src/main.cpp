@@ -1,5 +1,6 @@
 /* FIXME (GamerMan7799#1#): The balls will become stuck together for seemingly random reasons */
-/* TODO (GamerMan7799#1#): Balls are different colors based on their IDS */
+/* TODO (GamerMan7799#5#): Collision Method can be set in Config */
+/* TODO (GamerMan7799#9#): Allow setting of same Physics Values in Config */
 /**********************************************************************************************************************************************************************/
 #include <SDL2/SDL.h>
 #include <cstdio>
@@ -41,7 +42,7 @@ namespace Global {
         const float fMinVelocity = 0.0; //If a ball has less velocity than the it will "die"
         const float fCoefficientRestitution = 0.76; //How much total energy remains after a collision
         //(see https://en.wikipedia.org/wiki/Coefficient_of_restitution for more info)
-        const uchar CollisionMethod = CollideInelastic;
+        const uchar CollisionMethod = CollideInelastic; //The collision method to use (see above)
     }
 
     namespace Equations { //Holds Values for different equations that are not physics related
@@ -55,6 +56,8 @@ namespace Global {
 /**********************************************************************************************************************************************************************/
 //This is the maximum number of cannonballs which can be "alive" at a time
 #define DEFINED_CANNONBALL_LIMIT 20
+//IF this is not commented out then program will use unrealistic method that will increase velocity the closer they are together
+//#define DEFINED_USE_R2_VEL_MODDER
 /**********************************************************************************************************************************************************************/
 clsCannonball Cannonballs[DEFINED_CANNONBALL_LIMIT];
 /**********************************************************************************************************************************************************************/
@@ -72,7 +75,7 @@ int main(int argc, char *argv[]) {
 
     //Since all the Cannonballs will share the same SDL screen stuff place them all together
     for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {
-        Cannonballs[i].setSDLScreen( CannonWindow.getBallTexture(), CannonWindow.getPixelTexture(), CannonWindow.getWindow() );
+        Cannonballs[i].setSDLScreen( CannonWindow.getBallTexture(), CannonWindow.getPixelTexture(), CannonWindow.getWindow(), i );
     }
 
     bool quit = false;
@@ -160,7 +163,7 @@ void addNewCannonball(LOC mouseC, LOC mouseO, double HoldTime ) {
     //loop through array to find next available cannonball slot
     for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {
         if (!Cannonballs[i].blnstarted) {
-            Cannonballs[i].setValues(radius, mouseO, fire_v, angle, i);
+            Cannonballs[i].setValues(radius, mouseO, fire_v, angle);
             return;
         } //end if not started
     } //end for cannonballs.
@@ -199,9 +202,10 @@ void doCollision(uint numA, uint numB) {
     Aprops = Cannonballs[numA].getPhysicalProps();
     Bprops = Cannonballs[numB].getPhysicalProps();
 
+#ifdef DEFINED_USE_R2_VEL_MODDER
     //This part here has no actual basis on real life,
     //it is just my attempt at preventing the cannonballs from sticking together
-    /*LOC CenterA, CenterB, DeltaCenters;
+    LOC CenterA, CenterB, DeltaCenters;
     double VelModder;
     CenterA = Cannonballs[numA].getplace();
     CenterB = Cannonballs[numB].getplace();
@@ -216,8 +220,9 @@ void doCollision(uint numA, uint numB) {
     Avel.x *= (double) VelModder;
     Avel.y *= (double) VelModder;
     Bvel.x *= (double) VelModder;
-    Bvel.y *= (double) VelModder;*/
+    Bvel.y *= (double) VelModder;
     //End of non real stuff
+#endif
 
     double Aangle, Bangle, ContactAngle;
     double Atotal_v, Btotal_v;

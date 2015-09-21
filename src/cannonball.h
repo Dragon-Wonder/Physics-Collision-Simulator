@@ -5,6 +5,7 @@
 #include <math.h>
 #include <cstdio>
 #include <cstdlib>
+//#include <time.h>
 #include "config.h"
 #include "global.h"
 #include "screen.h"
@@ -32,20 +33,27 @@ struct stcBox {
     uint bottom;
 };
 
+struct stcColor {
+    Uint8 Red;
+    Uint8 Green;
+    Uint8 Blue;
+};
+
 typedef struct stcDoubleValues dblXY;
 typedef struct stcPhysicalProperties PP;
 typedef struct stcBox BOX;
+typedef struct stcColor clr;
 /**********************************************************************************************************************************************/
 class clsCannonball {
     public:
         /** Default constructor */
         clsCannonball();
-        void setValues(double, LOC, double, double, uint);
+        void setValues(double, LOC, double, double);
         LOC getplace(void);
         void setplace(LOC);
 
         void update(double);
-        void setSDLScreen(SDL_Texture*, SDL_Texture*, WINATT);
+        void setSDLScreen(SDL_Texture*, SDL_Texture*, WINATT, uint);
         dblXY getVelocity(void);
         void setVelocity(dblXY);
         PP getPhysicalProps(void);
@@ -56,7 +64,7 @@ class clsCannonball {
     private:
         uint ballID;
         bool blnDragEnabled;
-
+        clr Color;
         SDL_Texture* ball;
         SDL_Texture* pixel;
         WINATT window;

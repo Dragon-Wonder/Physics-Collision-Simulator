@@ -111,7 +111,14 @@ void clsCannonball::update(double newdeltat) {
 	show();
 }
 /**********************************************************************************************************************************************/
-void clsCannonball::setSDLScreen(SDL_Texture* SDLball, SDL_Texture* SDLpxel, WINATT SDLwindow) {
+void clsCannonball::setSDLScreen(SDL_Texture* SDLball, SDL_Texture* SDLpxel, WINATT SDLwindow, uint newID) {
+    ballID = newID;
+    //set the color of the ball
+    //Set some ID's to have specific colors, but otherwise randomize them
+    Color.Red = rand() % 255;
+    Color.Green = rand() % 255;
+    Color.Blue = rand() % 255;
+
     ball = SDLball;
     pixel = SDLpxel;
     SDL_QueryTexture(ball,NULL,NULL, &Screen_place.w, &Screen_place.h);
@@ -133,12 +140,18 @@ void clsCannonball::show() {
 
     //set the ball alpha
     SDL_SetTextureAlphaMod(ball, alpha);
+    SDL_SetTextureColorMod(ball, Color.Red, Color.Green, Color.Blue);
 
     //Place the ball
     SDL_RenderCopy(window.ren,ball,NULL,&Screen_place);
+
+    //reset ball Alpha and color so it doesn't effect the next ball
+    SDL_SetTextureAlphaMod(ball, 0xFF);
+    SDL_SetTextureColorMod(ball, 0xFF, 0xFF, 0xFF);
+
 }
 /**********************************************************************************************************************************************/
-void clsCannonball::setValues(double r, LOC init_place, double init_vel, double init_angle, uint ID) {
+void clsCannonball::setValues(double r, LOC init_place, double init_vel, double init_angle) {
     props.radius = r; //in meters
 
     acc.x = 0.00;
@@ -150,8 +163,6 @@ void clsCannonball::setValues(double r, LOC init_place, double init_vel, double 
 
     vel.x = (double)(init_vel) * (cos(init_angle));
 	vel.y = (double)(init_vel) * (sin(init_angle));
-
-	ballID = ID;
 	blnstarted = true;
 
     Drag_calcvalues();
@@ -193,6 +204,7 @@ void clsCannonball::drawPath(LOC newplace) {
 
     //If there have been enough updates since the last time the path was updated,
     //then update the path array otherwise inc updates
+    SDL_SetTextureColorMod(pixel, Color.Red, Color.Green, Color.Blue);
     if ( UpdatesSinceLast >= 25 ) {
         UpdatesSinceLast = 0;
         //First move all the old locations down one spot in the array
@@ -208,5 +220,6 @@ void clsCannonball::drawPath(LOC newplace) {
         dst.x = (uint)(path[i].x + Screen_place.w / 2);
         SDL_RenderCopy(window.ren, pixel, NULL, &dst);
     } //end for
+    SDL_SetTextureColorMod(pixel, 0xFF, 0xFF, 0xFF);
 }
 /**********************************************************************************************************************************************/
