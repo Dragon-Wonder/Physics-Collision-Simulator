@@ -10,6 +10,7 @@ clsConfig::clsConfig() {
     //Set default values
     values.blnLogging = false;
     values.blnDragMode = false;
+    values.blnDrawPathOnScreen = false;
     values.uintScreenWidth = 640;
     values.uintScreenHeight = 480;
 #if defined(_AIX)
@@ -56,6 +57,7 @@ void clsConfig::make(void) {
     fprintf(configFile,"Screen Height: %u\n",values.uintScreenHeight);
     fprintf(configFile,"Log Ball's path: %u\n", (values.blnLogging ? 1 : 0) ) ;
     fprintf(configFile,"Enable Drag Mode (experimental): %u\n", (values.blnDragMode ? 1 : 0) );
+    fprintf(configFile,"Draw Ball path on screen: %u\n", (values.blnDrawPathOnScreen ? 1 : 0) );
 	fclose(configFile);
 }
 /**********************************************************************************************************************************************/
@@ -88,6 +90,12 @@ void clsConfig::load(void) {
 	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
 	if(Global::blnDebugMode) {printf("Enable Drag \t %d\n",intTempBool);}
 	values.blnDragMode = (intTempBool == 1);
+
+    fgets(chrTempString,50,configFile);
+	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %*s %*s %d",&intTempBool);
+	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
+	if(Global::blnDebugMode) {printf("Enable Screen Path \t %d\n",intTempBool);}
+	values.blnDrawPathOnScreen = (intTempBool == 1);
 
 	fclose(configFile);
 	printf("\n\n");
@@ -127,7 +135,7 @@ void clsConfig::Check(void) {
 			printf("Current config file out of date. Making new one.\n");
 			fclose(configFile);
 			make();
-		} else { load();}
+		} else { load(); }
 	} //end if exists
 }
 /**********************************************************************************************************************************************/

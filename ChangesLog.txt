@@ -1,3 +1,17 @@
+21 September 2015
+   Released version 1.2.3-Beta
+
+     Change log:
+        -Removed: Sky image (replaced with SDL_SetRenderDrawColor)
+        -Added: Cannonballs are now more transparent the less mass they have
+		-Removed: My attempt at making parts of the ball image transparent (it wasn't working)
+		-Changed: Reduced fTimetoSizeRatio from 1.2458 to 0.0124
+		-Added: Namespace Equations to hold equation values
+		-Changed: Screen background color from White to Black
+		-Changed: Ball color from Black to White
+		-Changed: Pixel color from Black to White
+		-Added: Ball Path is now drawn on screen (holds so many past points, can be enabled in config file)
+
 18 September 2015
    Released version 1.2.2-Beta
 

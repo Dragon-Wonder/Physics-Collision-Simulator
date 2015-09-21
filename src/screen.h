@@ -10,7 +10,6 @@
 /**********************************************************************************************************************************************************************/
 //Include the xpm files which present the images.
 #include "image_ball.xpm"
-#include "image_sky.xpm"
 #include "image_pixel.xpm"
 /**********************************************************************************************************************************************************************/
 struct stcWinAtt { //Attribute of the window
@@ -44,11 +43,11 @@ class clsScreen {
         void drawline(LOC, LOC);
 
         SDL_Texture* getBallTexture(void);
+        SDL_Texture* getPixelTexture(void);
         WINATT getWindow(void);
 
     private:
         SDL_Texture *ball;
-        SDL_Texture *sky;
         SDL_Texture *pixel; //used for drawing the line
 
         WINATT window;
@@ -58,7 +57,6 @@ class clsScreen {
         //are closed
         bool blnWindow;
         bool blnRenderer;
-        bool blnSky;
         bool blnBall;
         bool blnPixel;
         bool bln_SDL_started;

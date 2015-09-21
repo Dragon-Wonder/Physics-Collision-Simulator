@@ -1,7 +1,5 @@
-/* TODO (GamerMan7799#4#): Show path of each ball on the screen */
 /* FIXME (GamerMan7799#1#): The balls will become stuck together for seemingly random reasons */
 /* TODO (GamerMan7799#1#): Balls are different colors based on their IDS */
-/* TODO (GamerMan7799#1#): Balls are more transparent the less mass it has. */
 /**********************************************************************************************************************************************************************/
 #include <SDL2/SDL.h>
 #include <cstdio>
@@ -35,18 +33,23 @@ namespace Global {
     clsConfig Config;
     namespace Physics { //hold physics values in one place for future reference
         const uint uBallDensity = 7850; //Density of the ball in kg/m^3 (7850 is steel)
-        const float fGravity = -9.81;
-        const float fDragCofficient = 0.47;
-        //Friction values based on Concrete and Steel
-        const float fKineticFriction = 0.36;
-        const float fDensityAir = 1.2754; //Density of air
+        const float fGravity = -9.81; //acceleration due to gravity in m/s^2
+        const float fDragCofficient = 0.47; //Drag coefficient in the air
+        const float fKineticFriction = 0.36; //Friction values based on Concrete and Steel
+        const float fDensityAir = 1.2754; //Density of air (in kg/m^3)
         const float fRecoil = -0.56; //the multiplier of the velocity when a ball hits the walls / floor
-        const float fVelocityScalar = 1; //Changing this effects the fire velocity
         const float fMinVelocity = 0.0; //If a ball has less velocity than the it will "die"
         const float fCoefficientRestitution = 0.76; //How much total energy remains after a collision
-        //(see https://en.wikipedia.org/wiki/Coefficient_of_restitution for more info
-        const float fTimetoSizeRatio = 1.2458; //One second of holding down the mouse button = this many meters for the ball
+        //(see https://en.wikipedia.org/wiki/Coefficient_of_restitution for more info)
         const uchar CollisionMethod = CollideInelastic;
+    }
+
+    namespace Equations { //Holds Values for different equations that are not physics related
+        const float fVelocityScalar = 1; //Changing this effects the ratio of the line to the velocity when creating a cannonball
+        const float fTimetoSizeRatio = 0.0124; //One second of holding down the mouse button = this many meters for the ball
+        const float fMassAlphaRatio = 47.568; //The ratio between mass and its alpha (transparent) value
+        const float fMassAlphaOffset = 152.18; //The offset for the equation of mass to alpha value
+        const uchar uAlphaMinimum = 30; //the lowest that the alpha value is allowed to be
     }
 }
 /**********************************************************************************************************************************************************************/
@@ -68,7 +71,9 @@ int main(int argc, char *argv[]) {
 	if ( !CannonWindow.getSDLStarted() ) {return 1;} //exit program if there was an error
 
     //Since all the Cannonballs will share the same SDL screen stuff place them all together
-    for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) { Cannonballs[i].setSDLScreen( CannonWindow.getBallTexture(), CannonWindow.getWindow() ); }
+    for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {
+        Cannonballs[i].setSDLScreen( CannonWindow.getBallTexture(), CannonWindow.getPixelTexture(), CannonWindow.getWindow() );
+    }
 
     bool quit = false;
     bool holding = false;
@@ -135,11 +140,11 @@ void addNewCannonball(LOC mouseC, LOC mouseO, double HoldTime ) {
     //Get location, vel, and angle
     double fire_v;
     double angle;
-    double radius = (double)Global::Physics::fTimetoSizeRatio * HoldTime;
+    double radius = (double)Global::Equations::fTimetoSizeRatio * HoldTime;
 
     //Because y increasing is going down according to SDL we first negative the velocity
     fire_v = -1 * sqrt( pow(mouseC.x - mouseO.x, 2) + pow(mouseC.y - mouseO.y, 2) );
-    fire_v /= (double) Global::Physics::fVelocityScalar;
+    fire_v /= (double) Global::Equations::fVelocityScalar;
 
     //if the mouse if pointing straight up or straight down make the angle 90
     //Otherwise calculate the angle with atan.

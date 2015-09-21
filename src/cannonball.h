@@ -10,6 +10,7 @@
 #include "screen.h"
 /**********************************************************************************************************************************************/
 #define PI 3.1415926535897
+#define DEFINED_MAXNUMPASTPOINTS 5
 /**********************************************************************************************************************************************/
 struct stcDoubleValues {
     double x;
@@ -44,7 +45,7 @@ class clsCannonball {
         void setplace(LOC);
 
         void update(double);
-        void setSDLScreen(SDL_Texture*, WINATT);
+        void setSDLScreen(SDL_Texture*, SDL_Texture*, WINATT);
         dblXY getVelocity(void);
         void setVelocity(dblXY);
         PP getPhysicalProps(void);
@@ -57,6 +58,7 @@ class clsCannonball {
         bool blnDragEnabled;
 
         SDL_Texture* ball;
+        SDL_Texture* pixel;
         WINATT window;
 
         BOX CollisionBox;
@@ -68,9 +70,12 @@ class clsCannonball {
         dblXY acc;
         PP props;
 
+        LOC path[DEFINED_MAXNUMPASTPOINTS];
+
         void enableDrag(void);
         double deltat;
         void show(void);
+        void drawPath(LOC);
         void Drag_calcvalues(void);
         void Drag_updateacc(void);
 };

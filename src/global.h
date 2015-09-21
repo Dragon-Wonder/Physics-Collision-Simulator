@@ -19,11 +19,17 @@ namespace Global {
         extern const float fKineticFriction;
         extern const float fDensityAir;
         extern const float fRecoil;
-        extern const float fVelocityScalar;
         extern const float fMinVelocity;
         extern const float fCoefficientRestitution;
-        extern const float fTimetoSizeRatio;
         extern const uchar CollisionMethod;
+    }
+
+    namespace Equations {
+        extern const float fVelocityScalar;
+        extern const float fTimetoSizeRatio;
+        extern const float fMassAlphaRatio;
+        extern const float fMassAlphaOffset;
+        extern const uchar uAlphaMinimum;
     }
 }
 /**********************************************************************************************************************************************/

@@ -135,7 +135,6 @@
 		<Unit filename="../src/global.h" />
 		<Unit filename="../src/image_ball.xpm" />
 		<Unit filename="../src/image_pixel.xpm" />
-		<Unit filename="../src/image_sky.xpm" />
 		<Unit filename="../src/main.cpp" />
 		<Unit filename="../src/screen.cpp" />
 		<Unit filename="../src/screen.h" />

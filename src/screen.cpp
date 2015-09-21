@@ -5,10 +5,8 @@ clsScreen::clsScreen() {
     window.width = Global::Config.values.uintScreenWidth;
     window.height = Global::Config.values.uintScreenHeight;
 
-    blnWindow = false;
-    blnRenderer = false;
-    blnSky = false;
-    blnBall = false;
+    blnWindow = blnRenderer = false;
+    blnBall = blnPixel = false;
     bln_SDL_started = false;
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -44,18 +42,16 @@ clsScreen::clsScreen() {
 	    if (Global::blnDebugMode) {printf("Renderer creation successful\n");}
     }
 
-	sky = loadIMG("sky");
-    if (bln_SDL_started == false) {return;}
-    else {
-        blnSky = true;
-        if (Global::blnDebugMode) {printf("Sky loading successful\n");}
-    }
+    //Set the background color of the render to black
+    SDL_SetRenderDrawColor(window.ren, 0x00, 0x00, 0x00, 0xFF );
 
     ball = loadIMG("ball");
     if (bln_SDL_started == false) {return;}
     else {
         blnBall = true;
         if (Global::blnDebugMode) {printf("Ball loading successful\n");}
+        //Set the blend mode for the texture so I can change the alpha later
+        SDL_SetTextureBlendMode(ball, SDL_BLENDMODE_BLEND );
     }
 
     pixel = loadIMG("pixel");
@@ -80,9 +76,9 @@ void clsScreen::update(void) {
 }
 /**********************************************************************************************************************************************************************/
 void clsScreen::clearscreen() {
+    //set the ball texture back to full opaque
+    SDL_SetTextureAlphaMod(ball, 0xFF);
     SDL_RenderClear(window.ren);
-    //Copy sky
-    SDL_RenderCopy(window.ren,sky,NULL,NULL);
 }
 /**********************************************************************************************************************************************************************/
 void clsScreen::cleanup(void) {
@@ -95,11 +91,6 @@ void clsScreen::cleanup(void) {
         SDL_DestroyTexture(pixel);
         blnPixel = false;
         if (Global::blnDebugMode) {printf("Ball texture destroyed\n");}
-    }
-	if (blnSky) {
-        SDL_DestroyTexture(sky);
-        blnSky = false;
-        if (Global::blnDebugMode) {printf("Sky texture destroyed\n");}
     }
 	if (blnRenderer) {
         SDL_DestroyRenderer(window.ren);
@@ -119,11 +110,9 @@ void clsScreen::error(void) {
 }
 /**********************************************************************************************************************************************************************/
 SDL_Texture* clsScreen::loadIMG(std::string filename) {
-    //SDL_Surface* temp = IMG_Load(filename.c_str());
     SDL_Surface* temp;
 
     if (filename == "ball") {temp = IMG_ReadXPMFromArray(image_ball_xpm);}
-    else if (filename == "sky") {temp = IMG_ReadXPMFromArray(image_sky_xpm);}
     else if (filename == "pixel") {temp = IMG_ReadXPMFromArray(image_pixel_xpm);}
     else { temp = nullptr; }
 
@@ -136,32 +125,6 @@ SDL_Texture* clsScreen::loadIMG(std::string filename) {
         bln_SDL_started = false;
 	}
 
-	//Do some additional stuff to the ball texture
-	//so that parts are transparent.
-	if ( filename == "ball" ) {
-        //I don't completely understand all of this got it from Lazy Foo's tutorial
-        //here: http://lazyfoo.net/tutorials/SDL/40_texture_manipulation/index.php
-        SDL_Rect rect_ball;
-        SDL_QueryTexture(tex, NULL, NULL, &rect_ball.w, &rect_ball.h);
-        void* mPixels = NULL;
-        int mPitch;
-        if (SDL_LockTexture(tex, NULL, &mPixels, &mPitch) == 0) {
-            Uint32* pixels = (Uint32*)mPixels;
-            int pixelCount = (mPitch / 4) * rect_ball.h;
-            Uint32 colorKey = SDL_MapRGB( SDL_GetWindowSurface( window.win )->format, 0xFF, 0xFF, 0xFF ); //the color we are trying to replace
-            Uint32 transparent = SDL_MapRGBA( SDL_GetWindowSurface( window.win )->format, 0xFF, 0xFF, 0xFF, 0x00 ); //transparent
-            for (int i = 0; i < pixelCount; i ++) {
-                if(pixels[i] == colorKey) {
-                    pixels[i] = transparent;
-                } //end if white
-            } //end for all pixels
-            printf("Texture unlocking\n");
-            SDL_UnlockTexture(tex);
-            printf("Texture unlocked\n");
-        } else {
-            if (Global::blnDebugMode) {printf("Failed to make ball background transparent\n");}
-        }
-	} //end if ball
 	return tex;
 }
 /**********************************************************************************************************************************************************************/
@@ -201,5 +164,9 @@ void clsScreen::drawline(LOC Current, LOC Old) {
             SDL_RenderCopy(window.ren, pixel, NULL, &dst);
         } //end for length
     } //end if
+}
+/**********************************************************************************************************************************************************************/
+SDL_Texture* clsScreen::getPixelTexture() {
+    return pixel;
 }
 /**********************************************************************************************************************************************************************/

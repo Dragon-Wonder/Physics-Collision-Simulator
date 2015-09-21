@@ -104,15 +104,16 @@ void clsCannonball::update(double newdeltat) {
     if (total_v < Global::Physics::fMinVelocity || isnan(total_v) ) {
         blnstarted = false;
         if (Global::blnDebugMode) {
-            if ( isnan(total_v) ) {printf("Ball vel is NaN; killing it\n");}
+            if ( isnan(total_v) ) {printf("Ball velocity is NaN; killing it\n");}
             else {printf("Ball moving too slow; killing it\n");}
         } //end if debug mode
     } //end if should kill
 	show();
 }
 /**********************************************************************************************************************************************/
-void clsCannonball::setSDLScreen(SDL_Texture* SDLball, WINATT SDLwindow) {
+void clsCannonball::setSDLScreen(SDL_Texture* SDLball, SDL_Texture* SDLpxel, WINATT SDLwindow) {
     ball = SDLball;
+    pixel = SDLpxel;
     SDL_QueryTexture(ball,NULL,NULL, &Screen_place.w, &Screen_place.h);
     window = SDLwindow;
 }
@@ -120,6 +121,19 @@ void clsCannonball::setSDLScreen(SDL_Texture* SDLball, WINATT SDLwindow) {
 void clsCannonball::show() {
     Screen_place.x = place.x;
     Screen_place.y = window.height - place.y;
+
+    if (Global::Config.values.blnDrawPathOnScreen) { drawPath(place); }
+
+    Uint8 alpha = 0xFF;
+    double dblAlpha;
+
+    dblAlpha = (double) Global::Equations::fMassAlphaRatio * log(props.mass) + Global::Equations::fMassAlphaOffset;
+    alpha = dblAlpha < (double) Global::Equations::uAlphaMinimum ? (Uint8) Global::Equations::uAlphaMinimum : (Uint8) dblAlpha;
+    alpha = dblAlpha > 255.0 ? 255 : (Uint8) dblAlpha;
+
+    //set the ball alpha
+    SDL_SetTextureAlphaMod(ball, alpha);
+
     //Place the ball
     SDL_RenderCopy(window.ren,ball,NULL,&Screen_place);
 }
@@ -172,5 +186,27 @@ void clsCannonball::setPhysicalProps(PP newprops) {
 /**********************************************************************************************************************************************/
 BOX clsCannonball::getBOX() {
     return CollisionBox;
+}
+/**********************************************************************************************************************************************/
+void clsCannonball::drawPath(LOC newplace) {
+    static uint UpdatesSinceLast;
+
+    //If there have been enough updates since the last time the path was updated,
+    //then update the path array otherwise inc updates
+    if ( UpdatesSinceLast >= 25 ) {
+        UpdatesSinceLast = 0;
+        //First move all the old locations down one spot in the array
+        for (uint i = 1; i < DEFINED_MAXNUMPASTPOINTS; i++) { path[i] = path[i-1]; }
+        //Now put the new location into the latest spot
+        path[0] = newplace;
+    } else { UpdatesSinceLast++; } //end if update points
+    //Now draw the path
+    SDL_Rect dst;
+    dst.w = dst.h = 1;
+    for (uint i = 0; i < DEFINED_MAXNUMPASTPOINTS; i++) {
+        dst.y = window.height - (uint)(path[i].y - Screen_place.h / 2);
+        dst.x = (uint)(path[i].x + Screen_place.w / 2);
+        SDL_RenderCopy(window.ren, pixel, NULL, &dst);
+    } //end for
 }
 /**********************************************************************************************************************************************/

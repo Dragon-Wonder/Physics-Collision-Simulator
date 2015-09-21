@@ -14,6 +14,7 @@ struct ConfigValues {
 	uint uintScreenHeight;
 	bool blnLogging;
 	bool blnDragMode;
+	bool blnDrawPathOnScreen;
 	char* OperatingSystem;
 };
 
