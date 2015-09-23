@@ -59,3 +59,35 @@ Cannon-PRIVATE
 
 /RandomCrap/
 /SDL2Stuff/
+
+# Build dir
+build
+build.release
+build.debug
+build-release
+build-debug
+debug_build
+release_build
+/bin
+/lib
+/install
+
+# Qt cache
+CMakeLists.txt.user
+CMakeLists.txt.user.*
+
+# IDE project files
+*.sublime-project
+*.sublime-workspace
+
+# Local config windows
+_configure.bat
+_open-project.bat
+_start-cmake-gui.bat
+_start-cmd.bat
+
+# Local config unix
+.localconfig
+
+#Doxygen Stuff
+/project/doxygen/html/

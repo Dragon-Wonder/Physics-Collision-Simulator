@@ -7,6 +7,17 @@ This holds all the functions related to the config file, its loading, making, an
 */
 /**********************************************************************************************************************************************/
 clsConfig::clsConfig() {
+    /////////////////////////////////////////////////
+    /// @brief The default constructor, will set the config values as follows
+    ///        * values.blnLogging = false;
+    ///        * values.blnDragMode = false;
+    ///        * values.blnDrawPathOnScreen = false;
+    ///        * values.uintScreenWidth = 640;
+    ///        * values.uintScreenHeight = 480;
+    ///        It will also set the OS based on values that are defined
+    ///
+    /////////////////////////////////////////////////
+
     //Set default values
     values.blnLogging = false;
     values.blnDragMode = false;
@@ -39,18 +50,28 @@ clsConfig::clsConfig() {
 }
 /**********************************************************************************************************************************************/
 bool clsConfig::exists(void) {
+    /////////////////////////////////////////////////
+    /// @brief Checks if config file already exists
+    /// @return TRUE / FALSE
+    /////////////////////////////////////////////////
+
 	//Returns true or false if config file exists
 	FILE* pTempFile = fopen(FileName, "r");
 	return (pTempFile != NULL);
 }
 /**********************************************************************************************************************************************/
 void clsConfig::make(void) {
+    /////////////////////////////////////////////////
+    /// @brief Will make a new config file, based on the default values in the constructor
+    /// @return void
+    /////////////////////////////////////////////////
+
 	//Makes the config file
 	configFile = fopen(FileName,"w");
 	printf("Config File will now be created!\n");
 
 	fprintf(configFile,"Config File for the Cannon.exe\n");
-	fprintf(configFile,"%s-%s\n",DEFINED_VER_FULLVERSION_STRING, DEFINED_VER_STATUS_SHORT);
+	fprintf(configFile,"%s\n",DEFINED_VER_FULLVERSION_STRING);
 	//Write the config file with the defaults above
 	//this way I only have to change the defaults in one place
     fprintf(configFile,"Screen Width: %u\n",values.uintScreenWidth);
@@ -62,6 +83,11 @@ void clsConfig::make(void) {
 }
 /**********************************************************************************************************************************************/
 void clsConfig::load(void) {
+    /////////////////////////////////////////////////
+    /// @brief Will load the values of the config file and put them where they belong
+    /// @return void
+    /////////////////////////////////////////////////
+
 	//Loads all of the config values
 	char chrTempString[50];
 	int intTempBool, intValuesScanned;
@@ -102,16 +128,24 @@ void clsConfig::load(void) {
 }
 /**********************************************************************************************************************************************/
 char clsConfig::verisonCheck(const char *ConfigVerison) {
-	//This checks the version number written at the top of the config file
-	//against the internal version number of the program.
-	//If it finds a Major revision change the config HAS to be replaced.
-	//Otherwise just use the config file
-
-	uint C_MajorNum, C_MinorNum, C_PatchNum, C_BuildNum;
+    /////////////////////////////////////////////////
+    /// @brief Will check the version number written into the config vs the Program version number.
+    ///        Version number is done like [MAJOR].[MINOR].[PATH]-[SOFTWARESTATUS] with these numbers defined in version.h
+    ///        Based on which (if any) of these number are different between the two it will do the following:
+    ///        * Software Statuses are different = Make New Config File
+    ///        * Major Number different = Make New Config File
+    ///        * Minor, or Patch Numbers different = Use Old Config File
+    ///        * No Number different = Use Old Config File
+    ///
+    /// @param ConfigVersion = The Version number in the config file
+    /// @return USECONFIG / NEWCONFIG
+    ///
+    /////////////////////////////////////////////////
+	uint C_MajorNum, C_MinorNum, C_PatchNum;
     char C_SoftwareStatus, P_SoftwareStatus;
-	sscanf(ConfigVerison,"%u.%u.%u.%u-%c",&C_MajorNum, &C_MinorNum, &C_PatchNum, &C_BuildNum, &C_SoftwareStatus);
-	if (Global::blnDebugMode) {printf("Config: v %u %u %u %u %c \n", C_MajorNum, C_MinorNum, C_PatchNum, C_BuildNum, C_SoftwareStatus);}
-	sscanf(DEFINED_VER_STATUS_SHORT,"%c",&P_SoftwareStatus);
+	sscanf(ConfigVerison,"%u.%u.%u-%c",&C_MajorNum, &C_MinorNum, &C_PatchNum, &C_SoftwareStatus);
+	if (Global::blnDebugMode) {printf("Config: v %u %u %u %c \n", C_MajorNum, C_MinorNum, C_PatchNum, C_SoftwareStatus);}
+	sscanf(DEFINED_VER_STATUS,"%c",&P_SoftwareStatus);
 	if (P_SoftwareStatus != C_SoftwareStatus) {return NEWCONFIG;}
 	else if (DEFINED_VER_MAJOR != C_MajorNum) {return NEWCONFIG;}
 	else if (DEFINED_VER_MINOR != C_MinorNum) {return USECONFIG;}
@@ -119,6 +153,13 @@ char clsConfig::verisonCheck(const char *ConfigVerison) {
 }
 /**********************************************************************************************************************************************/
 void clsConfig::Check(void) {
+    /////////////////////////////////////////////////
+    /// @brief This is the basic method used to call on the config.
+    ///        It first checks if there is already a config file (if not makes a new one)
+    ///        if there is an existing config file it will then check its version number and load its values
+    ///        or make a new one depending on the return of clsConfig::versionCheck
+    /////////////////////////////////////////////////
+
 	char chrTempString[50], chrConfigVerison;
 
 	if ( !exists() ) {

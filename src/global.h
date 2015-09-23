@@ -1,18 +1,26 @@
 #ifndef __GLOBAL_H_INCLUDED__
 #define __GLOBAL_H_INCLUDED__
+
+//This file will hold the global references that are need in one place
 /**********************************************************************************************************************************************/
 class clsConfig;
 /**********************************************************************************************************************************************/
 //global typedefs
 typedef unsigned char uchar;
+/**< Rename unsigned char to uchar because I'm lazy */
+
 typedef unsigned int uint;
+/**< Rename unsigned int to uint because I'm lazy */
+
 typedef unsigned long ulong;
+/**< Rename unsigned long to ulong because I'm lazy */
+
 /**********************************************************************************************************************************************/
 //Global namespace
 namespace Global {
     extern const bool blnDebugMode;
-    extern clsConfig Config; //Hold the config file globally so configure options can be referenced everywhere
-    namespace Physics { //hold physics values in one place for future reference
+    extern clsConfig Config;
+    namespace Physics {
         extern const uint uBallDensity;
         extern const float fGravity;
         extern const float fDragCofficient;

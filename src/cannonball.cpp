@@ -3,6 +3,20 @@
 #include "screen.h"
 /**********************************************************************************************************************************************/
 clsCannonball::clsCannonball() {
+    /////////////////////////////////////////////////
+    /// @brief The default Constructor for the cannonballs. It has to call
+    ///         the values as default so we can create it in the array. The values are changed
+    ///         later. The default values are as follows:
+    ///         * deltat = 1 / 60 (for 60 fps)
+    ///         * acc.x = 0
+    ///         * acc.y = Global::Physics::fGravity
+    ///         * props.radius = 5
+    ///         * props.density = Global::Physics::uBallDensity
+    ///         * place = 0
+    ///         * dblLoc = place casted as a double
+    ///         * Vel = 0
+    /////////////////////////////////////////////////
+
     //Put some default values in; on the off chance I forget to set them later
     blnDragEnabled = false;
     blnstarted = false;
@@ -24,18 +38,32 @@ clsCannonball::clsCannonball() {
    if (Global::blnDebugMode) {printf("Ball created.\n");}
 }
 /**********************************************************************************************************************************************/
-void clsCannonball::enableDrag(void) {
-    blnDragEnabled = true;
-    if (Global::blnDebugMode) {printf("Drag enabled.\n");}
-}
-/**********************************************************************************************************************************************/
 void clsCannonball::Drag_calcvalues(void) {
+    /////////////////////////////////////////////////
+    /// @brief This will calculate addionational properties of the cannonball based on its radius.
+    ///        These include:
+    ///        * area
+    ///        * volume
+    ///        * mass
+    ///
+    /// @param void
+    /// @return void
+    ///
+    /////////////////////////////////////////////////
+
 	props.area = (double) (2.0 * PI * pow(props.radius,2));
 	props.volume = (double) ((4.0/3.0) * PI * pow(props.radius,3));
 	props.mass = props.density * props.volume;
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::Drag_updateacc(void) {
+    /////////////////////////////////////////////////
+    /// @brief This will update the acceleration of the ball due to Friction and Drag (if enabled)
+    ///
+    /// @return void
+    ///
+    /////////////////////////////////////////////////
+
     acc.x = 0.0;
     acc.y = Global::Physics::fGravity;
     if (vel.x != 0.0 && vel.y != 0.0 && props.mass != 0.0) {
@@ -66,6 +94,20 @@ void clsCannonball::Drag_updateacc(void) {
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::update(double newdeltat) {
+    /////////////////////////////////////////////////
+    /// @brief This will do the following:
+    ///        * Update ball's position
+    ///        * Update ball's velocity
+    ///        * Call clsCannonball::Drag_updateacc if blnDragEnabled is true
+    ///        * Log the ball's location (if enabled)
+    ///        * Update CollisionBox
+    ///        * Set the ball's blnstarted to false (stopping future updates) if total velocity is less than Global::Physics::fMinVelocity or equals NaN
+    ///
+    /// @param newdeltat = the time (in seconds) that have passed since the last update (see tick.cpp)
+    /// @return void
+    ///
+    /////////////////////////////////////////////////
+
     deltat = newdeltat;
 
     if (blnDragEnabled) {Drag_updateacc();}
@@ -112,6 +154,17 @@ void clsCannonball::update(double newdeltat) {
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::setSDLScreen(SDL_Texture* SDLball, SDL_Texture* SDLpxel, WINATT SDLwindow, uint newID) {
+    /////////////////////////////////////////////////
+    /// @brief This will set certain values for the ball based on the screen. It will also randomly generate a color for the ball.
+    ///
+    /// @param SDLball = Pointer to clsScreen::ball
+    /// @param SDLpxel = Pointer to clsScreen::pixel
+    /// @param SDLwindow = attributes of the SDL window
+    /// @param newID = the ID that ball's ID will be set to
+    /// @return void
+    ///
+    /////////////////////////////////////////////////
+
     ballID = newID;
     //set the color of the ball
     //Set some ID's to have specific colors, but otherwise randomize them
@@ -126,6 +179,11 @@ void clsCannonball::setSDLScreen(SDL_Texture* SDLball, SDL_Texture* SDLpxel, WIN
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::show() {
+    /////////////////////////////////////////////////
+    /// @brief Places the ball on the SDL Screen
+    /// @return void
+    /////////////////////////////////////////////////
+
     Screen_place.x = place.x;
     Screen_place.y = window.height - place.y;
 
@@ -152,6 +210,17 @@ void clsCannonball::show() {
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::setValues(double r, LOC init_place, double init_vel, double init_angle) {
+    /////////////////////////////////////////////////
+    /// @brief Changes the values of the ball to whatever is entered
+    ///
+    /// @param r = radius of the ball
+    /// @param init_place = its starting location
+    /// @param init_vel = its starting velocity
+    /// @param init_angle = its starting angle (in radians)
+    /// @return void
+    ///
+    /////////////////////////////////////////////////
+
     props.radius = r; //in meters
 
     acc.x = 0.00;
@@ -166,40 +235,70 @@ void clsCannonball::setValues(double r, LOC init_place, double init_vel, double 
 	blnstarted = true;
 
     Drag_calcvalues();
-	if (Global::Config.values.blnDragMode) { enableDrag(); }
+	if (Global::Config.values.blnDragMode) {
+        blnDragEnabled = true;
+        if (Global::blnDebugMode) {printf("Drag enabled.\n");}
+    } //end if drag mode
 }
 /**********************************************************************************************************************************************/
 LOC clsCannonball::getplace() {
+    /////////////////////////////////////////////////
+    /// @brief Returns the ball's place
+    /////////////////////////////////////////////////
     return place;
 }
 /**********************************************************************************************************************************************/
 dblXY clsCannonball::getVelocity() {
+    /////////////////////////////////////////////////
+    /// @brief Returns the ball's velocity
+    /////////////////////////////////////////////////
     return vel;
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::setVelocity(dblXY newvel) {
+    /////////////////////////////////////////////////
+    /// @brief Sets the ball's velocity
+    /////////////////////////////////////////////////
     vel.x = newvel.x;
     vel.y = newvel.y;
 }
 /**********************************************************************************************************************************************/
 PP clsCannonball::getPhysicalProps() {
+    /////////////////////////////////////////////////
+    /// @brief Returns the ball's physical properties
+    /////////////////////////////////////////////////
     return props;
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::setplace(LOC newplace) {
+    /////////////////////////////////////////////////
+    /// @brief Set the ball's place
+    /////////////////////////////////////////////////
     dblLOC.x = newplace.x;
     dblLOC.y = newplace.y;
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::setPhysicalProps(PP newprops) {
+    /////////////////////////////////////////////////
+    /// @brief Set the ball's physical properties (only used on CollidePerfectInelastic)
+    /////////////////////////////////////////////////
     props = newprops;
 }
 /**********************************************************************************************************************************************/
 BOX clsCannonball::getBOX() {
+    /////////////////////////////////////////////////
+    /// @brief Returns the ball's box
+    /////////////////////////////////////////////////
     return CollisionBox;
 }
 /**********************************************************************************************************************************************/
 void clsCannonball::drawPath(LOC newplace) {
+    /////////////////////////////////////////////////
+    /// @brief Will draw the path the ball as taken based on DEFINED_MAXNUMPASTPOINTS
+    /// @param newplace = The last place the ball was at
+    /// @return void
+    /////////////////////////////////////////////////
+
     static uint UpdatesSinceLast;
 
     //If there have been enough updates since the last time the path was updated,

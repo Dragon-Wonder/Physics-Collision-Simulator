@@ -143,16 +143,19 @@
 		<Unit filename="../src/tick.h" />
 		<Unit filename="../src/version.h" />
 		<Extensions>
-			<AutoVersioning>
-				<Scheme minor_max="10" build_max="10" rev_max="999" rev_rand_max="1" build_times_to_increment_minor="1000" />
-				<Settings autoincrement="1" date_declarations="1" use_define="1" update_manifest="0" do_auto_increment="1" ask_to_increment="1" language="C" svn="0" svn_directory="" header_path="..\src\version.h" />
-				<Changes_Log show_changes_editor="1" app_title="Released version %M.%m.%b-%T" changeslog_path="..\ChangesLog.txt" />
-				<Code header_guard="__VERSION_HEADER__" namespace="Version" prefix="DEFINED_VER" />
-			</AutoVersioning>
 			<code_completion />
 			<envvars />
 			<debugger />
 			<lib_finder disable_auto="1" />
+			<DoxyBlocks>
+				<comment_style block="5" line="0" />
+				<doxyfile_project project_number="v1.2.5" />
+				<doxyfile_build extract_all="1" />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot class_diagrams="1" />
+				<general use_at_in_tags="1" />
+			</DoxyBlocks>
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

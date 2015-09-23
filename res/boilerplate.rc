@@ -7,7 +7,7 @@ id ICON "Icon_App.ico"
 /**********************************************************************************************************************************************/
 //General stuff that should need to be changed
 #define VER_COMPANYNAME_STR "Public Domain"
-#define VER_FILEDESCRIPTION_STR "A simple program that stimulates a cannon being fired."
+#define VER_FILEDESCRIPTION_STR "A simple program that stimulates a cannonballs moving around and colliding and bouncing off of each other."
 #define VER_FILENAME_STR "SDL Cannon Simulation"
 #define VER_ORIGINALFILENAME_STR "Cannon.exe"
 #define VER_LEGALCOPYRIGHT_STR "http://unlicense.org"

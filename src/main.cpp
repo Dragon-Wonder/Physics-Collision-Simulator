@@ -18,50 +18,68 @@ void checkForCollisons(uint);
 bool checkCollide(BOX, BOX);
 void doCollision(uint, uint);
 /**********************************************************************************************************************************************************************/
-enum Collisions { //The method of the collision (I just wanted to play around with some options.
-    CollideElastic = 0, //This is the normal way things collide, they hit and bounce off, no energy is lost
-    CollideInelastic, //balls collide and bounce off of each other losing some energy.
-    CollidePerfectInelastic, //In this method the balls collide and then stick together
-    CollideNone //No collisions
+/**< The method of the collision (I just wanted to play around with some options.) */
+enum Collisions {
+    CollideElastic = 0, /**< This is the normal way things collide, they hit and bounce off, no energy is lost */
+    CollideInelastic, /**< Balls collide and bounce off of each other losing some energy. */
+    CollidePerfectInelastic, /**< In this method the balls collide and then stick together */
+    CollideNone /**< No collisions */
 };
 /**********************************************************************************************************************************************************************/
 namespace Global {
+    /**< Holds if build is in debug mode, this can happen if DEFINED_BUILD_MODE_PRIVATE is defined in the complier*/
 #ifdef DEFINED_BUILD_MODE_PRIVATE
     const bool blnDebugMode = true;
 #else
     const bool blnDebugMode = false;
 #endif
+
     clsConfig Config;
-    namespace Physics { //hold physics values in one place for future reference
-        const uint uBallDensity = 7850; //Density of the ball in kg/m^3 (7850 is steel)
-        const float fGravity = -9.81; //acceleration due to gravity in m/s^2
-        const float fDragCofficient = 0.47; //Drag coefficient in the air
-        const float fKineticFriction = 0.36; //Friction values based on Concrete and Steel
-        const float fDensityAir = 1.2754; //Density of air (in kg/m^3)
-        const float fRecoil = -0.56; //the multiplier of the velocity when a ball hits the walls / floor
-        const float fMinVelocity = 0.0; //If a ball has less velocity than the it will "die"
-        const float fCoefficientRestitution = 0.76; //How much total energy remains after a collision
-        //(see https://en.wikipedia.org/wiki/Coefficient_of_restitution for more info)
-        const uchar CollisionMethod = CollideInelastic; //The collision method to use (see above)
+
+    /**< Holds Values that are related the the physics of the world, these are all based on real numbers */
+    namespace Physics {
+        const uint uBallDensity = 7850; /**< Density of the ball in kg/m^3 (7850 is steel) */
+        const float fGravity = -9.81; /**< Acceleration due to gravity in m/s^2 */
+        const float fDragCofficient = 0.47; /**< Drag coefficient in the air */
+        const float fKineticFriction = 0.36; /**< Friction values based on Concrete and Steel */
+        const float fDensityAir = 1.2754; /**< Density of air (in kg/m^3)  */
+        const float fRecoil = -0.56; /**< The multiplier of the velocity when a ball hits the walls / floor */
+        const float fMinVelocity = 0.0; /**< If a ball has less velocity than the it will "die" */
+        const float fCoefficientRestitution = 0.76; /**< How much total energy remains after a collision, (see https://en.wikipedia.org/wiki/Coefficient_of_restitution for more info) */
+        const uchar CollisionMethod = CollideInelastic; /**< The collision method to use (see Collisions Enum) */
     }
 
-    namespace Equations { //Holds Values for different equations that are not physics related
-        const float fVelocityScalar = 1; //Changing this effects the ratio of the line to the velocity when creating a cannonball
-        const float fTimetoSizeRatio = 0.0124; //One second of holding down the mouse button = this many meters for the ball
-        const float fMassAlphaRatio = 47.568; //The ratio between mass and its alpha (transparent) value
-        const float fMassAlphaOffset = 152.18; //The offset for the equation of mass to alpha value
-        const uchar uAlphaMinimum = 30; //the lowest that the alpha value is allowed to be
+    /**< Holds Values for different equations that are not physics related */
+    namespace Equations {
+        const float fVelocityScalar = 1; /**< Changing this effects the ratio of the line to the velocity when creating a cannonball */
+        const float fTimetoSizeRatio = 0.0124; /**< One second of holding down the mouse button = this many meters for the ball */
+        const float fMassAlphaRatio = 47.568; /**< The ratio between mass and its alpha (transparent) value */
+        const float fMassAlphaOffset = 152.18; /**< The offset for the equation of mass to alpha value */
+        const uchar uAlphaMinimum = 30; /** The lowest that the alpha value is allowed to be */
     }
 }
 /**********************************************************************************************************************************************************************/
-//This is the maximum number of cannonballs which can be "alive" at a time
 #define DEFINED_CANNONBALL_LIMIT 20
-//IF this is not commented out then program will use unrealistic method that will increase velocity the closer they are together
+/**< The maximum number of cannonballs allowed. This is because the cannonballs are stored in an array; but later versions
+     might allow dynamically allocated number.*/
+
 #define DEFINED_USE_R2_VEL_MODDER
+/**< If this is defined, then program will use unrealistic method that will increase the velocity of two colliding balls the closer they are together
+     it will reduce the number of times that the balls stick together, but also causes them to get unrealistically high velocities*/
 /**********************************************************************************************************************************************************************/
 clsCannonball Cannonballs[DEFINED_CANNONBALL_LIMIT];
+/**< The is the array that holds all of the cannonballs. */
+
 /**********************************************************************************************************************************************************************/
 int main(int argc, char *argv[]) {
+    /** @brief The main function
+     *
+     * @param argc = Something required by SDL
+     * @param argv = Something required by SDL
+     * @return 0 for successfully ran, or 1 for an error happened.
+     *
+     */
+
     Global::Config.Check(); //Load Config file and all its values.
     if (Global::Config.values.blnLogging) { //Open log file to clear it, if it exists
         FILE* logfile = fopen("logfile.log","w");
@@ -140,6 +158,15 @@ int main(int argc, char *argv[]) {
 }
 /**********************************************************************************************************************************************************************/
 void addNewCannonball(LOC mouseC, LOC mouseO, double HoldTime ) {
+    /** @brief Will add a new cannonball based on the mouse start and mouse end. Mass of the ball will vary based on Hold Time
+     *
+     * @param mouseC = Current Mouse Location in X and Y
+     * @param mouseO = Old (start of mouse click) Mouse Location in X and Y
+     * @param HoldTime = Time (in seconds) that the mouse button was held down for
+     * @return void
+     *
+     */
+
     //Get location, vel, and angle
     double fire_v;
     double angle;
@@ -174,6 +201,15 @@ void addNewCannonball(LOC mouseC, LOC mouseO, double HoldTime ) {
 }
 /**********************************************************************************************************************************************************************/
 void checkForCollisons(uint j) { //Checks every cannonball against every other cannonball to see if they collide
+
+    /////////////////////////////////////////////////
+    /// @brief Checks ball number j is colliding with another ball and then do collisions
+    ///
+    /// @param  j = the number in the array that ball we are checking is
+    /// @return void (all changes if they are colliding is handled in this function)
+    ///
+    /////////////////////////////////////////////////
+
     BOX A, B;
     A = Cannonballs[j].getBOX();
     for (uint i = 0; i < DEFINED_CANNONBALL_LIMIT; i++) {
@@ -184,7 +220,16 @@ void checkForCollisons(uint j) { //Checks every cannonball against every other c
     } //end for loop inner
 }
 /**********************************************************************************************************************************************************************/
-bool checkCollide(BOX A, BOX B) { //checks if two objects (made with the BOXES collide)
+bool checkCollide(BOX A, BOX B) {
+    /////////////////////////////////////////////////
+    /// @brief Checks if two boxes overlap
+    ///
+    /// @param A = Box for ball A
+    /// @param B = Box for ball B
+    /// @return TRUE / FALSE if they overlap and therefore collide
+    ///
+    /////////////////////////////////////////////////
+
     if( A.bottom <= B.top ){return false;}
     if( A.top >= B.bottom ){return false;}
     if( A.right <= B.left ){return false;}
@@ -194,6 +239,15 @@ bool checkCollide(BOX A, BOX B) { //checks if two objects (made with the BOXES c
 }
 /**********************************************************************************************************************************************************************/
 void doCollision(uint numA, uint numB) {
+    /////////////////////////////////////////////////
+    /// @brief Will calculate the new velocities of two balls that are colliding
+    ///
+    /// @param numA = the number in the array ball A is
+    /// @param numB = the number in the array ball B is
+    /// @return void (everything is handled inside the function)
+    ///
+    /////////////////////////////////////////////////
+
     dblXY Avel, Bvel;
     PP Aprops, Bprops;
 
