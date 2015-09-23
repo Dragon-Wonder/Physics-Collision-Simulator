@@ -57,7 +57,7 @@ namespace Global {
 //This is the maximum number of cannonballs which can be "alive" at a time
 #define DEFINED_CANNONBALL_LIMIT 20
 //IF this is not commented out then program will use unrealistic method that will increase velocity the closer they are together
-//#define DEFINED_USE_R2_VEL_MODDER
+#define DEFINED_USE_R2_VEL_MODDER
 /**********************************************************************************************************************************************************************/
 clsCannonball Cannonballs[DEFINED_CANNONBALL_LIMIT];
 /**********************************************************************************************************************************************************************/
@@ -194,7 +194,7 @@ bool checkCollide(BOX A, BOX B) { //checks if two objects (made with the BOXES c
 }
 /**********************************************************************************************************************************************************************/
 void doCollision(uint numA, uint numB) {
-    dblXY Avel, Bvel, NewVel;
+    dblXY Avel, Bvel;
     PP Aprops, Bprops;
 
     Avel = Cannonballs[numA].getVelocity();

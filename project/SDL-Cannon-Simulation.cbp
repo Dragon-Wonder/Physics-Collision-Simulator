@@ -110,6 +110,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-std=c++11" />
+			<Add option="-Wno-write-strings" />
 			<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/include" />
 			<Add directory="../SDL2Stuff/include" />
 		</Compiler>
