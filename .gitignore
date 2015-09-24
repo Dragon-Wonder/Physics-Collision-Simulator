@@ -1,0 +1,9 @@
+*.o
+*.res
+project/SDL-Cannon-Simulation.depend
+*.txt
+RandomCrap/Installer Template/res/Cannon.ico
+*.h
+SDL2Stuff/include/SDL2/glfont.c
+*.a
+SDL2Stuff/lib/libSDL2.la

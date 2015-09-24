@@ -1,0 +1,8 @@
+<map id="clsCannonball" name="clsCannonball">
+<area shape="rect" id="node2" href="$structstc_physical_properties.html" title="stcPhysicalProperties" alt="" coords="5,5,155,32"/>
+<area shape="rect" id="node3" href="$structstc_double_values.html" title="stcDoubleValues" alt="" coords="179,5,299,32"/>
+<area shape="rect" id="node4" href="$structstc_color.html" title="stcColor" alt="" coords="323,5,394,32"/>
+<area shape="rect" id="node5" href="$structstc_location.html" title="stcLocation" alt="" coords="418,5,507,32"/>
+<area shape="rect" id="node6" href="$structstc_box.html" title="stcBox" alt="" coords="531,5,594,32"/>
+<area shape="rect" id="node7" href="$structstc_win_att.html" title="stcWinAtt" alt="" coords="624,5,704,32"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="doCollision" name="doCollision">
+<area shape="rect" id="node2" href="$classcls_cannonball.html#a665b7ed65335a9ff5d7e4b5f93ab3bf5" title="clsCannonball::getVelocity" alt="" coords="140,5,316,32"/>
+<area shape="rect" id="node3" href="$classcls_cannonball.html#a8c91a725fc32138b5a0591ffc97aff2f" title="clsCannonball::getPhysical\lProps" alt="" coords="139,57,317,98"/>
+<area shape="rect" id="node4" href="$classcls_cannonball.html#a1b66191db38d29d06449dd40e0f53838" title="clsCannonball::getplace" alt="" coords="148,123,308,149"/>
+<area shape="rect" id="node5" href="$classcls_cannonball.html#ab31a04400131b00347db77d71efeb737" title="clsCannonball::setPhysical\lProps" alt="" coords="139,174,317,215"/>
+<area shape="rect" id="node6" href="$classcls_cannonball.html#a9bc6f2c8acfd8769b6c37019e002d567" title="clsCannonball::setVelocity" alt="" coords="140,240,316,267"/>
+</map>
