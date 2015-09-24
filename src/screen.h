@@ -43,18 +43,31 @@ class clsScreen {
         WINATT getWindow(void);
 
     private:
+        /** The ball texture */
         SDL_Texture *ball;
+
+        /** The pixel texture, used to draw lines */
         SDL_Texture *pixel; //used for drawing the line
 
+        /** Window Attributes. */
         WINATT window;
 
         //Keeps track of which parts have been loaded
         //so when ending only the ones that are open
         //are closed
+        /** If window is loaded */
         bool blnWindow;
+
+        /** If renderer is loaded */
         bool blnRenderer;
+
+        /** If ball image is loaded */
         bool blnBall;
+
+        /** If pixel image is loaded */
         bool blnPixel;
+
+        /** If SDL is started an without issues */
         bool bln_SDL_started;
 
         SDL_Texture* loadIMG(std::string);

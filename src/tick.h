@@ -6,17 +6,15 @@
 #include <cstdio>
 #include <cstdlib>
 /**********************************************************************************************************************************************/
-namespace Global {extern const bool blnDebugMode;}
-/**********************************************************************************************************************************************/
-//typedef because reasons
-typedef unsigned char uchar;
-typedef unsigned int uint;
-typedef unsigned long ulong;
+#include "global.h"
 /**********************************************************************************************************************************************/
 class clsTick {
 	private:
 		//Members
+		/** The time the ball positions were last updated at */
 		clock_t lngTimerStart;
+
+		/** The time of the start of the mouse being held down */
 		clock_t lngHoldingStart;
 	public:
 		//Default Constructor
