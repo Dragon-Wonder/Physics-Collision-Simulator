@@ -90,4 +90,4 @@ _start-cmd.bat
 .localconfig
 
 #Doxygen Stuff
-/project/doxygen/html/
+/html/
