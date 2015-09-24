@@ -1,35 +1,33 @@
 #ifndef __MY_SCREEN_HEADER__
 #define __MY_SCREEN_HEADER__
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string>
-#include <cstdio>
 #include "config.h"
-#include "global.h"
-/**********************************************************************************************************************************************************************/
-struct stcWinAtt { //Attribute of the window
-    uint width;
-    uint height;
-    SDL_Window *win;
-    SDL_Renderer *ren;
+/*****************************************************************************/
+/** This structure will hold certain attributes of the screen */
+struct stcWinAtt {
+    uint width; /**< The width of the screen in terms of pixels */
+    uint height; /**< The height of the screen in terms of pixels */
+    SDL_Window *win; /**< A pointer to the SDL window that is being used */
+    SDL_Renderer *ren; /**< A pointer to the SDL rednder that is being used */
 };
 
+/** This structure will hold place values in terms of X and Y*/
 struct stcLocation {
-    int x;
-    int y;
+    int x; /**< X location */
+    int y; /**< Y location */
 };
 
 typedef struct stcWinAtt WINATT;
 typedef struct stcLocation LOC;
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 #include "cannonball.h"
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 class clsScreen {
     public:
-        /** Default constructor */
         clsScreen();
-        /** Default destructor */
         ~clsScreen();
 
         void update(void);
@@ -67,11 +65,11 @@ class clsScreen {
         /** If pixel image is loaded */
         bool blnPixel;
 
-        /** If SDL is started an without issues */
+        /** If SDL is started and without issues */
         bool bln_SDL_started;
 
         SDL_Texture* loadIMG(std::string);
         void error(void);
 };
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 #endif // __MY_SCREEN_HEADER__

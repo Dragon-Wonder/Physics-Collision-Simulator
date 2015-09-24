@@ -3,35 +3,47 @@
 :: Really just for personal use
 :: There are a lot of random files that get throw about, this batch file will delete them if they are there.
 :: because I'm too lazy to go searching for them myself, but I want to keep my folders clean.
+set MAINDIR = %~dp0
+set PROJECTDIR = %MAINDIR%Project\
+set DOXYGENDIR = %PROJECTDIR%doxygen\
+set RESDIR = %MAINDIR%res\
+set SRCDIR = %MAINDIR%src\
 
 echo Cleaning Project Folder...
-IF EXIST %~dp0Project\bin RMDIR /S /Q %~dp0Project\bin
-IF EXIST %~dp0Project\obj RMDIR /S /Q %~dp0Project\obj
-IF EXIST %~dp0Project\SDL-Cannon-Simulation.depend del /F %~dp0Project\SDL-Cannon-Simulation.depend
-IF EXIST %~dp0Project\SDL-Cannon-Simulation.layout del /F %~dp0Project\SDL-Cannon-Simulation.layout
+IF EXIST %PROJECTDIR%SDL-Cannon-Simulation.depend del /F %PROJECTDIR%SDL-Cannon-Simulation.depend
+IF EXIST %PROJECTDIR%SDL-Cannon-Simulation.layout del /F %PROJECTDIR%SDL-Cannon-Simulation.layout
+echo.
+
+echo Cleaning Doxygen Folder...
+IF EXIST %DOXYGENDIR%html RMDIR /S /Q %DOXYGENDIR%html
+IF EXIST %DOXYGENDIR%latex RMDIR /S /Q %DOXYGENDIR%latex
+IF EXIST %DOXYGENDIR%man RMDIR /S /Q %DOXYGENDIR%man
+IF EXIST %DOXYGENDIR%rtf RMDIR /S /Q %DOXYGENDIR%rtf
+IF EXIST %DOXYGENDIR%xml RMDIR /S /Q %DOXYGENDIR%xml
+IF EXIST %DOXYGENDIR%doxygen.log del /F %DOXYGENDIR%doxygen.log
 echo.
 
 echo Cleaning res Folder...
-IF EXIST %~dp0res\boilerplate.res del /F %~dp0res\boilerplate.res
-echo.
-
-echo Cleaning src Folder...
-IF EXIST %~dp0src\main.o del /F %~dp0src\main.o
-IF EXIST %~dp0src\cannonball.o del /F %~dp0src\cannonball.o
-IF EXIST %~dp0src\config.o del /F %~dp0src\config.o
-IF EXIST %~dp0src\tick.o del /F %~dp0src\tick.o
-IF EXIST %~dp0src\screen.o del /F %~dp0src\screen.o
+IF EXIST %RESDIR%boilerplate.res del /F %RESDIR%boilerplate.res
 echo.
 
 echo Cleaning Main Folder...
-IF EXIST %~dp0Config.ini del /F %~dp0Config.ini
-IF EXIST %~dp0gmon.out del /F %~dp0gmon.out
-IF EXIST %~dp0Cannon.exe del /F %~dp0Cannon.exe
-IF EXIST %~dp0Cannon-PRIVATE.exe del /F %~dp0Cannon-PRIVATE.exe
-IF EXIST %~dp0Cannon del /F %~dp0Cannon
-IF EXIST %~dp0Cannon-PRIVATE del /F %~dp0Cannon-PRIVATE
-IF EXIST %~dp0logfile.log del /F %~dp0logfile.log
-IF EXIST %~dp0time-log.log del /F %~dp0time-log.log 
+IF EXIST %MAINDIR%Config.ini del /F %MAINDIR%Config.ini
+IF EXIST %MAINDIR%gmon.out del /F %MAINDIR%gmon.out
+IF EXIST %MAINDIR%Cannon.exe del /F %MAINDIR%Cannon.exe
+IF EXIST %MAINDIR%Cannon-PRIVATE.exe del /F %MAINDIR%Cannon-PRIVATE.exe
+IF EXIST %MAINDIR%Cannon del /F %MAINDIR%Cannon
+IF EXIST %MAINDIR%Cannon-PRIVATE del /F %MAINDIR%Cannon-PRIVATE
+IF EXIST %MAINDIR%logfile.log del /F %MAINDIR%logfile.log
+IF EXIST %MAINDIR%time-log.log del /F %MAINDIR%time-log.log 
+IF EXIST %MAINDIR%*.stackdump del /F %MAINDIR%*.stackdump
+echo.
+
+echo Cleaning .o files where they might exist...
+IF EXIST %MAINDIR%*.o del /F %MAINDIR%*.o
+IF EXIST %SRCDIR%*.o del /F %SRCDIR%*.o
+IF EXIST %DIR%Project\bin RMDIR /S /Q %DIR%Project\bin
+IF EXIST %DIR%Project\obj RMDIR /S /Q %DIR%Project\obj
 echo.
 
 echo All cleaning done.

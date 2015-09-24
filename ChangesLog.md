@@ -3,6 +3,27 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [1.2.6-Beta] - 2015-09-24
+### Updated
+* Cleanup.bat to include doxygen files (also added wildcard support for some files)
+* Readme for the slight change to the config file
+
+### Changed
+* Makefile (it should now work)
+* Doxygen now uses DOT to make graphs
+* Functions that were in main.cpp have been renamed and moved into a namespace
+* All line seprators from 170 charaters long to 80 to allow me to see if I am breaking Google's recommended 80 charaters length 
+	see [here] (https://google-styleguide.googlecode.com/svn/trunk/cppguide.html#Line_Length)
+* Made most lines to be less than 80 charaters
+
+### Cleaned
+* Depencies on header files
+* Depencies on exteral libraries
+
+### Added
+* More doxygen comments that I missed before
+
+
 ## [1.2.5-Beta] - 2015-09-23
 ### Added
 * Doxygen Support

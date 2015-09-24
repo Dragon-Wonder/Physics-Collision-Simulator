@@ -38,7 +38,7 @@ PROJECT_NAME           = Cannon-Simulation
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = v1.2.5-Beta
+PROJECT_NUMBER         = v1.2.6-Beta
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -765,16 +765,7 @@ WARN_LOGFILE           = C:\Users\Patrick.Rye\Documents\GitHub\Cannon-Simulation
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = "..\..\src\screen.h" \
-                         "..\..\src\cannonball.h" \
-                         "..\..\src\version.h" \
-                         "..\..\src\config.cpp" \
-                         "..\..\src\cannonball.cpp" \
-                         "..\..\src\main.cpp" \
-                         "..\..\src\screen.cpp" \
-                         "..\..\src\global.h" \
-                         "..\..\src\tick.h" \
-                         "..\..\src\config.h" \
+INPUT                  = ../../src \
                          ../../ChangesLog.md \
                          ../../README.md \
                          ../../LICENSE.md
@@ -2143,7 +2134,7 @@ HIDE_UNDOC_RELATIONS   = YES
 # set to NO
 # The default value is: NO.
 
-HAVE_DOT               = NO
+HAVE_DOT               = YES
 
 # The DOT_NUM_THREADS specifies the number of dot invocations doxygen is allowed
 # to run in parallel. When set to 0 doxygen will base this on the number of
@@ -2272,7 +2263,7 @@ CALL_GRAPH             = YES
 # The default value is: NO.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-CALLER_GRAPH           = NO
+CALLER_GRAPH           = YES
 
 # If the GRAPHICAL_HIERARCHY tag is set to YES then doxygen will graphical
 # hierarchy of all classes instead of a textual one.
@@ -2321,7 +2312,7 @@ INTERACTIVE_SVG        = NO
 # found. If left blank, it is assumed the dot tool can be found in the path.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-DOT_PATH               = 
+DOT_PATH               = "../../../../../../../Program Files (x86)/Graphviz2.38/bin"
 
 # The DOTFILE_DIRS tag can be used to specify one or more directories that
 # contain dot files that are included in the documentation (see the \dotfile

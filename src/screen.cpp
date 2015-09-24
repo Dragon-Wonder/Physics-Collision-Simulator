@@ -1,11 +1,20 @@
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 #include "screen.h"
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 //Include the xpm files which present the images.
 #include "image_ball.xpm"
 #include "image_pixel.xpm"
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 clsScreen::clsScreen() {
+    /////////////////////////////////////////////////
+    /// @brief The default constructor for the SDL screen
+    ///        it will try start SDL, and create and window and a renderer,
+    ///        then try to load the textures it will need, if any of these fail
+    ///        it will set bln_SDL_Started to false and return void, when main in main.cpp
+    ///        checks bln_SDL_Started and ends the entire program will it is false.
+    ///        If, however, bln_SDL_Started is true it will continue on with the rest of the program.
+    /////////////////////////////////////////////////
+
     window.width = Global::Config.values.uintScreenWidth;
     window.height = Global::Config.values.uintScreenHeight;
 
@@ -22,7 +31,9 @@ clsScreen::clsScreen() {
 	    if (Global::blnDebugMode) {printf("SDL init successful\n");}
     }
 
-	window.win = SDL_CreateWindow("Cannon Simulation",100,100, window.width, window.height, SDL_WINDOW_SHOWN);
+	window.win = SDL_CreateWindow("Cannon Simulation",100,100,
+                               window.width, window.height, SDL_WINDOW_SHOWN);
+
 	if (window.win == nullptr) {
         printf("SDL Failed to create window.\n");
         cleanup();
@@ -34,7 +45,9 @@ clsScreen::clsScreen() {
 	    if (Global::blnDebugMode) {printf("Window creation successful\n");}
 	}
 
-	window.ren = SDL_CreateRenderer(window.win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	window.ren = SDL_CreateRenderer(window.win, -1,
+                    SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
 	if (window.ren == nullptr) {
         printf("SDL Failed to create renderer.\n");
         cleanup();
@@ -66,26 +79,51 @@ clsScreen::clsScreen() {
     }
 
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 clsScreen::~clsScreen() {
+    /////////////////////////////////////////////////
+    /// @brief This is the default deconstructor, it will just call
+    ///        clsScreen::cleanup to ensure everything is cleared from memory,
+    ///        and then quit SDL.
+    /////////////////////////////////////////////////
+
     cleanup();
     SDL_Quit();
     if (Global::blnDebugMode) {printf("SDL quit\n");}
 }
-/**********************************************************************************************************************************************************************/
-void clsScreen::update(void) {
-    //function for just updating the screen, nothing else
-    //on its own in case I want to just update the screen at some point
+/*****************************************************************************/
+void clsScreen::update() {
+    /////////////////////////////////////////////////
+    /// @brief Will update the SDL screen with whatever has been drawn
+    ///        see clsCannonball::show
+    /// @return void
+    /////////////////////////////////////////////////
+
     SDL_RenderPresent(window.ren);
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 void clsScreen::clearscreen() {
-    //set the ball texture back to full opaque
-    SDL_SetTextureAlphaMod(ball, 0xFF);
+    /////////////////////////////////////////////////
+    /// @brief Will delete all textures currently shown on the screen
+    /// @return void
+    /////////////////////////////////////////////////
+
     SDL_RenderClear(window.ren);
 }
-/**********************************************************************************************************************************************************************/
-void clsScreen::cleanup(void) {
+/*****************************************************************************/
+void clsScreen::cleanup() {
+    /////////////////////////////////////////////////
+    /// @brief This will attempt to delete Textures, and the Window / Renderer
+    ///        from memory if their representative loaded boolean is true. Will delete
+    ///        * Ball texture
+    ///        * Pixel Texture
+    ///        * Renderer
+    ///        * Window
+    ///
+    /// @return void
+    ///
+    /////////////////////////////////////////////////
+
     if (blnBall) {
         SDL_DestroyTexture(ball);
         blnBall = false;
@@ -107,20 +145,37 @@ void clsScreen::cleanup(void) {
         if (Global::blnDebugMode) {printf("Window destroyed\n");}
     }
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 void clsScreen::error(void) {
+    /////////////////////////////////////////////////
+    /// @brief Will print out the error generated by SDL if something goes wrong
+    /// @return void
+    /////////////////////////////////////////////////
+
     printf("SDL error: %s\n", SDL_GetError());
 	getchar();
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 SDL_Texture* clsScreen::loadIMG(std::string filename) {
+    /////////////////////////////////////////////////
+    /// @brief Will load a specified image into a texture.
+    ///        It will first load it from the XPM array that it is embedded as into a surface,
+    ///        then will will convert the surface into a texture, if that fails it will set bln_SDL_started to false
+    ///        and return nullptr, otherwise returns texture.
+    ///
+    /// @param filename = The texture to load (currently only supports "ball" or "pixel" as those are the only two textures needed)
+    /// @return Pointer to the texture in memory
+    /////////////////////////////////////////////////
+
     SDL_Surface* temp;
 
     if (filename == "ball") {temp = IMG_ReadXPMFromArray(image_ball_xpm);}
     else if (filename == "pixel") {temp = IMG_ReadXPMFromArray(image_pixel_xpm);}
     else { temp = nullptr; }
 
-	SDL_Texture *tex = (temp == nullptr) ? nullptr : SDL_CreateTextureFromSurface(window.ren,temp);
+	SDL_Texture *tex = (temp == nullptr)
+                        ? nullptr : SDL_CreateTextureFromSurface(window.ren,temp);
+
 	SDL_FreeSurface(temp);
 	if (tex == nullptr) {
         printf("Failed to create texture.\n");
@@ -131,20 +186,43 @@ SDL_Texture* clsScreen::loadIMG(std::string filename) {
 
 	return tex;
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 SDL_Texture* clsScreen::getBallTexture() {
+    /////////////////////////////////////////////////
+    /// @brief Returns the Ball texture for use in the clsCannonball
+    /// @return Pointer to the ball texture in memory
+    /////////////////////////////////////////////////
+
     return ball;
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 WINATT clsScreen::getWindow() {
+    /////////////////////////////////////////////////
+    /// @brief Returns window attributes
+    /// @return clsScreen::window
+    /////////////////////////////////////////////////
+
     return window;
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 bool clsScreen::getSDLStarted() {
+    /////////////////////////////////////////////////
+    /// @brief Returns if SDL is started and running without issues
+    /// @return bln_SDL_started
+    /////////////////////////////////////////////////
+
     return bln_SDL_started;
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 void clsScreen::drawline(LOC Current, LOC Old) {
+    /////////////////////////////////////////////////
+    /// @brief Will draw a line (using the pixel texture) from the old mouse location to
+    ///        the Current mouse location
+    /// @param Current = Current Mouse Location in terms of X and Y
+    /// @param Old = Old Mouse Location (start of click) in terms of X and Y
+    /// @return void
+    /////////////////////////////////////////////////
+
     double slope;
     SDL_Rect dst;
     SDL_QueryTexture(pixel, NULL, NULL, &dst.w, &dst.h);
@@ -169,8 +247,13 @@ void clsScreen::drawline(LOC Current, LOC Old) {
         } //end for length
     } //end if
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/
 SDL_Texture* clsScreen::getPixelTexture() {
+    /////////////////////////////////////////////////
+    /// @brief Returns pointer to the pixel texture
+    /// @return Pointer to Pixel texture in memory
+    /////////////////////////////////////////////////
+
     return pixel;
 }
-/**********************************************************************************************************************************************************************/
+/*****************************************************************************/

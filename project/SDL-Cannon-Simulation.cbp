@@ -153,7 +153,7 @@
 				<doxyfile_build extract_all="1" />
 				<doxyfile_warnings />
 				<doxyfile_output />
-				<doxyfile_dot class_diagrams="1" />
+				<doxyfile_dot class_diagrams="1" have_dot="1" />
 				<general use_at_in_tags="1" />
 			</DoxyBlocks>
 		</Extensions>

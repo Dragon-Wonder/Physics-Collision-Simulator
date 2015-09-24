@@ -1,11 +1,11 @@
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 #include "config.h"
 #include "version.h"
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 /*
 This holds all the functions related to the config file, its loading, making, and holding the values pulled from the config.
 */
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 clsConfig::clsConfig() {
     /////////////////////////////////////////////////
     /// @brief The default constructor, will set the config values as follows
@@ -48,7 +48,7 @@ clsConfig::clsConfig() {
     values.OperatingSystem = "UNDEFINED OS!";
 #endif // defined OS
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 bool clsConfig::exists(void) {
     /////////////////////////////////////////////////
     /// @brief Checks if config file already exists
@@ -59,7 +59,7 @@ bool clsConfig::exists(void) {
 	FILE* pTempFile = fopen(FileName, "r");
 	return (pTempFile != NULL);
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsConfig::make(void) {
     /////////////////////////////////////////////////
     /// @brief Will make a new config file, based on the default values in the constructor
@@ -77,11 +77,13 @@ void clsConfig::make(void) {
     fprintf(configFile,"Screen Width: %u\n",values.uintScreenWidth);
     fprintf(configFile,"Screen Height: %u\n",values.uintScreenHeight);
     fprintf(configFile,"Log Ball's path: %u\n", (values.blnLogging ? 1 : 0) ) ;
-    fprintf(configFile,"Enable Drag Mode (experimental): %u\n", (values.blnDragMode ? 1 : 0) );
-    fprintf(configFile,"Draw Ball path on screen: %u\n", (values.blnDrawPathOnScreen ? 1 : 0) );
+    fprintf(configFile,"Enable Drag Mode (experimental): %u\n",
+                        (values.blnDragMode ? 1 : 0) );
+    fprintf(configFile,"Draw Ball path on screen: %u\n",
+                        (values.blnDrawPathOnScreen ? 1 : 0) );
 	fclose(configFile);
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsConfig::load(void) {
     /////////////////////////////////////////////////
     /// @brief Will load the values of the config file and put them where they belong
@@ -126,7 +128,7 @@ void clsConfig::load(void) {
 	fclose(configFile);
 	printf("\n\n");
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 char clsConfig::verisonCheck(const char *ConfigVerison) {
     /////////////////////////////////////////////////
     /// @brief Will check the version number written into the config vs the Program version number.
@@ -143,15 +145,19 @@ char clsConfig::verisonCheck(const char *ConfigVerison) {
     /////////////////////////////////////////////////
 	uint C_MajorNum, C_MinorNum, C_PatchNum;
     char C_SoftwareStatus, P_SoftwareStatus;
-	sscanf(ConfigVerison,"%u.%u.%u-%c",&C_MajorNum, &C_MinorNum, &C_PatchNum, &C_SoftwareStatus);
-	if (Global::blnDebugMode) {printf("Config: v %u %u %u %c \n", C_MajorNum, C_MinorNum, C_PatchNum, C_SoftwareStatus);}
+	sscanf(ConfigVerison,"%u.%u.%u-%c",&C_MajorNum, &C_MinorNum,
+                        &C_PatchNum, &C_SoftwareStatus);
+
+	if (Global::blnDebugMode)
+        {printf("Config: v %u %u %u %c \n", C_MajorNum, C_MinorNum, C_PatchNum, C_SoftwareStatus);}
+
 	sscanf(DEFINED_VER_STATUS,"%c",&P_SoftwareStatus);
 	if (P_SoftwareStatus != C_SoftwareStatus) {return NEWCONFIG;}
 	else if (DEFINED_VER_MAJOR != C_MajorNum) {return NEWCONFIG;}
 	else if (DEFINED_VER_MINOR != C_MinorNum) {return USECONFIG;}
 	else {return USECONFIG;}
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
 void clsConfig::Check(void) {
     /////////////////////////////////////////////////
     /// @brief This is the basic method used to call on the config.
@@ -179,4 +185,4 @@ void clsConfig::Check(void) {
 		} else { load(); }
 	} //end if exists
 }
-/**********************************************************************************************************************************************/
+/*****************************************************************************/
