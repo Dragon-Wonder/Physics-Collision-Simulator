@@ -1,9 +1,21 @@
+# Main project stuff
+RandomCrap/
+SDL2Stuff/
+Project/
+src/
+res/
 *.o
-*.res
-project/SDL-Cannon-Simulation.depend
-*.txt
-RandomCrap/Installer Template/res/Cannon.ico
+*.log
+*.md
+Makefile
+*.exe
+*.bat
+*.cpp
 *.h
-SDL2Stuff/include/SDL2/glfont.c
-*.a
-SDL2Stuff/lib/libSDL2.la
+*.xpm
+*.ico
+*.rc
+*.cbp
+
+
+
