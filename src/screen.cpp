@@ -10,8 +10,8 @@ clsScreen::clsScreen() {
     /// @brief The default constructor for the SDL screen
     ///        it will try start SDL, and create and window and a renderer,
     ///        then try to load the textures it will need, if any of these fail
-    ///        it will set bln_SDL_Started to false and return void, when main in main.cpp
-    ///        checks bln_SDL_Started and ends the entire program will it is false.
+    ///        it will set bln_SDL_Started to false and return void, when main in main.cpp it
+    ///        checks bln_SDL_Started and will end the entire program if it is false.
     ///        If, however, bln_SDL_Started is true it will continue on with the rest of the program.
     /////////////////////////////////////////////////
 
@@ -22,32 +22,41 @@ clsScreen::clsScreen() {
     blnBall = blnPixel = false;
     bln_SDL_started = false;
 
+    //Start SDL
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        //SDL returned a non-zero which means there was an error
 		bln_SDL_started = false;
 		error();
 		return;
 	} else {
+	    //SDL started without error
 	    bln_SDL_started = true;
 	    if (Global::blnDebugMode) {printf("SDL init successful\n");}
     }
 
+    //Create the window.
 	window.win = SDL_CreateWindow("Cannon Simulation",100,100,
                                window.width, window.height, SDL_WINDOW_SHOWN);
 
+    //Check if the window was created properly
 	if (window.win == nullptr) {
+        //Window was not created
         printf("SDL Failed to create window.\n");
         cleanup();
         error();
 		bln_SDL_started = false;
 		return;
 	} else {
+	    //Window was created
 	    blnWindow = true;
 	    if (Global::blnDebugMode) {printf("Window creation successful\n");}
 	}
 
+    //Try to create the renderer
 	window.ren = SDL_CreateRenderer(window.win, -1,
                     SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
+    //Check if renderer was created.
 	if (window.ren == nullptr) {
         printf("SDL Failed to create renderer.\n");
         cleanup();
@@ -59,9 +68,10 @@ clsScreen::clsScreen() {
 	    if (Global::blnDebugMode) {printf("Renderer creation successful\n");}
     }
 
-    //Set the background color of the render to black
+    //Set the background color of the renderer to black
     SDL_SetRenderDrawColor(window.ren, 0x00, 0x00, 0x00, 0xFF );
 
+    //Load the ball texture
     ball = loadIMG("ball");
     if (bln_SDL_started == false) {return;}
     else {
@@ -71,6 +81,7 @@ clsScreen::clsScreen() {
         SDL_SetTextureBlendMode(ball, SDL_BLENDMODE_BLEND );
     }
 
+    //Load the pixel texture
     pixel = loadIMG("pixel");
     if (bln_SDL_started == false) {return;}
     else {
@@ -78,7 +89,7 @@ clsScreen::clsScreen() {
         if (Global::blnDebugMode) {printf("Pixel loading successful\n");}
     }
 
-}
+} //end of constructor
 /*****************************************************************************/
 clsScreen::~clsScreen() {
     /////////////////////////////////////////////////
@@ -129,10 +140,11 @@ void clsScreen::cleanup() {
         blnBall = false;
         if (Global::blnDebugMode) {printf("Ball texture destroyed\n");}
     }
-    if (blnBall) {
+
+    if (blnPixel) {
         SDL_DestroyTexture(pixel);
         blnPixel = false;
-        if (Global::blnDebugMode) {printf("Ball texture destroyed\n");}
+        if (Global::blnDebugMode) {printf("Pixel texture destroyed\n");}
     }
 	if (blnRenderer) {
         SDL_DestroyRenderer(window.ren);
@@ -160,11 +172,13 @@ SDL_Texture* clsScreen::loadIMG(std::string filename) {
     /////////////////////////////////////////////////
     /// @brief Will load a specified image into a texture.
     ///        It will first load it from the XPM array that it is embedded as into a surface,
-    ///        then will will convert the surface into a texture, if that fails it will set bln_SDL_started to false
+    ///        then will will convert the surface into a texture, if that fails
+    ///        it will set bln_SDL_started to false
     ///        and return nullptr, otherwise returns texture.
     ///
-    /// @param filename = The texture to load (currently only supports "ball" or "pixel" as those are the only two textures needed)
-    /// @return Pointer to the texture in memory
+    /// @param filename = The texture to load (currently only supports "ball"
+    ///                   or "pixel" as those are the only two textures needed).
+    /// @return Pointer to the texture in memory.
     /////////////////////////////////////////////////
 
     SDL_Surface* temp;

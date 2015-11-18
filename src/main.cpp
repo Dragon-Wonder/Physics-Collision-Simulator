@@ -12,7 +12,7 @@
 /**< The maximum number of cannonballs allowed. This is because the cannonballs
      are stored in an array; but later versions might allow dynamically allocated number.*/
 
-#define DEFINED_USE_R2_VEL_MODDER
+//j#define DEFINED_USE_R2_VEL_MODDER
 /**< If this is defined, then program will use unrealistic method that will
      increase the velocity of two colliding balls the closer they are together
      it will reduce the number of times that the balls stick together,
@@ -31,13 +31,13 @@ namespace Cannonballs {
 /*****************************************************************************/
 /** The method of the collision (I just wanted to play around with some options.) */
 enum Collisions {
-    CollideElastic = 0, /**< This is normal collision in a perfect would without
-                             friction, they hit and bounce off, no energy is lost */
+    CollideElastic = 0, /**< This is normal collision in a perfect world without
+                             friction, they hit and bounce off, no energy is lost. */
     CollideInelastic, /**< This is the normal way things collide, Balls collide and
                            bounce off of each other losing some energy. */
     CollidePerfectInelastic, /**< In this method the balls collide and then
-                                  stick together */
-    CollideNone /**< No collisions */
+                                  stick together. */
+    CollideNone /**< No collisions, balls pass through each other. */
 };
 /*****************************************************************************/
 namespace Global {
@@ -94,13 +94,15 @@ namespace Global {
 } //end namespace Global
 /*****************************************************************************/
 int main(int argc, char *argv[]) {
-    /** @brief The main function
-     *
-     * @param argc = Something required by SDL
-     * @param argv = Something required by SDL
-     * @return 0 for successfully ran, or 1 for an error happened.
-     *
-     */
+    /////////////////////////////////////////////////
+    /// @brief The main function
+    ///
+    /// @param argc = Something required by SDL
+    /// @param argv = Something required by SDL
+    /// @return 0 for successfully ran, or 1 for an error happened.
+    ///
+    /////////////////////////////////////////////////
+
 
     Global::Config.Check(); //Load Config file and all its values.
     if (Global::Config.values.blnLogging) { //Open log file to clear it, if it exists
@@ -185,15 +187,16 @@ int main(int argc, char *argv[]) {
 }
 /*****************************************************************************/
 void Cannonballs::addNew(LOC mouseC, LOC mouseO, double HoldTime ) {
-    /** @brief Will add a new cannonball based on the mouse start and mouse end.
-     *         Mass of the ball will vary based on Hold Time
-     *
-     * @param mouseC = Current Mouse Location in X and Y
-     * @param mouseO = Old (start of mouse click) Mouse Location in X and Y
-     * @param HoldTime = Time (in seconds) that the mouse button was held down for
-     * @return void
-     *
-     */
+    /////////////////////////////////////////////////
+    /// @brief Will add a new cannonball based on the mouse start and mouse end.
+    ///        Mass of the ball will vary based on Hold Time
+    ///
+    /// @param mouseC = Current Mouse Location in X and Y
+    /// @param mouseO = Old (start of mouse click) Mouse Location in X and Y
+    /// @param HoldTime = Time (in seconds) that the mouse button was held down for
+    /// @return void
+    ///
+    /////////////////////////////////////////////////
 
     //Get location, vel, and angle
     double fire_v;
@@ -204,7 +207,7 @@ void Cannonballs::addNew(LOC mouseC, LOC mouseO, double HoldTime ) {
     fire_v = -1 * sqrt( pow(mouseC.x - mouseO.x, 2) + pow(mouseC.y - mouseO.y, 2) );
     fire_v /= (double) Global::Equations::fVelocityScalar;
 
-    //if the mouse if pointing straight up or straight down make the angle 90
+    //If the mouse if pointing straight up or straight down make the angle 90
     //Otherwise calculate the angle with atan.
     if (mouseC.x == mouseO.x) {
         angle = (PI / 2.0) * ( (mouseC.y > mouseO.y) ? -1.0 : 1.0 );
@@ -233,10 +236,10 @@ void Cannonballs::addNew(LOC mouseC, LOC mouseO, double HoldTime ) {
 void Cannonballs::checkCollisons(uint j) {
 
     /////////////////////////////////////////////////
-    /// @brief Checks ball number j is colliding with another ball and then do collisions
+    /// @brief Checks ball number j is colliding with another ball and then do collisions.
     ///
-    /// @param  j = the number in the array that ball we are checking is
-    /// @return void (all changes if they are colliding is handled in this function)
+    /// @param  j = the number in the array that ball we are checking is.
+    /// @return void (all changes if they are colliding is handled in this function).
     ///
     /////////////////////////////////////////////////
 

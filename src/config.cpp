@@ -3,7 +3,8 @@
 #include "version.h"
 /*****************************************************************************/
 /*
-This holds all the functions related to the config file, its loading, making, and holding the values pulled from the config.
+This holds all the functions related to the config file, its loading, making,
+and holding the values pulled from the config.
 */
 /*****************************************************************************/
 clsConfig::clsConfig() {

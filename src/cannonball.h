@@ -11,7 +11,7 @@
 
 /** This is the max number of points that are recorded and then shown if
     Global::Config.values.blnDrawPathOnScreen is true. I had issues of no more than
-    5 showing up, so 5 is the default value */
+    5 showing up, so 5 is the default value. */
 #define DEFINED_MAXNUMPASTPOINTS 5
 /*****************************************************************************/
 /** Holds X and Y values that are related together, the values are doubles

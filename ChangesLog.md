@@ -3,6 +3,15 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [1.2.7-Beta] - 2015-11-18
+### Fixed
+* Copy Paste Error that caused the pixel texture to remain in memory
+* Spelling and grammar mistakes
+
+### Added
+* More comments
+
+
 ## [1.2.6-Beta] - 2015-09-24
 ### Updated
 * Cleanup.bat to include doxygen files (also added wildcard support for some files)

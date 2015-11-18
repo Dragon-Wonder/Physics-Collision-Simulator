@@ -7,10 +7,10 @@
 class clsTick {
 	private:
 		//Members
-		/** The time the ball positions were last updated at */
+		/** The time the ball positions were last updated at. */
 		clock_t lngTimerStart;
 
-		/** The time of the start of the mouse being held down */
+		/** The time of the start of the mouse being held down. */
 		clock_t lngHoldingStart;
 	public:
 		//Default Constructor

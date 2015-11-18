@@ -45,6 +45,7 @@
 					<Add option="-Os" />
 					<Add option="-std=c++11" />
 					<Add option="-w" />
+					<Add option="-D__NO_INLINE__" />
 					<Add directory="src/" />
 				</Compiler>
 				<Linker>

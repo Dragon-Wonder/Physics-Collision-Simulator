@@ -11,7 +11,7 @@ struct stcWinAtt {
     uint width; /**< The width of the screen in terms of pixels */
     uint height; /**< The height of the screen in terms of pixels */
     SDL_Window *win; /**< A pointer to the SDL window that is being used */
-    SDL_Renderer *ren; /**< A pointer to the SDL rednder that is being used */
+    SDL_Renderer *ren; /**< A pointer to the SDL renderer that is being used */
 };
 
 /** This structure will hold place values in terms of X and Y*/
@@ -53,19 +53,19 @@ class clsScreen {
         //Keeps track of which parts have been loaded
         //so when ending only the ones that are open
         //are closed
-        /** If window is loaded */
+        /** If window is loaded. */
         bool blnWindow;
 
-        /** If renderer is loaded */
+        /** If renderer is loaded. */
         bool blnRenderer;
 
-        /** If ball image is loaded */
+        /** If ball image is loaded. */
         bool blnBall;
 
-        /** If pixel image is loaded */
+        /** If pixel image is loaded. */
         bool blnPixel;
 
-        /** If SDL is started and without issues */
+        /** If SDL is started and without issues. */
         bool bln_SDL_started;
 
         SDL_Texture* loadIMG(std::string);

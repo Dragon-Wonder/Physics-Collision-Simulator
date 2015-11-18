@@ -16,7 +16,7 @@ clsCannonball::clsCannonball() {
     ///         * Vel = 0
     /////////////////////////////////////////////////
 
-    //Put some default values in; on the off chance I forget to set them later
+    //Put some default values in; on the off chance I forget to set them later.
     blnDragEnabled = false;
     blnstarted = false;
     deltat = (1.00 / 60.00) ;
@@ -39,7 +39,7 @@ clsCannonball::clsCannonball() {
 /*****************************************************************************/
 void clsCannonball::Drag_calcvalues(void) {
     /////////////////////////////////////////////////
-    /// @brief This will calculate addionational properties of the cannonball based on its radius.
+    /// @brief This will calculate additional properties of the cannonball based on its radius.
     ///        These include:
     ///        * area
     ///        * volume
@@ -114,6 +114,7 @@ void clsCannonball::update(double newdeltat) {
 
     dblLOC.x = dblLOC.x + vel.x * deltat + 0.5 * acc.x * pow(deltat,2);
 	vel.x = (vel.x + acc.x * deltat);
+	//Recoil the ball if it is past an edge
 	if (dblLOC.x <= 0.0 || dblLOC.x >= window.width - Screen_place.w) {
         vel.x *= Global::Physics::fRecoil;
         dblLOC.x += dblLOC.x <= 0.0 ? 1.0 : -1.0;
@@ -121,6 +122,7 @@ void clsCannonball::update(double newdeltat) {
 
 	dblLOC.y = dblLOC.y + vel.y * deltat + 0.5 * acc.y * pow(deltat,2);
 	vel.y = (vel.y + acc.y * deltat);
+	//Recoil the ball if it is past an edge
 	if (dblLOC.y <= Screen_place.h || dblLOC.y >= window.height) {
         vel.y *= Global::Physics::fRecoil;
         dblLOC.y += dblLOC.y <= Screen_place.y ? 1.0 : -1.0;
@@ -150,14 +152,15 @@ void clsCannonball::update(double newdeltat) {
             else {printf("Ball moving too slow; killing it\n");}
         } //end if debug mode
     } //end if should kill
-	show();
+	show(); //show the ball on the screen
 }
 /*****************************************************************************/
 void clsCannonball::setSDLScreen(SDL_Texture* SDLball,
                                  SDL_Texture* SDLpxel,
                                  WINATT SDLwindow, uint newID) {
     /////////////////////////////////////////////////
-    /// @brief This will set certain values for the ball based on the screen. It will also randomly generate a color for the ball.
+    /// @brief This will set certain values for the ball based on the screen.
+    ///        It will also randomly generate a color for the ball.
     ///
     /// @param SDLball = Pointer to clsScreen::ball
     /// @param SDLpxel = Pointer to clsScreen::pixel
@@ -169,7 +172,6 @@ void clsCannonball::setSDLScreen(SDL_Texture* SDLball,
 
     ballID = newID;
     //set the color of the ball
-    //Set some ID's to have specific colors, but otherwise randomize them
     Color.Red = rand() % 255;
     Color.Green = rand() % 255;
     Color.Blue = rand() % 255;
@@ -218,12 +220,12 @@ void clsCannonball::show() {
 void clsCannonball::setValues(double r, LOC init_place,
                               double init_vel, double init_angle) {
     /////////////////////////////////////////////////
-    /// @brief Changes the values of the ball to whatever is entered
+    /// @brief Changes the values of the ball to whatever is entered.
     ///
-    /// @param r = radius of the ball
-    /// @param init_place = its starting location
-    /// @param init_vel = its starting velocity
-    /// @param init_angle = its starting angle (in radians)
+    /// @param r = radius of the ball.
+    /// @param init_place = its starting location.
+    /// @param init_vel = its starting velocity.
+    /// @param init_angle = its starting angle (in radians).
     /// @return void
     ///
     /////////////////////////////////////////////////

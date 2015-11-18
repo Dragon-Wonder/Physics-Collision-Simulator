@@ -2,16 +2,16 @@
 #define __VERSION_HEADER__
 /*****************************************************************************/
 	//Date Version Types
-	#define DEFINED_VER_DATE "21"
+	#define DEFINED_VER_DATE "18"
 	/**< Day of the last build */
 
-	#define DEFINED_VER_MONTH "09"
+	#define DEFINED_VER_MONTH "11"
 	/**< Month of the last build */
 
 	#define DEFINED_VER_YEAR "2015"
 	/**< Year of the last build */
 
-	#define DEFINED_VER_UBUNTU_VERSION_STYLE  "15.09"
+	#define DEFINED_VER_UBUNTU_VERSION_STYLE  "15.11"
 	/**< Version styling for Ubuntu, consists of YY.MM */
 
 
@@ -37,17 +37,17 @@
 	#define DEFINED_VER_MINOR  2
 	/**< The minor version number */
 
-	#define DEFINED_VER_BUILD  6
+	#define DEFINED_VER_BUILD  7
 	/**< The patch version number */
 
-	#define DEFINED_VER_RC_FILEVERSION 1,2,6,4
+	#define DEFINED_VER_RC_FILEVERSION 1,2,7,0
 	/**< The number used in the boilerplate.rc file
         Follows MAJOR,MINOR,PATCH,BUILD where build is the number of times this version has been built*/
 
-	#define DEFINED_VER_RC_FILEVERSION_STRING "1, 2, 6, 4\0"
+	#define DEFINED_VER_RC_FILEVERSION_STRING "1, 2, 7, 0\0"
 	/**< Is the same as DEFINED_VER_RC_FILEVERSION but is a null terminated string */
 
-	#define DEFINED_VER_FULLVERSION_STRING  "1.2.6-Beta"
+	#define DEFINED_VER_FULLVERSION_STRING  "1.2.7-Beta"
 	/**< The full string of the version number */
 
 /*****************************************************************************/

@@ -7,13 +7,13 @@ class clsConfig;
 /*****************************************************************************/
 //global typedefs
 typedef unsigned char uchar;
-/**< Rename unsigned char to uchar because I'm lazy */
+/**< Rename unsigned char to uchar because I'm lazy. */
 
 typedef unsigned int uint;
-/**< Rename unsigned int to uint because I'm lazy */
+/**< Rename unsigned int to uint because I'm lazy. */
 
 typedef unsigned long ulong;
-/**< Rename unsigned long to ulong because I'm lazy */
+/**< Rename unsigned long to ulong because I'm lazy. */
 
 /*****************************************************************************/
 //Global namespace
