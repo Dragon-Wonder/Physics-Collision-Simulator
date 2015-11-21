@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['ball',['ball',['../dd/dad/a00005.html#a53ac6fea8e847a0d5548076ff786c036',1,'clsCannonball::ball()'],['../de/d5e/a00007.html#a4b12e9a32d175dac795124a294affd9d',1,'clsScreen::ball()']]],
+  ['ballid',['ballID',['../dd/dad/a00005.html#ac2b0820bd7bac6deefe417f73954f289',1,'clsCannonball']]],
+  ['balls',['Balls',['../d5/d79/a00030.html#a66dbc91a9c21e0c81b1b23a1cf59df10',1,'Cannonballs']]],
+  ['bln_5fsdl_5fstarted',['bln_SDL_started',['../de/d5e/a00007.html#aa623da012033030a69a9bcf8d454131c',1,'clsScreen']]],
+  ['blnball',['blnBall',['../de/d5e/a00007.html#ac37946a7a91edf3c1d8a17425fe716a1',1,'clsScreen']]],
+  ['blndebugmode',['blnDebugMode',['../df/d61/a00031.html#a27dda89bb2c45a4383b91c0ec45d8f0d',1,'Global']]],
+  ['blndragenabled',['blnDragEnabled',['../dd/dad/a00005.html#a489dbb176ae4696bdbe2dd06dc35d597',1,'clsCannonball']]],
+  ['blndragmode',['blnDragMode',['../da/da0/a00009.html#a64d9daadce2da5e7b57d5d80ada51bc3',1,'ConfigValues']]],
+  ['blndrawpathonscreen',['blnDrawPathOnScreen',['../da/da0/a00009.html#a011eaf6857549201d01d4ad133c8417e',1,'ConfigValues']]],
+  ['blnlogging',['blnLogging',['../da/da0/a00009.html#a12cc83386660d52d6b9d569713153b5e',1,'ConfigValues']]],
+  ['blnpixel',['blnPixel',['../de/d5e/a00007.html#a230c950007a94ca74c65ed9a938a137c',1,'clsScreen']]],
+  ['blnrenderer',['blnRenderer',['../de/d5e/a00007.html#a02190a8f7ed711c90c6256efbbaa6d6c',1,'clsScreen']]],
+  ['blnstarted',['blnstarted',['../dd/dad/a00005.html#a2db73027e5e89acb846ae81bb08d8831',1,'clsCannonball']]],
+  ['blnwindow',['blnWindow',['../de/d5e/a00007.html#a7dc92dff41da9b83a5c7586bd79213ba',1,'clsScreen']]],
+  ['blue',['Blue',['../da/d45/a00011.html#a909cbc6bbf7a37fd9f1e6485a231a431',1,'stcColor']]],
+  ['bottom',['bottom',['../d7/dec/a00010.html#a3d3251994af0d184e4641873fcecb461',1,'stcBox']]]
+];

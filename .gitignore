@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Compiled Object files
 *.slo
 *.lo
@@ -91,3 +92,26 @@ _start-cmd.bat
 
 #Doxygen Stuff
 /html/
+=======
+# Main project stuff
+RandomCrap/
+SDL2Stuff/
+Project/
+src/
+res/
+*.o
+*.log
+*.md
+Makefile
+*.exe
+*.bat
+*.cpp
+*.h
+*.xpm
+*.ico
+*.rc
+*.cbp
+
+
+
+>>>>>>> efde293c92c4494ba9a2751363864f3805fde75f
