@@ -15,6 +15,7 @@ clsConfig::clsConfig() {
     ///        * values.blnDrawPathOnScreen = false;
     ///        * values.uintScreenWidth = 640;
     ///        * values.uintScreenHeight = 480;
+    ///        * values.uchrCollisionMethod = CollideInelastic;
     ///        It will also set the OS based on values that are defined
     ///
     /////////////////////////////////////////////////
@@ -25,6 +26,7 @@ clsConfig::clsConfig() {
     values.blnDrawPathOnScreen = false;
     values.uintScreenWidth = 640;
     values.uintScreenHeight = 480;
+    values.uchrCollisionMethod = CollideInelastic;
 #if defined(_AIX)
     values.OperatingSystem = "AIX";
 #elif defined(__unix__)
@@ -82,6 +84,7 @@ void clsConfig::make(void) {
                         (values.blnDragMode ? 1 : 0) );
     fprintf(configFile,"Draw Ball path on screen: %u\n",
                         (values.blnDrawPathOnScreen ? 1 : 0) );
+    fprintf(configFile,"Collision Method: %u\n", values.uchrCollisionMethod);
 	fclose(configFile);
 }
 /*****************************************************************************/
@@ -125,6 +128,12 @@ void clsConfig::load(void) {
 	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
 	if(Global::blnDebugMode) {printf("Enable Screen Path \t %d\n",intTempBool);}
 	values.blnDrawPathOnScreen = (intTempBool == 1);
+
+    fgets(chrTempString,50,configFile);
+    intValuesScanned = sscanf(chrTempString, "%*s %*s %d", &values.uchrCollisionMethod);
+    if (intValuesScanned < 1) {printf("ERROR!"); values.uchrCollisionMethod = CollideInelastic;}
+    if (values.uchrCollisionMethod > CollideNone) {printf("ERROR!"); values.uchrCollisionMethod = CollideNone;}
+    if(Global::blnDebugMode) {printf("Collision Method: \t %d\n",values.uchrCollisionMethod);}
 
 	fclose(configFile);
 	printf("\n\n");

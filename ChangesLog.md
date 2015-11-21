@@ -3,6 +3,15 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [1.0.0-RC] - 2015-11-21
+### Added
+* Movement Equation Image
+* Collision method set in config
+
+### Notes
+* Moved to RC as I've done almost everything I can think of to do. All that really needs to be figured out is why the balls sometimes stick together.
+	Which I believe is because of the Tick system and cannot be easily fixed.
+
 ## [1.2.7-Beta] - 2015-11-18
 ### Fixed
 * Copy Paste Error that caused the pixel texture to remain in memory

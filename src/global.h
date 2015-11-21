@@ -29,7 +29,7 @@ namespace Global {
         extern const float fRecoil;
         extern const float fMinVelocity;
         extern const float fCoefficientRestitution;
-        extern const uchar CollisionMethod;
+        extern uchar CollisionMethod;
     }
 
     namespace Equations {
@@ -40,5 +40,16 @@ namespace Global {
         extern const uchar uAlphaMinimum;
     }
 }
+/*****************************************************************************/
+/** The method of the collision (I just wanted to play around with some options.) */
+enum Collisions {
+    CollideElastic = 0, /**< This is normal collision in a perfect world without
+                             friction, they hit and bounce off, no energy is lost. */
+    CollideInelastic, /**< This is the normal way things collide, Balls collide and
+                           bounce off of each other losing some energy. */
+    CollidePerfectInelastic, /**< In this method the balls collide and then
+                                  stick together. */
+    CollideNone /**< No collisions, balls pass through each other. */
+};
 /*****************************************************************************/
 #endif // __GLOBAL_H_INCLUDED__

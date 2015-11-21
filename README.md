@@ -52,6 +52,7 @@ Screen Height: 480
 Log Ball's path: 0
 Enable Drag Mode (experimental): 0
 Draw Ball path on screen: 0
+Collision Method: 1
 ```
 
 You can use this to change things like the screen height and width, and other stuff.
@@ -62,6 +63,16 @@ You can use this to change things like the screen height and width, and other st
 online and I cannot verify how accurate it is.
 
 "Draw Ball path on Screen" (if enabled with a 1 instead of 0), will cause small pixels to trail after each ball.
+
+"Collision Method" you can change how the balls will interact with each other when they collide based on the number in the table below.
+
+| Name                    | Number | Explanation                                                                                                |
+|-------------------------|--------|------------------------------------------------------------------------------------------------------------|
+| CollideElastic          | 0      | This is normal collision in a perfect world without  friction, they hit and bounce off, no energy is lost. |
+| CollideInelastic        | 1      | This is the real life situation. Balls collide and,  bounce off of each other losing some energy.          |
+| CollidePerfectInelastic | 2      | In this method the balls collide and then stick together.                                                  |
+| CollideNone             | 3      | The balls do not collide and pass through each other.                                                      |
+
 
 Once you start the program you will be greeted with a beautiful black screen. To create a new cannonball you click (and hold down the button) 
 you can now move your move around to change the angle that the new cannonball will be fired at; as well as the longer the line the faster it will go. 

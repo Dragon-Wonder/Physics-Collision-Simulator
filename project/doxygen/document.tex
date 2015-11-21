@@ -1,0 +1,43 @@
+\documentclass[10pt,a4paper,landscape]{article}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\author{Patrick Rye}
+\begin{document}
+	\begin{equation*}
+		\begin{matrix}\mathit{Defs}\hfill\null &\left\{\begin{matrix}\hfill
+				v_{1x}&=\hfill\null &v_{1}\times \cos (\theta _{1})\\\hfill
+				v_{2x}&=\hfill\null &v_{2}\times \cos (\theta _{2})\\\hfill \phi
+				&=\hfill\null &|\theta _{1}-\theta _{2}|\\\hfill v_{1}&=\hfill\null
+				&\sqrt{v_{1x}^{2}+v_{1y}^{2}}\\\hfill v_{2}&=\hfill\null
+				&\sqrt{v_{2x}^{2}+v_{2y}^{2}}\end{matrix}\right\}\hfill\null
+			\\\mathit{Givens}\hfill\null &\left\{\begin{matrix}v_{1x}\hfill\null
+				&v_{1y}\hfill\null \\v_{2x}\hfill\null &v_{2y}\hfill\null \\\theta
+				_{1}\hfill\null &\theta _{2}\hfill\null \end{matrix}\right\}\hfill\null
+			\\\mathit{Object}1\hfill\null &\left\{\begin{matrix}\hfill
+				v_{1x}^{'}&=\hfill\null &\frac{v_{1}\times \cos (\theta _{1}-\phi
+					)\times (m_{1}-m_{2})+2\ast m_{2}\times v_{2}\times \cos (\theta
+					_{2}-\phi )}{m_{1}+m_{2}}\times \cos (\phi )+v_{1}\times \sin (\theta
+				_{1}-\phi )\times \cos (\phi +\frac{\pi }{2})\\\hfill
+				v_{1y}^{'}&=\hfill\null &\frac{v_{1}\times \cos (\theta _{1}-\phi
+					)\times (m_{1}-m_{2})+2\ast m_{2}\times v_{2}\times \cos (\theta
+					_{2}-\phi )}{m_{1}+m_{2}}\times \sin (\phi )+v_{1}\times \sin (\theta
+				_{1}-\phi )\times \sin (\phi +\frac{\pi
+				}{2})\end{matrix}\right\}\hfill\null \\\mathit{Object}2\hfill\null
+			&\left\{\begin{matrix}\hfill v_{2x}^{'}&=\hfill\null &\frac{v_{2}\times
+					\cos (\theta _{2}-\phi )\times (m_{2}-m_{1})+2\ast m_{1}\times
+					v_{1}\times \cos (\theta _{1}-\phi )}{m_{1}+m_{2}}\times \cos (\phi
+				)+v_{2}\times \sin (\theta _{2}-\phi )\times \cos (\phi +\frac{\pi
+				}{2})\\\hfill v_{2y}^{'}&=\hfill\null &\frac{v_{2}\times \cos (\theta
+				_{2}-\phi )\times (m_{2}-m_{1})+2\ast m_{1}\times v_{1}\times \cos
+				(\theta _{1}-\phi )}{m_{1}+m_{2}}\times \sin (\phi )+v_{2}\times \sin
+			(\theta _{2}-\phi )\times \sin (\phi +\frac{\pi
+			}{2})\end{matrix}\right\}\hfill\null
+		\\\mathit{Coefficient}\mathit{of}\mathit{restitution}\hfill\null
+		&\left\{\begin{matrix}C_{R}\hfill\null &=\hfill\null
+			&\frac{v_{1}^{'}-v_{2}^{'}}{v_{2}-v_{1}}\hfill\null
+		\end{matrix}\right\}\hfill\null \end{matrix}\hfill
+\end{equation*}
+\end{document}

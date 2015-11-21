@@ -20,6 +20,7 @@ struct ConfigValues {
 	bool blnLogging; /**< If logging of balls' path to a file is enabled */
 	bool blnDragMode; /**< Whether Drag is enabled or not */
 	bool blnDrawPathOnScreen; /**< Whether to draw the balls' past path on the screen */
+	uchar uchrCollisionMethod; /**< The Method of Collision see Collisions */
 	char* OperatingSystem; /**< The OS that the program is running on, doesn't do anything */
 };
 

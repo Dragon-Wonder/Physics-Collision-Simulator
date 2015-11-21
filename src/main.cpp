@@ -1,7 +1,6 @@
 /*****************************************************************************/
 //General Todos
 /* FIXME (GamerMan7799#1#): The balls will become stuck together for seemingly random reasons */
-/* TODO (GamerMan7799#5#): Collision Method can be set in Config */
 /* TODO (GamerMan7799#9#): Allow setting of some Physics Values in Config */
 /*****************************************************************************/
 #include "version.h"
@@ -28,17 +27,6 @@ namespace Cannonballs {
 
     clsCannonball Balls[DEFINED_CANNONBALL_LIMIT]; /**< The is the array that holds all of the cannonballs. */
 }
-/*****************************************************************************/
-/** The method of the collision (I just wanted to play around with some options.) */
-enum Collisions {
-    CollideElastic = 0, /**< This is normal collision in a perfect world without
-                             friction, they hit and bounce off, no energy is lost. */
-    CollideInelastic, /**< This is the normal way things collide, Balls collide and
-                           bounce off of each other losing some energy. */
-    CollidePerfectInelastic, /**< In this method the balls collide and then
-                                  stick together. */
-    CollideNone /**< No collisions, balls pass through each other. */
-};
 /*****************************************************************************/
 namespace Global {
     /** Holds if build is in debug mode, this can happen if
@@ -67,7 +55,7 @@ namespace Global {
         const float fMinVelocity = 0.0; /**< If a ball has less velocity than the it will "die" */
         const float fCoefficientRestitution = 0.76; /**< How much total energy remains after a collision,
                                                         (see https://en.wikipedia.org/wiki/Coefficient_of_restitution for more info) */
-        const uchar CollisionMethod = CollideInelastic; /**< The collision method to use (see Collisions Enum) */
+        uchar CollisionMethod = CollideInelastic; /**< The collision method to use (see Collisions Enum) */
     } //end Namespace Physics
 
     /** Holds Values for different equations that are not physics related */
@@ -275,6 +263,7 @@ void Cannonballs::doCollide(uint numA, uint numB) {
     /////////////////////////////////////////////////
     /// @brief Will calculate the new velocities of two balls that are colliding
     ///
+    /// @image html Equations.PNG "The equations used to get the resulting velocities."
     /// @param numA = the number in the array ball A is
     /// @param numB = the number in the array ball B is
     /// @return void (everything is handled inside the function)
