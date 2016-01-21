@@ -31,9 +31,9 @@ echo Cleaning Main Folder...
 IF EXIST %MAINDIR%Config.ini del /F %MAINDIR%Config.ini
 IF EXIST %MAINDIR%gmon.out del /F %MAINDIR%gmon.out
 IF EXIST %MAINDIR%Cannon.exe del /F %MAINDIR%Cannon.exe
-IF EXIST %MAINDIR%Cannon-PRIVATE.exe del /F %MAINDIR%Cannon-PRIVATE.exe
-IF EXIST %MAINDIR%Cannon del /F %MAINDIR%Cannon
-IF EXIST %MAINDIR%Cannon-PRIVATE del /F %MAINDIR%Cannon-PRIVATE
+IF EXIST %MAINDIR%Physics-Collision-Simulator-PRIVATE.exe del /F %MAINDIR%Physics-Collision-Simulator-PRIVATE.exe
+IF EXIST %MAINDIR%Physics-Collision-Simulator del /F %MAINDIR%Physics-Collision-Simulator
+IF EXIST %MAINDIR%Physics-Collision-Simulator-PRIVATE del /F %MAINDIR%Physics-Collision-Simulator-PRIVATE
 IF EXIST %MAINDIR%logfile.log del /F %MAINDIR%logfile.log
 IF EXIST %MAINDIR%time-log.log del /F %MAINDIR%time-log.log 
 IF EXIST %MAINDIR%*.stackdump del /F %MAINDIR%*.stackdump

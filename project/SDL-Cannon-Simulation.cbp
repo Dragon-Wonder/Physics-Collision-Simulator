@@ -2,14 +2,14 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="SDL-Cannon-Simulation" />
+		<Option title="SDL-Physics-Collision-Simulator" />
 		<Option makefile="../Makefile" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug-Windows">
 				<Option platforms="Windows;" />
-				<Option output="../Cannon-PRIVATE" prefix_auto="1" extension_auto="1" />
+				<Option output="../Physics-Collision-Simulator-PRIVATE" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -36,7 +36,7 @@
 			</Target>
 			<Target title="Release-Windows">
 				<Option platforms="Windows;" />
-				<Option output="../Cannon" prefix_auto="1" extension_auto="1" />
+				<Option output="../Physics-Collision-Simulator" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
@@ -61,7 +61,7 @@
 			</Target>
 			<Target title="Debug-Linux">
 				<Option platforms="Unix;" />
-				<Option output="../Cannon-PRIVATE" prefix_auto="1" extension_auto="1" />
+				<Option output="../Physics-Collision-Simulator-PRIVATE" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -87,7 +87,7 @@
 			</Target>
 			<Target title="Release-Linux">
 				<Option platforms="Unix;" />
-				<Option output="../Cannon" prefix_auto="1" extension_auto="1" />
+				<Option output="../Physics-Collision-Simulator" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
@@ -119,6 +119,7 @@
 			<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/lib" />
 			<Add directory="../SDL2Stuff/lib" />
 		</Linker>
+		<Unit filename="../ChangesLog.md" />
 		<Unit filename="../README.md">
 			<Option target="Debug-Windows" />
 			<Option target="Release-Windows" />

@@ -73,7 +73,7 @@ void clsConfig::make(void) {
 	configFile = fopen(FileName,"w");
 	printf("Config File will now be created!\n");
 
-	fprintf(configFile,"Config File for the Cannon.exe\n");
+	fprintf(configFile,"Config File for the Physics-Collision-Simulator.exe\n");
 	fprintf(configFile,"%s\n",DEFINED_VER_FULLVERSION_STRING);
 	//Write the config file with the defaults above
 	//this way I only have to change the defaults in one place

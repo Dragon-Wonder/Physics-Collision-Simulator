@@ -123,18 +123,18 @@ int main(int argc, char *argv[]) {
             if ( event.type == SDL_QUIT ) {quit = true;}
             else if ( event.type == SDL_MOUSEBUTTONUP ) {
                 holding = false;
-                if (Global::blnDebugMode) {printf("Mouse button up\n");}
+                //if (Global::blnDebugMode) {printf("Mouse button up\n");}
                 Cannonballs::addNew(CurrentMouse, OldMouse, Tick.stopHolding() );
             } else if ( event.type == SDL_MOUSEMOTION && holding) {
                 //Draw the line
                 SDL_GetMouseState(&CurrentMouse.x, &CurrentMouse.y );
-                if (Global::blnDebugMode) {printf("Mouse found at (%d,%d)\n",CurrentMouse.x,CurrentMouse.y);}
+                //if (Global::blnDebugMode) {printf("Mouse found at (%d,%d)\n",CurrentMouse.x,CurrentMouse.y);}
             } else if ( event.type == SDL_MOUSEBUTTONDOWN ) {
                 holding = true;
                 Tick.startHolding();
                 SDL_GetMouseState(&OldMouse.x, &OldMouse.y);
                 CurrentMouse = OldMouse;
-                if (Global::blnDebugMode) {printf("Mouse Button down at (%d,%d)\n",OldMouse.x,OldMouse.y);}
+                //if (Global::blnDebugMode) {printf("Mouse Button down at (%d,%d)\n",OldMouse.x,OldMouse.y);}
             } else if ( event.type == SDL_KEYDOWN ) {
                 switch ( event.key.keysym.sym ) {
                 case SDLK_k:

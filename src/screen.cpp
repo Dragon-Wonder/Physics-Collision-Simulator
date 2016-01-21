@@ -35,7 +35,7 @@ clsScreen::clsScreen() {
     }
 
     //Create the window.
-	window.win = SDL_CreateWindow("Cannon Simulation",100,100,
+	window.win = SDL_CreateWindow("Physics-Collision-Simulator",100,100,
                                window.width, window.height, SDL_WINDOW_SHOWN);
 
     //Check if the window was created properly

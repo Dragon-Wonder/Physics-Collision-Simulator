@@ -3,6 +3,15 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [1.0.1-RC] - 2016-01-20
+### Removed
+* Unneeded debug messages
+
+### Changed
+* Updated some licensing dates for the new year.
+* Name to Physics Collision Simulator
+
+
 ## [1.0.0-RC] - 2015-11-21
 ### Added
 * Movement Equation Image
@@ -30,7 +39,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Makefile (it should now work)
 * Doxygen now uses DOT to make graphs
 * Functions that were in main.cpp have been renamed and moved into a namespace
-* All line seprators from 170 charaters long to 80 to allow me to see if I am breaking Google's recommended 80 charaters length 
+* All line seprators from 170 charaters long to 80 to allow me to see if I am breaking Google's recommended 80 charaters length
 	see [here] (https://google-styleguide.googlecode.com/svn/trunk/cppguide.html#Line_Length)
 * Made most lines to be less than 80 charaters
 
@@ -115,7 +124,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Readme
 
 ### Changed
-* Attempted to make the code more efficient 
+* Attempted to make the code more efficient
 * Default Min Velocity from 0.5 to 0.0 (basically disabling it)
 * Disabled the Unrealistic method I added in 1.1.9-beta as it did not help.
 * Default Collision Method from Elastic to Inelastic
@@ -281,7 +290,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 
 ## [1.1.4-Alpha] - 2015-08-26
-### Fixed 
+### Fixed
 * Bug where loop wouldn't end properly because x/y were uint
 
 ### Added
