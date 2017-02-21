@@ -17,39 +17,43 @@ typedef unsigned long ulong;
 
 /*****************************************************************************/
 //Global namespace
-namespace Global {
-    extern const bool blnDebugMode;
-    extern clsConfig Config;
-    namespace Physics {
-        extern const uint uBallDensity;
-        extern const float fGravity;
-        extern const float fDragCofficient;
-        extern const float fKineticFriction;
-        extern const float fDensityAir;
-        extern const float fRecoil;
-        extern const float fMinVelocity;
-        extern const float fCoefficientRestitution;
-        extern uchar CollisionMethod;
-    }
+namespace cannonballs {
+  extern uint intCannonBallNum;
+} //end namespace cannonballs
 
-    namespace Equations {
-        extern const float fVelocityScalar;
-        extern const float fTimetoSizeRatio;
-        extern const float fMassAlphaRatio;
-        extern const float fMassAlphaOffset;
-        extern const uchar uAlphaMinimum;
-    }
+namespace global {
+  extern const bool blnDebugMode;
+  extern clsConfig config;
+  namespace physics {
+    extern const float kBallDensity;
+    extern const float kGravity;
+    extern const float kDragCofficient;
+    extern const float kKineticFriction;
+    extern const float kDensityAir;
+    extern const float kRecoil;
+    extern const float kMinVelocity;
+    extern const float kCoefficientRestitution;
+    extern uchar collisionmethod;
+  }
+
+  namespace equations {
+    extern const float kVelocityScalar;
+    extern const float kTimeSizeRatio;
+    extern const float kMassAlphaRatio;
+    extern const float kMassAlphaOffset;
+    extern const float kAlphaMinimum;
+  }
 }
 /*****************************************************************************/
 /** The method of the collision (I just wanted to play around with some options.) */
 enum Collisions {
-    CollideElastic = 0, /**< This is normal collision in a perfect world without
-                             friction, they hit and bounce off, no energy is lost. */
-    CollideInelastic, /**< This is the normal way things collide, Balls collide and
-                           bounce off of each other losing some energy. */
-    CollidePerfectInelastic, /**< In this method the balls collide and then
-                                  stick together. */
-    CollideNone /**< No collisions, balls pass through each other. */
+  CollideElastic = 0, /**< This is normal collision in a perfect world without
+                           friction, they hit and bounce off, no energy is lost. */
+  CollideInelastic, /**< This is the normal way things collide, Balls collide and
+                         bounce off of each other losing some energy. */
+  CollidePerfectInelastic, /**< In this method the balls collide and then
+                                stick together. */
+  CollideNone /**< No collisions, balls pass through each other. */
 };
 /*****************************************************************************/
 #endif // __GLOBAL_H_INCLUDED__

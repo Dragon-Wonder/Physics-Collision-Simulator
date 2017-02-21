@@ -7,11 +7,11 @@ id ICON "Icon_App.ico"
 /**********************************************************************************************************************************************/
 //General stuff that should need to be changed
 #define VER_COMPANYNAME_STR "Public Domain"
-#define VER_FILEDESCRIPTION_STR "A simple program that stimulates cannonballs moving around and colliding and bouncing off of each other."
-#define VER_FILENAME_STR "SDL Physics Collision Simulator"
-#define VER_ORIGINALFILENAME_STR "Cannon.exe"
+#define VER_FILEDESCRIPTION_STR "A simple physics simulation"
+#define VER_FILENAME_STR "SDL Physics Simulation"
+#define VER_ORIGINALFILENAME_STR "Physics-Simulation.exe"
 #define VER_LEGALCOPYRIGHT_STR "http://unlicense.org"
-#define VER_COMMENTS_STR "Source Code found at: https://github.com/GamerMan7799/Physics-Collision-Simulator"
+#define VER_COMMENTS_STR "Source Code found at: https://github.com/Dragon-Wonder/Physics-Collision-Simulator"
 /**********************************************************************************************************************************************/
 //If Private is define above, indicting that it was a build not meant to be released define these variables
 #ifndef DEFINED_BUILD_MODE_PRIVATE

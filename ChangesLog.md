@@ -3,6 +3,26 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [1.1.0] - 2017-02-20
+### Added
+* Cannonballs are now vector based instead of array based
+* Path is now vector based
+* Random colors are now seeded based on time. Because reasons...
+
+### Updated
+* Many variable names to be more in line with [Google's style guide](https://google.github.io/styleguide/cppguide.html)
+* Various other changes to make it more in line with the style guide
+* Various other improvements to code function and variable types
+* Number of cannonballs is now limited by computer memory
+* Window values are now held more globally so I don't have to keep passing it everything that needs it.
+  This likely isn't the best method to achieve it, but it prevents an issue with switching to vector based cannonballs.\
+* Max number of past points is now a config value
+
+### Notes
+* There are still quite a few non-standard elements left from before I started using Google's style guide consistantly. 
+  I changed the worst offending members, but most of the rest of it will be left. 
+  
+  
 ## [1.0.1-RC] - 2016-01-20
 ### Removed
 * Unneeded debug messages
@@ -39,7 +59,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Makefile (it should now work)
 * Doxygen now uses DOT to make graphs
 * Functions that were in main.cpp have been renamed and moved into a namespace
-* All line seprators from 170 charaters long to 80 to allow me to see if I am breaking Google's recommended 80 charaters length
+* All line seprators from 170 charaters long to 80 to allow me to see if I am breaking Google's recommended 80 charaters length 
 	see [here] (https://google-styleguide.googlecode.com/svn/trunk/cppguide.html#Line_Length)
 * Made most lines to be less than 80 charaters
 
@@ -124,7 +144,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Readme
 
 ### Changed
-* Attempted to make the code more efficient
+* Attempted to make the code more efficient 
 * Default Min Velocity from 0.5 to 0.0 (basically disabling it)
 * Disabled the Unrealistic method I added in 1.1.9-beta as it did not help.
 * Default Collision Method from Elastic to Inelastic
@@ -290,7 +310,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 
 ## [1.1.4-Alpha] - 2015-08-26
-### Fixed
+### Fixed 
 * Bug where loop wouldn't end properly because x/y were uint
 
 ### Added

@@ -5,14 +5,6 @@
 /*****************************************************************************/
 #include "global.h"
 /*****************************************************************************/
-/** This is a define of a possible return that will cause the program to
-    make a new config file */
-#define NEWCONFIG 'N'
-
-/** This is a define of a possible return that will cause the program to use
-    an existing config file */
-#define USECONFIG 'U'
-/*****************************************************************************/
 /** Holds all of the config values in one place for easier reference */
 struct ConfigValues {
 	uint uintScreenWidth; /**< Screen Width in Pixels, defaults to 640 */
@@ -21,32 +13,34 @@ struct ConfigValues {
 	bool blnDragMode; /**< Whether Drag is enabled or not */
 	bool blnDrawPathOnScreen; /**< Whether to draw the balls' past path on the screen */
 	uchar uchrCollisionMethod; /**< The Method of Collision see Collisions */
+	uint uintMaxNumPastPoints; /**< Max number of past locations to keep track of for the ball. */
+	uint uintPastDelay; /**< How long of a delay between recording points */
 	char* OperatingSystem; /**< The OS that the program is running on, doesn't do anything */
 };
 
 typedef struct ConfigValues Configures;
 /*****************************************************************************/
 class clsConfig {
-    private:
-        /** The name of the config file that will made */
-        const char* FileName = "Config.ini";
+  private:
+  /** The name of the config file that will made */
+  const char* FileName_ = "Config.ini";
 
-        /** The reference file for the config file */
-        FILE* configFile;
+  /** The reference file for the config file */
+  FILE* configFile_;
 
-        char verisonCheck(const char *ConfigVerison);
- 		bool exists(void);
-		void make(void);
-		void load(void);
+  char verisonCheck(const char *ConfigVerison);
+  bool exists(void);
+  void make(void);
+  void load(void);
 
 	public:
-	    /** The config values */
-		Configures values;
+  /** The config values */
+  Configures values;
 
-		clsConfig();
+  clsConfig();
 
-		//Functions
-		void Check(void);
+  //Functions
+  void Check(void);
 };
 /*****************************************************************************/
 #endif
