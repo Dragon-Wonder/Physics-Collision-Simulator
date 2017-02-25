@@ -3,7 +3,7 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## [1.0.2] - 2017-02-24
+## [1.1.2] - 2017-02-24
 ### Added
 * "f" key now causes random balls to be fired off in different directions.
 
@@ -18,12 +18,12 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Elastic collision equation being wrong (had cos when it should have been sin)
 
 
-## [1.0.1] - 2017-02-22
+## [1.1.1] - 2017-02-22
 ### Updated
 * Vectors now use shrink to fit command to clear memory
 
 
-## [1.0.0] - 2017-02-20
+## [1.1.0] - 2017-02-20
 ### Added
 * Cannonballs are now vector based instead of array based
 * Path is now vector based
