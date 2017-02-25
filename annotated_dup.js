@@ -1,15 +1,15 @@
 var annotated_dup =
 [
-    [ "Global", "df/d61/a00031.html", null ],
-    [ "clsCannonball", "dd/dad/a00005.html", "dd/dad/a00005" ],
-    [ "clsConfig", "de/d21/a00006.html", "de/d21/a00006" ],
-    [ "clsScreen", "de/d5e/a00007.html", "de/d5e/a00007" ],
-    [ "clsTick", "d4/dee/a00008.html", "d4/dee/a00008" ],
-    [ "ConfigValues", "da/da0/a00009.html", "da/da0/a00009" ],
-    [ "stcBox", "d7/dec/a00010.html", "d7/dec/a00010" ],
-    [ "stcColor", "da/d45/a00011.html", "da/d45/a00011" ],
-    [ "stcDoubleValues", "df/d86/a00012.html", "df/d86/a00012" ],
-    [ "stcLocation", "d7/dd4/a00013.html", "d7/dd4/a00013" ],
-    [ "stcPhysicalProperties", "d2/de7/a00014.html", "d2/de7/a00014" ],
-    [ "stcWinAtt", "dd/d1b/a00015.html", "dd/d1b/a00015" ]
+    [ "global", "d4/dca/a00048.html", null ],
+    [ "clsCannonball", "d0/d89/a00071.html", "d0/d89/a00071" ],
+    [ "clsConfig", "d1/d51/a00079.html", "d1/d51/a00079" ],
+    [ "clsScreen", "da/d82/a00091.html", "da/d82/a00091" ],
+    [ "clsTick", "d9/d77/a00095.html", "d9/d77/a00095" ],
+    [ "ConfigValues", "d9/da5/a00075.html", "d9/da5/a00075" ],
+    [ "stcBox", "d1/d6f/a00063.html", "d1/d6f/a00063" ],
+    [ "stcColor", "dc/ddf/a00067.html", "dc/ddf/a00067" ],
+    [ "stcDoubleValues", "d4/d6d/a00055.html", "d4/d6d/a00055" ],
+    [ "stcLocation", "d1/d1e/a00087.html", "d1/d1e/a00087" ],
+    [ "stcPhysicalProperties", "d3/d8b/a00059.html", "d3/d8b/a00059" ],
+    [ "stcWinAtt", "d2/d1f/a00083.html", "d2/d1f/a00083" ]
 ];

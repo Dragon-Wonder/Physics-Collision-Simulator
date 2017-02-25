@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['main',['main',['../d3/d52/a00023.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main.cpp']]],
-  ['make',['make',['../de/d21/a00006.html#a52aa46b8ad25ffab50a341e05888dcda',1,'clsConfig']]]
+  ['load',['load',['../d1/d51/a00079.html#abc5b56d7d22d1cabc94fdcd97df0b8f6',1,'clsConfig']]],
+  ['loadimg',['loadIMG',['../da/d82/a00091.html#a4fa3599c84fefb927ca19c178222e328',1,'clsScreen']]]
 ];

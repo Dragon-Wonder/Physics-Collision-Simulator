@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['y',['y',['../df/d86/a00012.html#aef093677cde3c0c814ad75f24c3edcf9',1,'stcDoubleValues::y()'],['../d7/dd4/a00013.html#ae3ad95b44a60701b36e377f119d93dde',1,'stcLocation::y()']]]
+  ['width',['width',['../d2/d1f/a00083.html#a4538ff29626ed1d7d1b142f6f2c57eb7',1,'stcWinAtt']]],
+  ['win',['win',['../d2/d1f/a00083.html#a5e0a32d8c181fc7a17ad1097e0004bd8',1,'stcWinAtt']]]
 ];

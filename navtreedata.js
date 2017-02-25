@@ -1,8 +1,9 @@
 var NAVTREE =
 [
-  [ "Cannon-Simulation", "index.html", [
-    [ "Change Log", "d7/d46/a00002.html", null ],
-    [ "LICENSE", "d0/d0b/a00004.html", null ],
+  [ "Physics-Collision-Simulator", "index.html", [
+    [ "Physics-Simulation", "index.html", null ],
+    [ "Change Log", "d9/df8/a00096.html", null ],
+    [ "LICENSE", "d1/d84/a00097.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [

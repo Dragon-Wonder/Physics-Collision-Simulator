@@ -1,21 +1,8 @@
 var searchData=
 [
-  ['screen_2ecpp',['screen.cpp',['../d3/dfe/a00025.html',1,'']]],
-  ['screen_2eh',['screen.h',['../d6/d5b/a00026.html',1,'']]],
-  ['screen_5fplace',['Screen_place',['../dd/dad/a00005.html#a43dd9effd6a5ecf1d5b3481bce22eeb2',1,'clsCannonball']]],
-  ['setphysicalprops',['setPhysicalProps',['../dd/dad/a00005.html#ab31a04400131b00347db77d71efeb737',1,'clsCannonball']]],
-  ['setplace',['setplace',['../dd/dad/a00005.html#a0eebc151595ae80beac2cd35b3ca0d11',1,'clsCannonball']]],
-  ['setsdlscreen',['setSDLScreen',['../dd/dad/a00005.html#a6281f93968f54eaa6ccffff6d373485f',1,'clsCannonball']]],
-  ['setvalues',['setValues',['../dd/dad/a00005.html#adccab3ac4ac5e530599cc6308dee4049',1,'clsCannonball']]],
-  ['setvelocity',['setVelocity',['../dd/dad/a00005.html#a9bc6f2c8acfd8769b6c37019e002d567',1,'clsCannonball']]],
-  ['show',['show',['../dd/dad/a00005.html#ac9d52cf203ddef6eecf45a948d683598',1,'clsCannonball']]],
-  ['startholding',['startHolding',['../d4/dee/a00008.html#af66ef9cefe08dd0ce6f99614cb32be57',1,'clsTick']]],
-  ['starttimer',['startTimer',['../d4/dee/a00008.html#ac4a420f4f48d124a7fdb7328715433c4',1,'clsTick']]],
-  ['stcbox',['stcBox',['../d7/dec/a00010.html',1,'']]],
-  ['stccolor',['stcColor',['../da/d45/a00011.html',1,'']]],
-  ['stcdoublevalues',['stcDoubleValues',['../df/d86/a00012.html',1,'']]],
-  ['stclocation',['stcLocation',['../d7/dd4/a00013.html',1,'']]],
-  ['stcphysicalproperties',['stcPhysicalProperties',['../d2/de7/a00014.html',1,'']]],
-  ['stcwinatt',['stcWinAtt',['../dd/d1b/a00015.html',1,'']]],
-  ['stopholding',['stopHolding',['../d4/dee/a00008.html#a4f446f750debf454e1e4eb46387de040',1,'clsTick']]]
+  ['radius',['radius',['../d3/d8b/a00059.html#aec94ff07fb6f9480115a7020fafee119',1,'stcPhysicalProperties']]],
+  ['readme_2emd',['README.md',['../d5/df9/a00044.html',1,'']]],
+  ['red',['Red',['../dc/ddf/a00067.html#a677cd831442445cdd9ea88aa559d3480',1,'stcColor']]],
+  ['ren',['ren',['../d2/d1f/a00083.html#ad76188c8dbb60e848a14008b9450b52a',1,'stcWinAtt']]],
+  ['right',['right',['../d1/d6f/a00063.html#a1e599410cb52667f1aaeb0c8e2daa9b2',1,'stcBox']]]
 ];
