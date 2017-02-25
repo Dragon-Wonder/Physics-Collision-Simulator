@@ -1,4 +1,4 @@
-# Physcis-Collision-Simulator
+# Physics-Simulation
 
 A really simple program that uses SDL library to simulate cannonballs being fired and colliding and bouncing off of each other.
 
@@ -94,4 +94,5 @@ You can also press the following keys to yield effects
 K = All Balls will be "killed".
 R = All motion will be stopped.
 Q / ESC = Program will exit.
+F = Every so often a randomly generated cannonball will be created
 ```

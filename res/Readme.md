@@ -4,8 +4,6 @@ This will hold the resources used by the program currently it has
 
 * Icon
 
-* Ball.bmp
-
 * Boilerplate with verison information
 
 ## Icon Credit

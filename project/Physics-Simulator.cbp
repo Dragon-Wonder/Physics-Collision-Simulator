@@ -2,20 +2,20 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="SDL-Physics-Collision-Simulator" />
+		<Option title="SDL-Physics-Simulator" />
 		<Option makefile="../Makefile" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug-Windows">
 				<Option platforms="Windows;" />
-				<Option output="../Physics-Collision-Simulator-PRIVATE" prefix_auto="1" extension_auto="1" />
+				<Option output="../Physics-Simulator-PRIVATE" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-std=c++11" />
+					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-pg" />
@@ -36,14 +36,13 @@
 			</Target>
 			<Target title="Release-Windows">
 				<Option platforms="Windows;" />
-				<Option output="../Physics-Collision-Simulator" prefix_auto="1" extension_auto="1" />
+				<Option output="../Physics-Simulator" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-Os" />
-					<Add option="-std=c++11" />
 					<Add option="-w" />
 					<Add option="-D__NO_INLINE__" />
 					<Add directory="src/" />
@@ -61,7 +60,7 @@
 			</Target>
 			<Target title="Debug-Linux">
 				<Option platforms="Unix;" />
-				<Option output="../Physics-Collision-Simulator-PRIVATE" prefix_auto="1" extension_auto="1" />
+				<Option output="../Physics-Simulator-PRIVATE" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -87,7 +86,7 @@
 			</Target>
 			<Target title="Release-Linux">
 				<Option platforms="Unix;" />
-				<Option output="../Physics-Collision-Simulator" prefix_auto="1" extension_auto="1" />
+				<Option output="../Physics-Simulator" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
@@ -119,7 +118,6 @@
 			<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/lib" />
 			<Add directory="../SDL2Stuff/lib" />
 		</Linker>
-		<Unit filename="../ChangesLog.md" />
 		<Unit filename="../README.md">
 			<Option target="Debug-Windows" />
 			<Option target="Release-Windows" />
@@ -139,7 +137,9 @@
 		<Unit filename="../src/image_ball.xpm" />
 		<Unit filename="../src/image_pixel.xpm" />
 		<Unit filename="../src/main.cpp" />
-		<Unit filename="../src/screen.cpp" />
+		<Unit filename="../src/screen.cpp">
+			<Option weight="28" />
+		</Unit>
 		<Unit filename="../src/screen.h" />
 		<Unit filename="../src/tick.cpp" />
 		<Unit filename="../src/tick.h" />

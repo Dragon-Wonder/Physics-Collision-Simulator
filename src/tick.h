@@ -5,22 +5,18 @@
 #include <cmath>
 /*****************************************************************************/
 class clsTick {
+  public:
+    clsTick();
+
+    void startTimer(void);
+    double getTimeDifference(void);
+    void startHolding(void);
+    double stopHolding(void);
+
 	private:
-		//Members
-		/** The time the ball positions were last updated at. */
-		clock_t lngTimerStart;
 
-		/** The time of the start of the mouse being held down. */
-		clock_t lngHoldingStart;
-	public:
-		//Default Constructor
-		clsTick();
-		//Functions
-		void startTimer(void);
-		double getTimeDifference(void);
-
-		void startHolding(void);
-		double stopHolding(void);
+		clock_t lngTimerStart; /**< The time the ball positions were last updated at. */
+		clock_t lngHoldingStart; /**< The time of the start of the mouse being held down. */
 };
 /*****************************************************************************/
 #endif

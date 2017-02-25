@@ -29,10 +29,10 @@ struct stcPhysicalProperties {
 /** Holds a box which specifics the space that the ball occupies, used to see if it is colliding with another
      ball. The box is defined with the values of it left-most edge, its right-most edge, its top-most edge, and its bottom-most edge */
 struct stcBox {
-  uint left; /**< Left-most edge in term of pixels from the left window edge */
-  uint right; /**< Right-most edge in term of pixels from the left window edge */
-  uint top; /**< Top-most edge in term of pixels from the top window edge */
-  uint bottom; /**< Bottom-most edge in term of pixels from the top window edge */
+  int left; /**< Left-most edge in term of pixels from the left window edge */
+  int right; /**< Right-most edge in term of pixels from the left window edge */
+  int top; /**< Top-most edge in term of pixels from the top window edge */
+  int bottom; /**< Bottom-most edge in term of pixels from the top window edge */
 };
 
 /** The color based on red, green, and blue */
@@ -65,66 +65,37 @@ class clsCannonball {
     void setPhysicalProps(PP);
     BOX getBOX(void);
 
-    /** Whether or not the ball is "started" if it is, the program will update
-        it and won't let a new ball replace it in its array spot. If it is not started
-        it won't have its update called and can be replaced when addNewCannonball is called. */
-    bool blnstarted_;
+
+    bool blnstarted_; /**< Whether or not the ball is "started" if it is, the program will update
+        it and won't let a new ball replace it in its array spot. */
+
+    bool blncheckphysics_; /**< If physics should be checked. It is disabled if the ball collides,
+                                so that when looping through all of the balls, it doesn't mark
+                                the same collision twice */
   private:
-    /** The ball ID which is basically just its number in the array */
-    uint ballID_;
 
-    /** If Drag has been enabled or not */
-    bool blndragenabled_;
-
-    /** The color of the ball, which is randomly generated */
-    clr color_;
-
-    //** A pointer to the texture of the ball that is created in Screen.cpp,
-    //    used to draw the ball on the screen */
-    //SDL_Texture* ball_;
-
-    //** A pointer to the texture of the pixel that is created in Screen.cpp,
-     //   used to draw the path behind the ball when that is enabled */
-    //SDL_Texture* pixel_;
-
-    //** Hold certain values that are based on the window */
-    //WINATT window_;
-
-    /** The Box for this specific ball */
-    BOX collisionbox_;
-
-    /** The SDL Rect for the current place of the ball */
-    SDL_Rect screen_place_;
-
-    /** The ball's location in terms of X and Y */
-    LOC place_;
-
-    /** The ball's velocity in terms of X and Y */
-    dblXY vel_;
-
-    /** The ball's location in terms of X and Y in double
+    uint ballID_;  /**< The ball ID which is basically just its number in the array */
+    bool blndragenabled_;  /**< If Drag has been enabled or not */
+    clr color_; /**< The color of the ball, which is randomly generated */
+    BOX collisionbox_; /**< The Box for this specific ball */
+    SDL_Rect screen_place_; /**< The SDL Rect for the current place of the ball */
+    LOC place_; /**< The ball's location in terms of X and Y */
+    dblXY vel_; /**< The ball's velocity in terms of X and Y */
+    dblXY dblLOC_; /**< The ball's location in terms of X and Y in double
         (because it is more accurate then we round to get the place
         that is used to put the ball on the screen */
-    dblXY dblLOC_;
-
-    /** The ball's current acceleration values in terms of X and Y */
-    dblXY acc_;
-
-    /** The Physical properties of the ball */
-    PP props_;
-
-    /** Past locations of the ball which will be shown if enabled */
-    VPath path_;
-
-    /** The time in seconds since the last time it moved. It is variable
+    dblXY acc_; /**< The ball's current acceleration values in terms of X and Y */
+    PP props_; /**< The Physical properties of the ball */
+    VPath path_; /**< Past locations of the ball which will be shown if enabled */
+    double deltat_; /**< The time in seconds since the last time it moved. It is variable
         based on how much time has past since the last update to keep
         the movements looking realistic. See clsTick::getTimeDifference */
-    double deltat_;
 
     void show(void);
     void drawPath(LOC);
     void dragCalcValues(void);
     void dragUpdateAcc(void);
+    void updateCollisionBox(void);
 };
 /*****************************************************************************/
 #endif // __CANNONBALL_HEADER__

@@ -2,7 +2,7 @@
 #define __VERSION_HEADER__
 /*****************************************************************************/
 	//Date Version Types
-	#define DEFINED_VER_DATE "20"
+	#define DEFINED_VER_DATE "24"
 	/**< Day of the last build */
 
 	#define DEFINED_VER_MONTH "02"
@@ -34,20 +34,20 @@
 	#define DEFINED_VER_MAJOR  1
 	/**< The major version number */
 
-	#define DEFINED_VER_MINOR  1
+	#define DEFINED_VER_MINOR  0
 	/**< The minor version number */
 
-	#define DEFINED_VER_BUILD  0
+	#define DEFINED_VER_BUILD  2
 	/**< The patch version number */
 
-	#define DEFINED_VER_RC_FILEVERSION 1,1,0,0
+	#define DEFINED_VER_RC_FILEVERSION 1,0,2,25
 	/**< The number used in the boilerplate.rc file
         Follows MAJOR,MINOR,PATCH,BUILD where build is the number of times this version has been built*/
 
-	#define DEFINED_VER_RC_FILEVERSION_STRING "1, 1, 0, 0\0"
+	#define DEFINED_VER_RC_FILEVERSION_STRING "1, 0, 2, 25\0"
 	/**< Is the same as DEFINED_VER_RC_FILEVERSION but is a null terminated string */
 
-	#define DEFINED_VER_FULLVERSION_STRING  "1.1.0-R"
+	#define DEFINED_VER_FULLVERSION_STRING  "1.0.2-r"
 	/**< The full string of the version number */
 
 /*****************************************************************************/

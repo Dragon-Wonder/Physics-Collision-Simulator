@@ -22,26 +22,26 @@ clsScreen::clsScreen() {
   screen::screenatt.width = global::config.values.uintScreenWidth;
   screen::screenatt.height = global::config.values.uintScreenHeight;
 
-  blnWindow = blnRenderer = false;
-  blnBall = blnPixel = false;
-  bln_SDL_started = false;
+  blnWindow_ = blnRenderer_ = false;
+  blnBall_ = blnPixel_ = false;
+  bln_SDL_started_ = false;
 
   //Start SDL
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-      //SDL returned a non-zero which means there was an error
-    bln_SDL_started = false;
+    //SDL returned a non-zero which means there was an error
+    bln_SDL_started_ = false;
     error();
     return;
-
   } else {
     //SDL started without error
-    bln_SDL_started = true;
-    if (global::blnDebugMode) {printf("SDL init successful\n");}
+    bln_SDL_started_ = true;
+    if (global::blnDebugMode) { printf("SDL init successful\n"); }
   }
 
-    //Create the screen::screenatt.
-	screen::screenatt.win = SDL_CreateWindow("Cannon Simulation",100,100,
-                               screen::screenatt.width, screen::screenatt.height, SDL_WINDOW_SHOWN);
+  //Create the screen::screenatt.
+	screen::screenatt.win = SDL_CreateWindow("Physics Simulation",100,100,
+                              screen::screenatt.width, screen::screenatt.height,
+                              SDL_WINDOW_SHOWN);
 
     //Check if the window was created properly
 	if (screen::screenatt.win == nullptr) {
@@ -49,12 +49,12 @@ clsScreen::clsScreen() {
     printf("SDL Failed to create window.\n");
     cleanup();
     error();
-		bln_SDL_started = false;
+		bln_SDL_started_ = false;
 		return;
 	} else {
     //Window was created
-    blnWindow = true;
-    if (global::blnDebugMode) {printf("Window creation successful\n");}
+    blnWindow_ = true;
+    if (global::blnDebugMode) { printf("Window creation successful\n"); }
 	}
 
   //Try to create the renderer
@@ -66,11 +66,11 @@ clsScreen::clsScreen() {
     printf("SDL Failed to create renderer.\n");
     cleanup();
     error();
-    bln_SDL_started = false;
+    bln_SDL_started_ = false;
     return;
 	} else {
-    blnRenderer = true;
-    if (global::blnDebugMode) {printf("Renderer creation successful\n");}
+    blnRenderer_ = true;
+    if (global::blnDebugMode) { printf("Renderer creation successful\n"); }
   }
 
   //Set the background color of the renderer to black
@@ -78,20 +78,30 @@ clsScreen::clsScreen() {
 
   //Load the ball texture
   screen::screenatt.ball = loadIMG("ball");
-  if (bln_SDL_started == false) {return;}
-  else {
-    blnBall = true;
-    if (global::blnDebugMode) {printf("Ball loading successful\n");}
+  if (screen::screenatt.ball == nullptr) {
+    printf("SDL Failed to create ball texture.\n");
+    cleanup();
+    error();
+    bln_SDL_started_ = false;
+    return;
+  } else {
+    blnBall_ = true;
+    if (global::blnDebugMode) { printf("Ball loading successful\n"); }
     //Set the blend mode for the texture so I can change the alpha later
     SDL_SetTextureBlendMode(screen::screenatt.ball, SDL_BLENDMODE_BLEND );
   }
 
   //Load the pixel texture
   screen::screenatt.pixel = loadIMG("pixel");
-  if (bln_SDL_started == false) {return;}
-  else {
-    blnPixel = true;
-    if (global::blnDebugMode) {printf("Pixel loading successful\n");}
+  if (screen::screenatt.pixel == nullptr) {
+    printf("SDL Failed to create ball texture.\n");
+    cleanup();
+    error();
+    bln_SDL_started_ = false;
+    return;
+  } else {
+    blnPixel_ = true;
+    if (global::blnDebugMode) { printf("Pixel loading successful\n"); }
   }
 
 } //end of constructor
@@ -105,7 +115,7 @@ clsScreen::~clsScreen() {
 
   cleanup();
   SDL_Quit();
-  if (global::blnDebugMode) {printf("SDL quit\n");}
+  if (global::blnDebugMode) { printf("SDL quit\n"); }
 }
 /*****************************************************************************/
 void clsScreen::update() {
@@ -140,28 +150,28 @@ void clsScreen::cleanup() {
   ///
   /////////////////////////////////////////////////
 
-  if (blnBall) {
-      SDL_DestroyTexture(screen::screenatt.ball);
-      blnBall = false;
-      if (global::blnDebugMode) {printf("Ball texture destroyed\n");}
+  if (blnBall_) {
+    SDL_DestroyTexture(screen::screenatt.ball);
+    blnBall_ = false;
+    if (global::blnDebugMode) { printf("Ball texture destroyed\n"); }
   }
 
-  if (blnPixel) {
-      SDL_DestroyTexture(screen::screenatt.pixel);
-      blnPixel = false;
-      if (global::blnDebugMode) {printf("Pixel texture destroyed\n");}
+  if (blnPixel_) {
+    SDL_DestroyTexture(screen::screenatt.pixel);
+    blnPixel_ = false;
+    if (global::blnDebugMode) { printf("Pixel texture destroyed\n"); }
   }
 
-  if (blnRenderer) {
-      SDL_DestroyRenderer(screen::screenatt.ren);
-      blnRenderer = false;
-      if (global::blnDebugMode) {printf("Renderer destroyed\n");}
+  if (blnRenderer_) {
+    SDL_DestroyRenderer(screen::screenatt.ren);
+    blnRenderer_ = false;
+    if (global::blnDebugMode) { printf("Renderer destroyed\n"); }
   }
 
-  if (blnWindow) {
-      SDL_DestroyWindow(screen::screenatt.win);
-      blnWindow = false;
-      if (global::blnDebugMode) {printf("Window destroyed\n");}
+  if (blnWindow_) {
+    SDL_DestroyWindow(screen::screenatt.win);
+    blnWindow_ = false;
+    if (global::blnDebugMode) { printf("Window destroyed\n"); }
   }
 
 }
@@ -191,42 +201,17 @@ SDL_Texture* clsScreen::loadIMG(std::string filename) {
 
   SDL_Surface* temp;
 
-  if (filename == "ball") {temp = IMG_ReadXPMFromArray(image_ball_xpm);}
-  else if (filename == "pixel") {temp = IMG_ReadXPMFromArray(image_pixel_xpm);}
-  else { temp = nullptr; }
+  if (filename == "ball") { temp = IMG_ReadXPMFromArray(image_ball_xpm); }
+  else if (filename == "pixel") { temp = IMG_ReadXPMFromArray(image_pixel_xpm); }
+  else { return nullptr; }
 
-	SDL_Texture *tex = (temp == nullptr)
-                        ? nullptr : SDL_CreateTextureFromSurface(screen::screenatt.ren,temp);
+	SDL_Texture *tex = (temp == nullptr) ? nullptr :
+        SDL_CreateTextureFromSurface(screen::screenatt.ren,temp);
 
 	SDL_FreeSurface(temp);
-	if (tex == nullptr) {
-    printf("Failed to create texture.\n");
-    cleanup();
-    error();
-    bln_SDL_started = false;
-	}
 
 	return tex;
 }
-/*****************************************************************************/
-//SDL_Texture* clsScreen::getBallTexture() {
-//  /////////////////////////////////////////////////
-//  /// @brief Returns the Ball texture for use in the clsCannonball
-//  /// @return Pointer to the ball texture in memory
-//  /////////////////////////////////////////////////
-//
-//  return ball;
-//}
-/*****************************************************************************/
-//WINATT clsScreen::getWindow() {
-//  /////////////////////////////////////////////////
-//  /// @brief Returns window attributes
-//  /// @return clsScreen::window
-//  /////////////////////////////////////////////////
-//  screen::screenatt = window;
-//
-//  return window;
-//}
 /*****************************************************************************/
 bool clsScreen::getSDLStarted() {
   /////////////////////////////////////////////////
@@ -234,7 +219,7 @@ bool clsScreen::getSDLStarted() {
   /// @return bln_SDL_started
   /////////////////////////////////////////////////
 
-  return bln_SDL_started;
+  return bln_SDL_started_;
 }
 /*****************************************************************************/
 void clsScreen::drawline(LOC Current, LOC Old) {
@@ -250,15 +235,17 @@ void clsScreen::drawline(LOC Current, LOC Old) {
   SDL_Rect dst;
   SDL_QueryTexture(screen::screenatt.pixel, NULL, NULL, &dst.w, &dst.h);
   uint length;
-  length = (uint) round( sqrt( pow(Current.x - Old.x, 2) + pow(Current.y - Old.y, 2) ) );
+  length = (uint) round( sqrt( pow(Current.x - Old.x, 2) +
+            pow(Current.y - Old.y, 2) ) );
   if (Current.x == Old.x ) {
     dst.x = Current.x;
-    for (uint i = 0; i < length; i++) {
+    for (uint i = 0; i < length; ++i) {
       dst.y = i + (Current.y > Old.y ? Old.y : Current.y);
       SDL_RenderCopy(screen::screenatt.ren, screen::screenatt.pixel, NULL, &dst);
     } //end for length
   } else {
-    slope = ((double)Current.y - (double)Old.y) / ((double)Current.x - (double)Old.x);
+    slope = ((double)Current.y - (double)Old.y);
+    slope /=((double)Current.x - (double)Old.x);
     uint startpoint = (Old.x < Current.x) ? Old.x : Current.x;
     uint endpoint = (Old.x < Current.x) ? Current.x : Old.x;
     double incamount = (double)(endpoint - startpoint) / length;
@@ -270,13 +257,4 @@ void clsScreen::drawline(LOC Current, LOC Old) {
     } //end for length
   } //end if
 }
-/*****************************************************************************/
-//SDL_Texture* clsScreen::getPixelTexture() {
-//  /////////////////////////////////////////////////
-//  /// @brief Returns pointer to the pixel texture
-//  /// @return Pointer to Pixel texture in memory
-//  /////////////////////////////////////////////////
-//
-//  return pixel;
-//}
 /*****************************************************************************/

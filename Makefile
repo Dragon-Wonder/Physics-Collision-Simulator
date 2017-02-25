@@ -9,7 +9,7 @@ LDFLAGS=-L./SDL2Stuff/lib -lSDL2main -lSDL2 -lSDL2_image
 # Path to .cpp files
 SRCPATH = ./src/
 # Name of the executable made
-EXECUTABLE=Physics-Collision-Simulator
+EXECUTABLE=physics-simulation
 # Include Flags to look in Src folder
 INCLUDEFLAGS=-I. -I$(SRCPATH) -I./SDL2Stuff/include
 

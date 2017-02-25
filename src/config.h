@@ -21,26 +21,22 @@ struct ConfigValues {
 typedef struct ConfigValues Configures;
 /*****************************************************************************/
 class clsConfig {
-  private:
-  /** The name of the config file that will made */
-  const char* FileName_ = "Config.ini";
+ public:
 
-  /** The reference file for the config file */
-  FILE* configFile_;
+  Configures values; /**< The config values */
+
+  clsConfig();
+  void Check(void);
+
+ private:
+
+  const char* FileName_ = "Config.ini"; /**< The name of the config file that will made */
+  FILE* configFile_; /**< The reference file for the config file */
 
   char verisonCheck(const char *ConfigVerison);
   bool exists(void);
   void make(void);
   void load(void);
-
-	public:
-  /** The config values */
-  Configures values;
-
-  clsConfig();
-
-  //Functions
-  void Check(void);
 };
 /*****************************************************************************/
 #endif

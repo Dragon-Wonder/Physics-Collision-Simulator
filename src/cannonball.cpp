@@ -19,6 +19,7 @@ clsCannonball::clsCannonball() {
   //Put some default values in; on the off chance I forget to set them later.
   blndragenabled_ = false;
   blnstarted_ = false;
+  blncheckphysics_ = true;
   deltat_ = (1.00 / 60.00) ;
   acc_.x = 0.00;
   acc_.y = global::physics::kGravity;
@@ -49,15 +50,18 @@ clsCannonball::clsCannonball() {
     for(uchar i = 0; i < global::config.values.uintMaxNumPastPoints; ++i) {
       path_.push_back({0,0});
     } // end for max past points
-    if (global::blnDebugMode) {printf("Path values initialized.\n");}
+    if (global::blnDebugMode) { printf("Path values initialized.\n"); }
   } // end if draw path
 
-  if (global::blnDebugMode) {printf("Ball created.\n");}
+  if (global::blnDebugMode) { printf("Ball created.\n"); }
 }
 /*****************************************************************************/
 clsCannonball::~clsCannonball() {
   // clear the vector path
+
   path_.clear();
+  path_.shrink_to_fit();
+  path_ = VPath();
 }
 /*****************************************************************************/
 void clsCannonball::dragCalcValues(void) {
@@ -92,8 +96,8 @@ void clsCannonball::dragUpdateAcc(void) {
   if (vel_.x != 0.0 && vel_.y != 0.0 && props_.mass != 0.0) {
     double flow_velocity = sqrt(pow(vel_.x,2) + pow(vel_.y,2));
     double drag_force = (double) (0.5 * global::physics::kDensityAir *
-                                  flow_velocity * global::physics::kDragCofficient
-                                  * props_.area);
+                              flow_velocity * global::physics::kDragCofficient
+                              * props_.area);
     double drag_acc = (double) (drag_force / props_.mass);
     double angle;
 
@@ -104,19 +108,21 @@ void clsCannonball::dragUpdateAcc(void) {
     acc_.y += drag_acc * sin (angle);
     //Please recall fGravity is negative
     double friction = (double)global::physics::kKineticFriction *
-                      (double)global::physics::kGravity;
-
+                      (double)global::physics::kGravity * props_.mass;
+    updateCollisionBox();
     //Update acc for Friction values
-    if ( dblLOC_.y <= screen_place_.h || dblLOC_.y >= screen::screenatt.height ) {
+    if ( collisionbox_.bottom < screen_place_.h ||
+         collisionbox_.top > screen::screenatt.height ) {
       //Ball is in contact with floor or ceiling update x acc
-      acc_.x += friction * (vel_.x < 0.0 ? 1.0 : -1.0);
+      acc_.x += friction * (vel_.x < 0.0 ? -1.0 : 1.0);
     }
 
-    if ( dblLOC_.x <= 0.0 || dblLOC_.x >= screen::screenatt.width - screen_place_.w ) {
-      //Ball is in contact with the wall update y acc.
-      acc_.y += friction * (vel_.y < 0.0 ? 1.0 : -1.0);
+    if ( collisionbox_.left < (screen_place_.w /2 ) ||
+         collisionbox_.right > screen::screenatt.width ) {
+      // Ball is in contact with the wall update y acc.
+      acc_.y += friction * (vel_.y < 0.0 ? -1.0 : 1.0);
     }
-  } //end if things don't equal 0
+  } //end if things equal 0
 }
 /*****************************************************************************/
 void clsCannonball::update(double newdeltat) {
@@ -124,7 +130,7 @@ void clsCannonball::update(double newdeltat) {
   /// @brief This will do the following:
   ///        * Update ball's position
   ///        * Update ball's velocity
-  ///        * Call clsCannonball::Drag_updateacc if blnDragEnabled is true
+  ///        * Call clsCannonball::dragUpdateAcc if blnDragEnabled is true
   ///        * Log the ball's location (if enabled)
   ///        * Update CollisionBox
   ///        * Set the ball's blnstarted to false (stopping future updates) if total velocity is less than Global::Physics::fMinVelocity or equals NaN
@@ -134,28 +140,48 @@ void clsCannonball::update(double newdeltat) {
   ///
   /////////////////////////////////////////////////
 
+  blncheckphysics_ = true; // enable on update
   deltat_ = newdeltat;
 
   if (blndragenabled_) { dragUpdateAcc(); }
 
-  dblLOC_.x = dblLOC_.x + vel_.x * deltat_ + 0.5 * acc_.x * pow(deltat_,2);
 	vel_.x = (vel_.x + acc_.x * deltat_);
-	//Recoil the ball if it is past an edge
-	if (dblLOC_.x <= 0.0 || dblLOC_.x >= screen::screenatt.width - screen_place_.w) {
-    vel_.x *= global::physics::kRecoil;
-    dblLOC_.x += dblLOC_.x <= 0.0 ? 1.0 : -1.0;
-  } //end if hitting x edges
-
-	dblLOC_.y = dblLOC_.y + vel_.y * deltat_ + 0.5 * acc_.y * pow(deltat_,2);
 	vel_.y = (vel_.y + acc_.y * deltat_);
-	//Recoil the ball if it is past an edge
-	if (dblLOC_.y <= screen_place_.h || dblLOC_.y >= screen::screenatt.height) {
-    vel_.y *= global::physics::kRecoil;
-    dblLOC_.y += dblLOC_.y <= screen_place_.y ? 1.0 : -1.0;
-  }//end if hitting y edges
 
-  place_.x = dblLOC_.x < 0.0 ? 0 : round(dblLOC_.x);
-  place_.y = dblLOC_.y < 0.0 ? 0 : round(dblLOC_.y);
+	// get new velocities if collision with edges
+	/* TODO (GamerMan7799#2#): Make this stuff simpler */
+  if (collisionbox_.left < screen_place_.w / 2) {
+    vel_.x *= -1 * global::physics::kCoefficientRestitution;
+    vel_.y *= global::physics::kCoefficientRestitution;
+    dblLOC_.x++;
+  }
+
+  if (collisionbox_.right > (screen::screenatt.width)) {
+    vel_.x *= -1 * global::physics::kCoefficientRestitution;
+    vel_.y *= global::physics::kCoefficientRestitution;
+    dblLOC_.x--;
+  }
+
+  if (collisionbox_.bottom > (screen::screenatt.height)) {
+    vel_.x *= global::physics::kCoefficientRestitution;
+    vel_.y *= -1 * global::physics::kCoefficientRestitution;
+    dblLOC_.y++;
+  }
+
+  if (collisionbox_.top < 0 ) {
+    vel_.x *= global::physics::kCoefficientRestitution;
+    vel_.y *= -1 * global::physics::kCoefficientRestitution;
+    dblLOC_.y--;
+  }
+
+
+  dblLOC_.x = dblLOC_.x + vel_.x * deltat_ /*+ 0.5 * acc_.x * pow(deltat_,2)*/;
+  dblLOC_.y = dblLOC_.y + vel_.y * deltat_ /*+ 0.5 * acc_.y * pow(deltat_,2)*/;
+
+  // update place and collision box again in case something changed
+  place_.x = round(dblLOC_.x);
+  place_.y = round(dblLOC_.y);
+  updateCollisionBox();
 
 	if (global::config.values.blnLogging) {
     FILE* logfile = fopen("logfile.log","a");
@@ -163,19 +189,13 @@ void clsCannonball::update(double newdeltat) {
     fclose(logfile);
 	}
 
-	//Update the collision box for the new location
-	collisionbox_.left = place_.x;
-	collisionbox_.top = screen::screenatt.height - place_.y;
-	collisionbox_.right = collisionbox_.left + screen_place_.w;
-	collisionbox_.bottom = collisionbox_.top + screen_place_.h;
-
   double total_v;
   total_v = sqrt( pow(vel_.x,2) + pow(vel_.y,2) );
   if (total_v < global::physics::kMinVelocity || isnan(total_v) ) {
     blnstarted_ = false;
     if (global::blnDebugMode) {
-      if ( isnan(total_v) ) {printf("Ball velocity is NaN; killing it\n");}
-      else {printf("Ball moving too slow; killing it\n");}
+      if ( isnan(total_v) ) { printf("Ball velocity is NaN; killing it.\n"); }
+      else { printf("Ball moving too slow; killing it.\n"); }
     } //end if debug mode
   } //end if should kill
 	show(); //show the ball on the screen
@@ -187,28 +207,31 @@ void clsCannonball::show() {
   /// @return void
   /////////////////////////////////////////////////
 
-  screen_place_.x = place_.x;
-  screen_place_.y = screen::screenatt.height - place_.y;
+  screen_place_.x = collisionbox_.left;
+  screen_place_.y = collisionbox_.top;
 
   if (global::config.values.blnDrawPathOnScreen) { drawPath(place_); }
 
   Uint8 alpha = 0xFF;
   double dblAlpha;
 
+  // log = ln
   dblAlpha = (double) global::equations::kMassAlphaRatio * log(props_.mass) +
               global::equations::kMassAlphaOffset;
 
-  alpha = dblAlpha < (double) global::equations::kAlphaMinimum ?
-                      (Uint8) global::equations::kAlphaMinimum : (Uint8) dblAlpha;
+  if (dblAlpha < global::equations::kAlphaMinimum)
+    { dblAlpha = global::equations::kAlphaMinimum; }
 
   alpha = dblAlpha > 255.0 ? 255 : (Uint8) dblAlpha;
 
   //set the ball alpha
   SDL_SetTextureAlphaMod(screen::screenatt.ball, alpha);
-  SDL_SetTextureColorMod(screen::screenatt.ball, color_.Red, color_.Green, color_.Blue);
+  SDL_SetTextureColorMod(screen::screenatt.ball,
+                         color_.Red, color_.Green, color_.Blue);
 
   //Place the ball
-  SDL_RenderCopy(screen::screenatt.ren,screen::screenatt.ball,NULL,&screen_place_);
+  SDL_RenderCopy(screen::screenatt.ren,screen::screenatt.ball,
+                 NULL,&screen_place_);
 
   //reset ball Alpha and color so it doesn't effect the next ball
   SDL_SetTextureAlphaMod(screen::screenatt.ball, 0xFF);
@@ -234,24 +257,21 @@ void clsCannonball::setValues(double r, LOC init_place,
   props_.radius = r; //in meters
 
   // Get the width and height of the texture
-  SDL_QueryTexture(screen::screenatt.ball,NULL,NULL, &screen_place_.w, &screen_place_.h);
+  SDL_QueryTexture(screen::screenatt.ball,NULL,NULL, &screen_place_.w,
+                   &screen_place_.h);
 
-  acc_.x = 0.00;
-  acc_.y = global::physics::kGravity;
+  acc_ = {0.00, global::physics::kGravity};
 
   place_ = init_place;
-  dblLOC_.x = (double) place_.x;
-  dblLOC_.y = (double) place_.y;
+  dblLOC_ = { (double) place_.x,
+              (double) place_.y };
 
-  vel_.x = (double)(init_vel) * (cos(init_angle));
-	vel_.y = (double)(init_vel) * (sin(init_angle));
+  vel_ = { (double)(init_vel) * (cos(init_angle)),
+           (double)(init_vel) * (sin(init_angle)) };
 	blnstarted_ = true;
 
   dragCalcValues();
-	if (global::config.values.blnDragMode) {
-    blndragenabled_ = true;
-    if (global::blnDebugMode) {printf("Drag enabled.\n");}
-  } //end if drag mode
+  blndragenabled_ = global::config.values.blnDragMode;
 }
 /*****************************************************************************/
 LOC clsCannonball::getplace() {
@@ -272,8 +292,7 @@ void clsCannonball::setVelocity(dblXY newvel) {
   /////////////////////////////////////////////////
   /// @brief Sets the ball's velocity
   /////////////////////////////////////////////////
-  vel_.x = newvel.x;
-  vel_.y = newvel.y;
+  vel_ = newvel;
 }
 /*****************************************************************************/
 PP clsCannonball::getPhysicalProps() {
@@ -287,8 +306,8 @@ void clsCannonball::setplace(LOC newplace) {
   /////////////////////////////////////////////////
   /// @brief Set the ball's place
   /////////////////////////////////////////////////
-  dblLOC_.x = newplace.x;
-  dblLOC_.y = newplace.y;
+  dblLOC_.x = (double)newplace.x;
+  dblLOC_.y = (double)newplace.y;
 }
 /*****************************************************************************/
 void clsCannonball::setPhysicalProps(PP newprops) {
@@ -317,23 +336,38 @@ void clsCannonball::drawPath(LOC newplace) {
 
   //If there have been enough updates since the last time the path was updated,
   //then update the path array otherwise inc updates
-  SDL_SetTextureColorMod(screen::screenatt.pixel, color_.Red, color_.Green, color_.Blue);
+  SDL_SetTextureColorMod(screen::screenatt.pixel, color_.Red,
+                         color_.Green, color_.Blue);
   if ( updatesSinceLast >= global::config.values.uintPastDelay ) {
     updatesSinceLast = 0;
     // put new value into array
     path_.push_back(newplace);
     //delete the oldest (first spot) array value
     path_.erase(path_.begin());
+    path_.shrink_to_fit();
   } else { updatesSinceLast++; } //end if update points
 
   //Now draw the path
   SDL_Rect dst;
   dst.w = dst.h = 1;
   for (uint i = 0; i < global::config.values.uintMaxNumPastPoints; ++i) {
-    dst.y = screen::screenatt.height - (uint)(path_[i].y - screen_place_.h / 2);
-    dst.x = (uint)(path_[i].x + screen_place_.w / 2);
+    dst.y = screen::screenatt.height - (path_[i].y);
+    dst.x = (path_[i].x);
     SDL_RenderCopy(screen::screenatt.ren, screen::screenatt.pixel, NULL, &dst);
   } //end for
   SDL_SetTextureColorMod(screen::screenatt.pixel, 0xFF, 0xFF, 0xFF);
 }
 /*****************************************************************************/
+void clsCannonball::updateCollisionBox() {
+  /////////////////////////////////////////////////
+  /// @brief Updates the collision box
+  /////////////////////////////////////////////////
+
+	//Update the collision box for the new location
+	collisionbox_.left = place_.x - floor(screen_place_.w / 2);
+	collisionbox_.top = screen::screenatt.height - (place_.y + floor(screen_place_.h / 2));
+	collisionbox_.bottom = collisionbox_.top + screen_place_.h;
+	collisionbox_.right = collisionbox_.left + screen_place_.w;
+}
+/*****************************************************************************/
+

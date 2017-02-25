@@ -7,7 +7,7 @@ id ICON "Icon_App.ico"
 /**********************************************************************************************************************************************/
 //General stuff that should need to be changed
 #define VER_COMPANYNAME_STR "Public Domain"
-#define VER_FILEDESCRIPTION_STR "A simple physics simulation"
+#define VER_FILEDESCRIPTION_STR "A simple program that stimulates collisions between different objects"
 #define VER_FILENAME_STR "SDL Physics Simulation"
 #define VER_ORIGINALFILENAME_STR "Physics-Simulation.exe"
 #define VER_LEGALCOPYRIGHT_STR "http://unlicense.org"

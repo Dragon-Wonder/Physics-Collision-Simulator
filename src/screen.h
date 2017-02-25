@@ -8,18 +8,18 @@
 /*****************************************************************************/
 /** This structure will hold certain attributes of the screen */
 struct stcWinAtt {
-    unsigned int width; /**< The width of the screen in terms of pixels */
-    unsigned int height; /**< The height of the screen in terms of pixels */
-    SDL_Window *win; /**< A pointer to the SDL window that is being used */
-    SDL_Renderer *ren; /**< A pointer to the SDL renderer that is being used */
-    SDL_Texture *ball; /**< The ball texture */
-    SDL_Texture *pixel; /**< The pixel texture, used to draw lines */
+  unsigned int width; /**< The width of the screen in terms of pixels */
+  unsigned int height; /**< The height of the screen in terms of pixels */
+  SDL_Window *win; /**< A pointer to the SDL window that is being used */
+  SDL_Renderer *ren; /**< A pointer to the SDL renderer that is being used */
+  SDL_Texture *ball; /**< The ball texture */
+  SDL_Texture *pixel; /**< The pixel texture, used to draw lines */
 };
 /*****************************************************************************/
 /** This structure will hold place values in terms of X and Y*/
 struct stcLocation {
-    int x; /**< X location */
-    int y; /**< Y location */
+  int x; /**< X location */
+  int y; /**< Y location */
 };
 
 typedef struct stcWinAtt WINATT;
@@ -44,31 +44,13 @@ class clsScreen {
     bool getSDLStarted(void);
     void drawline(LOC, LOC);
 
-    //SDL_Texture* getBallTexture(void);
-    //SDL_Texture* getPixelTexture(void);
-    //WINATT getWindow(void);
-
   private:
-    /** Window Attributes. */
-    //WINATT window;
 
-    //Keeps track of which parts have been loaded
-    //so when ending only the ones that are open
-    //are closed
-    /** If window is loaded. */
-    bool blnWindow;
-
-    /** If renderer is loaded. */
-    bool blnRenderer;
-
-    /** If ball image is loaded. */
-    bool blnBall;
-
-    /** If pixel image is loaded. */
-    bool blnPixel;
-
-    /** If SDL is started and without issues. */
-    bool bln_SDL_started;
+    bool blnWindow_; /**< If window is loaded. */
+    bool blnRenderer_; /**< If renderer is loaded. */
+    bool blnBall_; /**< If ball image is loaded. */
+    bool blnPixel_; /**< If pixel image is loaded. */
+    bool bln_SDL_started_; /**< If SDL is started and without issues. */
 
     SDL_Texture* loadIMG(std::string);
     void error(void);

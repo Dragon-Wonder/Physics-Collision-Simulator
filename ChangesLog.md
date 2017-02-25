@@ -3,7 +3,27 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## [1.1.0] - 2017-02-20
+## [1.0.2] - 2017-02-24
+### Added
+* "f" key now causes random balls to be fired off in different directions.
+
+### Updated
+* Various Code improvements
+* Collision detection is now per pixel based.
+* Cannonball location is now based on its center point
+* Changed some of the scaling factors
+* Changed how collisions with the edges are handled.
+
+### Fixed
+* Elastic collision equation being wrong (had cos when it should have been sin)
+
+
+## [1.0.1] - 2017-02-22
+### Updated
+* Vectors now use shrink to fit command to clear memory
+
+
+## [1.0.0] - 2017-02-20
 ### Added
 * Cannonballs are now vector based instead of array based
 * Path is now vector based
@@ -15,22 +35,12 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Various other improvements to code function and variable types
 * Number of cannonballs is now limited by computer memory
 * Window values are now held more globally so I don't have to keep passing it everything that needs it.
-  This likely isn't the best method to achieve it, but it prevents an issue with switching to vector based cannonballs.\
+  This likely isn't the best method to achieve it, but it prevents an issue with switching to vector based cannonballs.
 * Max number of past points is now a config value
 
 ### Notes
 * There are still quite a few non-standard elements left from before I started using Google's style guide consistantly. 
   I changed the worst offending members, but most of the rest of it will be left. 
-  
-  
-## [1.0.1-RC] - 2016-01-20
-### Removed
-* Unneeded debug messages
-
-### Changed
-* Updated some licensing dates for the new year.
-* Name to Physics Collision Simulator
-
 
 ## [1.0.0-RC] - 2015-11-21
 ### Added

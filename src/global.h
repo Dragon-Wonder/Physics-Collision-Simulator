@@ -6,15 +6,9 @@
 class clsConfig;
 /*****************************************************************************/
 //global typedefs
-typedef unsigned char uchar;
-/**< Rename unsigned char to uchar because I'm lazy. */
-
-typedef unsigned int uint;
-/**< Rename unsigned int to uint because I'm lazy. */
-
-typedef unsigned long ulong;
-/**< Rename unsigned long to ulong because I'm lazy. */
-
+typedef unsigned char uchar; /**< Rename unsigned char to uchar because I'm lazy. */
+typedef unsigned int uint; /**< Rename unsigned int to uint because I'm lazy. */
+typedef unsigned long ulong; /**< Rename unsigned long to ulong because I'm lazy. */
 /*****************************************************************************/
 //Global namespace
 namespace cannonballs {
@@ -30,7 +24,6 @@ namespace global {
     extern const float kDragCofficient;
     extern const float kKineticFriction;
     extern const float kDensityAir;
-    extern const float kRecoil;
     extern const float kMinVelocity;
     extern const float kCoefficientRestitution;
     extern uchar collisionmethod;

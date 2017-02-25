@@ -1,9 +1,9 @@
 /*****************************************************************************/
 #include "tick.h"
 /*****************************************************************************/
-//This will hold functions related to time.
+#include <cstdio>
+#include <cstdlib>
 /*****************************************************************************/
-//Default Constructor
 clsTick::clsTick() {
   /////////////////////////////////////////////////
   /// @brief Default constructor, just sets lngTimerStart to now

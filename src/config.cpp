@@ -89,8 +89,10 @@ void clsConfig::make(void) {
   fprintf(configFile_,"Draw Ball path on screen: %u\n",
                         (values.blnDrawPathOnScreen ? 1 : 0) );
   fprintf(configFile_,"Collision Method: %u\n", values.uchrCollisionMethod);
-  fprintf(configFile_,"Number of points to track: %u\n",values.uintMaxNumPastPoints);
-  fprintf(configFile_,"Delay between recording points: %u\n",values.uintPastDelay);
+  fprintf(configFile_,"Number of points to track: %u\n",
+          values.uintMaxNumPastPoints);
+  fprintf(configFile_,"Delay between recording points: %u\n",
+          values.uintPastDelay);
 	fclose(configFile_);
 }
 /*****************************************************************************/
@@ -107,49 +109,64 @@ void clsConfig::load(void) {
   //Get Screen Width
   fgets(chrTempString,50,configFile_);
   intValuesScanned = sscanf(chrTempString,"%*s %*s %u",&values.uintScreenWidth);
-  if (intValuesScanned < 1) {printf("Error"); values.uintScreenWidth = 680;}
-  if (global::blnDebugMode) {printf("Screen Width \t %u\n", values.uintScreenWidth);}
+  if (intValuesScanned < 1) { printf("Error"); values.uintScreenWidth = 680; }
+  if (global::blnDebugMode)
+    { printf("Screen Width \t %u\n", values.uintScreenWidth); }
 
   //Get Screen Height
   fgets(chrTempString,50,configFile_);
   intValuesScanned = sscanf(chrTempString,"%*s %*s %u",&values.uintScreenHeight);
-  if (intValuesScanned < 1) {printf("Error"); values.uintScreenHeight = 480;}
-  if (global::blnDebugMode) {printf("Screen Height \t %u\n", values.uintScreenHeight);}
+  if (intValuesScanned < 1) { printf("Error"); values.uintScreenHeight = 480; }
+  if (global::blnDebugMode)
+    { printf("Screen Height \t %u\n", values.uintScreenHeight); }
 
   //Get if logging
 	fgets(chrTempString,50,configFile_);
 	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %d",&intTempBool);
-	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
-	if(global::blnDebugMode) {printf("Log Path \t %d\n",intTempBool);}
+	if (intValuesScanned < 1) { printf("ERROR!"); intTempBool = 0; }
+	if(global::blnDebugMode) { printf("Log Path \t %d\n",intTempBool); }
 	values.blnLogging = (intTempBool == 1);
 
   fgets(chrTempString,50,configFile_);
 	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %*s %d",&intTempBool);
-	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
-	if(global::blnDebugMode) {printf("Enable Drag \t %d\n",intTempBool);}
+	if (intValuesScanned < 1) { printf("ERROR!"); intTempBool = 0; }
+	if(global::blnDebugMode) { printf("Enable Drag \t %d\n",intTempBool); }
 	values.blnDragMode = (intTempBool == 1);
 
   fgets(chrTempString,50,configFile_);
-	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %*s %*s %d",&intTempBool);
-	if (intValuesScanned < 1) {printf("ERROR!"); intTempBool = 0;}
-	if(global::blnDebugMode) {printf("Enable Screen Path \t %d\n",intTempBool);}
+	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %*s %*s %d",
+                           &intTempBool);
+	if (intValuesScanned < 1) { printf("ERROR!"); intTempBool = 0; }
+	if(global::blnDebugMode) { printf("Enable Screen Path \t %d\n",intTempBool); }
 	values.blnDrawPathOnScreen = (intTempBool == 1);
 
   fgets(chrTempString,50,configFile_);
-  intValuesScanned = sscanf(chrTempString, "%*s %*s %d", &values.uchrCollisionMethod);
-  if (intValuesScanned < 1) {printf("ERROR!"); values.uchrCollisionMethod = CollideInelastic;}
-  if (values.uchrCollisionMethod > CollideNone) {printf("ERROR!"); values.uchrCollisionMethod = CollideNone;}
-  if(global::blnDebugMode) {printf("Collision Method: \t %d\n",values.uchrCollisionMethod);}
+  intValuesScanned = sscanf(chrTempString, "%*s %*s %d",
+                            &values.uchrCollisionMethod);
+  if (intValuesScanned < 1) {
+    printf("ERROR!");
+    values.uchrCollisionMethod = CollideInelastic;
+  }
+  if (values.uchrCollisionMethod > CollideNone) {
+    printf("ERROR!");
+    values.uchrCollisionMethod = CollideNone;
+  }
+  if(global::blnDebugMode)
+    { printf("Collision Method: \t %d\n",values.uchrCollisionMethod); }
 
   fgets(chrTempString,50,configFile_);
-  intValuesScanned = sscanf(chrTempString,"%*s %*s %*s %*s %*s %u",&values.uintMaxNumPastPoints);
-  if (intValuesScanned < 1) {printf("Error"); values.uintScreenHeight = 5;}
-  if (global::blnDebugMode) {printf("Max num of past points: \t %u\n", values.uintMaxNumPastPoints);}
+  intValuesScanned = sscanf(chrTempString,"%*s %*s %*s %*s %*s %u",
+                            &values.uintMaxNumPastPoints);
+  if (intValuesScanned < 1) { printf("Error"); values.uintScreenHeight = 5; }
+  if (global::blnDebugMode)
+    { printf("Max num of past points: \t %u\n", values.uintMaxNumPastPoints); }
 
   fgets(chrTempString,50,configFile_);
-  intValuesScanned = sscanf(chrTempString,"%*s %*s %*s %*s %u",&values.uintPastDelay);
-  if (intValuesScanned < 1) {printf("Error"); values.uintScreenHeight = 25;}
-  if (global::blnDebugMode) {printf("Delay on points: \t %u\n", values.uintPastDelay);}
+  intValuesScanned = sscanf(chrTempString,"%*s %*s %*s %*s %u",
+                            &values.uintPastDelay);
+  if (intValuesScanned < 1) { printf("Error"); values.uintScreenHeight = 25; }
+  if (global::blnDebugMode)
+    { printf("Delay on points: \t %u\n", values.uintPastDelay); }
 
 	fclose(configFile_);
 	printf("\n\n");
@@ -174,14 +191,16 @@ char clsConfig::verisonCheck(const char *ConfigVerison) {
 	sscanf(ConfigVerison,"%u.%u.%u-%c",&C_MajorNum, &C_MinorNum,
                         &C_PatchNum, &C_SoftwareStatus);
 
-	if (global::blnDebugMode)
-        {printf("Config: v %u %u %u %c \n", C_MajorNum, C_MinorNum, C_PatchNum, C_SoftwareStatus);}
+	if (global::blnDebugMode) {
+    printf("Config: v %u %u %u %c \n",
+             C_MajorNum, C_MinorNum, C_PatchNum, C_SoftwareStatus);
+	}
 
 	sscanf(DEFINED_VER_STATUS,"%c",&P_SoftwareStatus);
-	if (P_SoftwareStatus != C_SoftwareStatus) {return 'N';}
-	else if (DEFINED_VER_MAJOR != C_MajorNum) {return 'N';}
-	else if (DEFINED_VER_MINOR != C_MinorNum) {return 'U';}
-	else {return 'U';}
+	if (P_SoftwareStatus != C_SoftwareStatus) { return 'N'; }
+	else if (DEFINED_VER_MAJOR != C_MajorNum) { return 'N'; }
+	else if (DEFINED_VER_MINOR != C_MinorNum) { return 'U'; }
+	else { return 'U'; }
 }
 /*****************************************************************************/
 void clsConfig::Check(void) {
