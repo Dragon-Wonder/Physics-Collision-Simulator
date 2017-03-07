@@ -1,9 +1,8 @@
 /*****************************************************************************/
 //General Todos
 /* FIXME (GamerMan7799#1#): The balls will become stuck together for seemingly random reasons */
+/* FIXME (GamerMan7799#3#): Balls' velocity becomes NaN quite often */
 /* TODO (GamerMan7799#9#): Allow setting of some Physics Values in Config */
-/* TODO (GamerMan7799#9#): Add spin of balls to calculations */
-/* TODO (GamerMan7799#9#): Add different shapes (cube, cylinder, etc...) */
 /*****************************************************************************/
 #include "version.h"
 #include "screen.h"
@@ -18,6 +17,11 @@ typedef std::vector<clsCannonball> VectorCannon;
      increase the velocity of two colliding balls the closer they are together
      it will reduce the number of times that the balls stick together,
      but also causes them to get unrealistically high velocities*/
+/*****************************************************************************/
+//#define DEFINED_COLLISION_NORMAL_FORCE
+/**< If this is defined, then program will use apply a normal force to any
+     colliding balls. The forces are along the same direction as the velocities
+     are. It doesn;t make sense in the real world.*/
 /*****************************************************************************/
 /** Holds functions that deal with the balls colliding, and creating new balls
     that are currently in main.cpp. I wanted to get them out of the global scope. */
@@ -59,6 +63,7 @@ namespace global {
     const float kCoefficientRestitution = 0.76; /**< How much total energy remains after a collision,
                                                     (see https://en.wikipedia.org/wiki/Coefficient_of_restitution for more info) */
     uchar collisionmethod = CollideInelastic; /**< The collision method to use (see Collisions Enum) */
+    const double kAirDynViscosity = 2.22043 * pow(10,-5); /**< dynamic viscosity of air at 20°C */
   } //end Namespace Physics
 
   /** Holds Values for different equations that are not physics related */
@@ -69,12 +74,12 @@ namespace global {
     const float kTimeSizeRatio = 0.025; /**< One second of holding down
                                                 the mouse button = this many
                                                 meters for the ball */
-    const float kMassAlphaRatio = 20.583; /**< The ratio between mass and its
+    const float kMassAlphaRatio = 41.166; /**< The ratio between mass and its
                                                 alpha (transparent) value. \n
                                                 The equation used is Global::Equations::fMassAlphaRatio
                                                 * ln( clsCannonball::props.mass ) +
                                                 Global::Equations::fMassAlphaOffset */
-    const float kMassAlphaOffset = 117.14; /**< The offset for the equation of
+    const float kMassAlphaOffset = 130.84; /**< The offset for the equation of
                                                 mass to alpha value \n
                                                 The equation used is Global::Equations::fMassAlphaRatio
                                                 * ln( clsCannonball::props.mass ) +
@@ -132,8 +137,8 @@ int main(int argc, char *argv[]) {
         switch ( event.key.keysym.sym ) {
         case SDLK_k:
           //kill all the balls
-          for (VectorCannon::iterator i = cannonballs::balls.begin();
-               i != cannonballs::balls.end(); ++i) { b->blnstarted_ = false;  }
+          for (int i = 0; i < cannonballs::balls.size(); ++i)
+            { cannonballs::balls[i].blnstarted_ = false;  }
           break;
         case SDLK_q:
         case SDLK_ESCAPE:
@@ -142,9 +147,8 @@ int main(int argc, char *argv[]) {
           break;
         case SDLK_r:
           //stop all motion of balls
-          /* TODO (GamerMan7799#9#): Figure out how to count i by element internal to the vector */
-          for (VectorCannon::iterator i = cannonballs::balls.begin();
-               i != cannonballs::balls.end(); ++i) { i->setVelocity({0.0,0.0}); }
+          for (int i = 0; i < cannonballs::balls.size(); ++i)
+            { cannonballs::balls[i].setVelocity({0.0,0.0}); }
 
           break;
         case SDLK_f:
@@ -166,7 +170,7 @@ int main(int argc, char *argv[]) {
 
     //Update every ball
     tempdeltat = tick.getTimeDifference();
-    for (uint i = 0; i < cannonballs::intCannonBallNum; ++i) {
+    for (int i = 0; i < cannonballs::balls.size(); ++i) {
       //Loop through each cannonball
       if (cannonballs::balls[i].blnstarted_) {
         //only update cannonball if it is "alive"
@@ -188,7 +192,6 @@ int main(int argc, char *argv[]) {
   } while (!quit); //keep looping until we get a quit
 
   // clear the cannonball vector
-
   //cannonballs::balls.clear();
   //cannonballs::balls.shrink_to_fit();
   cannonballs::balls = VectorCannon();
@@ -211,7 +214,7 @@ void cannonballs::addNew(LOC mouseC, LOC mouseO, double HoldTime ) {
   //Get location, vel, and angle
   double fire_v;
   double angle;
-  double radius = (double)global::equations::kTimeSizeRatio * HoldTime;
+  double radius = (double)global::equations::kTimeSizeRatio * sqrt(HoldTime);
 
   fire_v = -1 * sqrt( pow(mouseC.x - mouseO.x, 2) + pow(mouseC.y - mouseO.y, 2) );
   fire_v *= (double) global::equations::kVelocityScalar;
@@ -219,7 +222,7 @@ void cannonballs::addNew(LOC mouseC, LOC mouseO, double HoldTime ) {
   //If the mouse if pointing straight up or straight down make the angle 90
   //Otherwise calculate the angle with atan.
   if (mouseC.x == mouseO.x) {
-    angle = (M_PI / 2.0) * ( (mouseC.y > mouseO.y) ? -1.0 : 1.0 );
+    angle = (M_PI / 2) * ( (mouseC.y > mouseO.y) ? -1.0 : 1.0 );
   } else {
     angle = (double) -1.0 * atan( (double)(mouseC.y - mouseO.y) /
              (double)(mouseC.x - mouseO.x) );
@@ -249,7 +252,7 @@ void cannonballs::checkCollisons(uint j) {
   BOX A, B;
   A = balls[j].getBOX();
   if (balls[j].blncheckphysics_) {
-    for (uint i = 0; i < intCannonBallNum; ++i) {
+    for (int i = 0; i < balls.size(); ++i) {
       if (balls[i].blncheckphysics_ && balls[j].blncheckphysics_ &&  i != j) {
         B = balls[i].getBOX();
         if ( checkOverlap(A, B) ) {
@@ -337,10 +340,10 @@ void cannonballs::doCollide(uint numA, uint numB) {
 
     //get the angle for both A and B
     if (Avel.x != 0.0) { Aangle = atan(Avel.y/Avel.x); }
-    else { Aangle = (Avel.y >= 0.0) ? M_PI / 2.0 : -M_PI / 2.0; }
+    else { Aangle = (Avel.y >= 0.0) ? M_PI / 2 : -M_PI / 2; }
 
     if (Bvel.x != 0.0) { Bangle = atan(Bvel.y/Bvel.x); }
-    else { Bangle = (Bvel.y >= 0.0) ? M_PI / 2.0 : -M_PI / 2.0; }
+    else { Bangle = (Bvel.y >= 0.0) ? M_PI / 2 : -M_PI / 2; }
 
     //Adjust the angle to be the right one.
     //Since atan will only yield a number between -PI/2 and PI/2 we
@@ -361,9 +364,9 @@ void cannonballs::doCollide(uint numA, uint numB) {
     TotalAMomentum.x *= cos(ContactAngle);
     TotalAMomentum.y *= sin(ContactAngle);
     TotalAMomentum.x += Atotal_v * sin(Aangle - ContactAngle) *
-                        cos(ContactAngle + (M_PI/2.0) );
+                        cos(ContactAngle + (M_PI / 2) );
     TotalAMomentum.y += Atotal_v * sin(Aangle - ContactAngle) *
-                        sin(ContactAngle + (M_PI/2.0) );
+                        sin(ContactAngle + (M_PI / 2) );
 
     //Now do B
     TotalBMomentum.x = Btotal_v * cos(Bangle - ContactAngle) *
@@ -376,9 +379,9 @@ void cannonballs::doCollide(uint numA, uint numB) {
     TotalBMomentum.x *= cos(ContactAngle);
     TotalBMomentum.y *= sin(ContactAngle);
     TotalBMomentum.x += Btotal_v * sin(Bangle - ContactAngle) *
-                        cos(ContactAngle + (M_PI/2.0) );
+                        cos(ContactAngle + (M_PI / 2) );
     TotalBMomentum.y += Btotal_v * sin(Bangle - ContactAngle) *
-                        sin(ContactAngle + (M_PI/2.0) );
+                        sin(ContactAngle + (M_PI / 2) );
   } else {
     TotalAMomentum.x = Aprops.mass * Avel.x + Bprops.mass * Bvel.x;
     TotalAMomentum.y = Aprops.mass * Avel.y + Bprops.mass * Bvel.y;
@@ -417,6 +420,28 @@ void cannonballs::doCollide(uint numA, uint numB) {
     //All of the heavy lifting is handled above.
     balls[numA].setVelocity(TotalAMomentum);
     balls[numB].setVelocity(TotalBMomentum);
+
+#ifdef DEFINED_COLLISION_NORMAL_FORCE
+    if (TotalAMomentum.x != 0.0) { Aangle = atan(TotalAMomentum.y/TotalAMomentum.x); }
+    else { Aangle = (TotalAMomentum.y >= 0.0) ? M_PI / 2 : -M_PI / 2; }
+    if (TotalBMomentum.x != 0.0) { Bangle = atan(TotalBMomentum.y/TotalBMomentum.x); }
+    else { Bangle = (TotalBMomentum.y >= 0.0) ? M_PI / 2 : -M_PI / 2; }
+    Aangle += TotalAMomentum.x < 0.0 ? M_PI : 0;
+    Bangle += TotalBMomentum.x < 0.0 ? M_PI : 0;
+
+    double normal_force;
+    dblXY forces;
+    normal_force = -1 * Aprops.mass * global::physics::kGravity;
+    forces.x = normal_force * cos (Aangle);
+    forces.y = normal_force * sin (Aangle);
+    balls[numA].addForce(forces);
+
+    normal_force = -1 * Bprops.mass * global::physics::kGravity;
+    forces.x = normal_force * cos (Bangle);
+    forces.y = normal_force * sin (Bangle);
+    balls[numB].addForce(forces);
+#endif
+
     break;
   default: //the catch all and CollideNone
     //Nothing Happens!
@@ -430,9 +455,9 @@ void cannonballs::clean_up() {
   ///        to reduce memory usage
   /////////////////////////////////////////////////
 
-  uint new_cannon_num = 0; // keeps track of the number of valid balls found
+  int new_cannon_num = 0; // keeps track of the number of valid balls found
 
-  for(uint i = 0; i < intCannonBallNum; ++i) {
+  for(int i = 0; i < intCannonBallNum; ++i) {
     if ( !(balls[i].blnstarted_) ) {
       balls.erase(balls.begin()+i);
     } else { new_cannon_num++; }
@@ -453,8 +478,8 @@ void cannonballs::fireRandom() {
   /////////////////////////////////////////////////
   Configures cnfg = global::config.values;
   LOC mouseo, mousec;
-  // time delay can be anywhere from 0 to 10 seconds
-  double time_delay = (rand() % 10000) / 1000;
+  // time delay can be anywhere from 0.25 to 10 seconds
+  double time_delay = ((rand() % (10000-250) + 250) / 1000);
 
   mouseo.x = rand() % cnfg.uintScreenWidth;
   mouseo.y = rand() % cnfg.uintScreenHeight;

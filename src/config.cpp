@@ -77,14 +77,14 @@ void clsConfig::make(void) {
 	configFile_ = fopen(FileName_,"w");
 	printf("Config File will now be created!\n");
 
-	fprintf(configFile_,"Config File for the Cannon.exe\n");
+	fprintf(configFile_,"Config File for the Physics-Simulation.exe\n");
 	fprintf(configFile_,"%s\n",DEFINED_VER_FULLVERSION_STRING);
 	//Write the config file with the defaults above
 	//this way I only have to change the defaults in one place
   fprintf(configFile_,"Screen Width: %u\n",values.uintScreenWidth);
   fprintf(configFile_,"Screen Height: %u\n",values.uintScreenHeight);
   fprintf(configFile_,"Log Ball's path: %u\n", (values.blnLogging ? 1 : 0) ) ;
-  fprintf(configFile_,"Enable Drag Mode (experimental): %u\n",
+  fprintf(configFile_,"Enable Drag Mode: %u\n",
                         (values.blnDragMode ? 1 : 0) );
   fprintf(configFile_,"Draw Ball path on screen: %u\n",
                         (values.blnDrawPathOnScreen ? 1 : 0) );
@@ -128,7 +128,7 @@ void clsConfig::load(void) {
 	values.blnLogging = (intTempBool == 1);
 
   fgets(chrTempString,50,configFile_);
-	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %*s %d",&intTempBool);
+	intValuesScanned = sscanf(chrTempString, "%*s %*s %*s %d",&intTempBool);
 	if (intValuesScanned < 1) { printf("ERROR!"); intTempBool = 0; }
 	if(global::blnDebugMode) { printf("Enable Drag \t %d\n",intTempBool); }
 	values.blnDragMode = (intTempBool == 1);
@@ -221,6 +221,7 @@ void clsConfig::Check(void) {
 		printf("Config file found; loading values\n");
 		fgets(chrTempString,50,configFile_);
 		fgets(chrTempString,50,configFile_);
+		//printf("%s\n",chrTempString);
 		chrConfigVerison = verisonCheck(chrTempString);
 
 		if (chrConfigVerison == 'N') {

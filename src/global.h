@@ -27,6 +27,7 @@ namespace global {
     extern const float kMinVelocity;
     extern const float kCoefficientRestitution;
     extern uchar collisionmethod;
+    extern const double kAirDynViscosity;
   }
 
   namespace equations {

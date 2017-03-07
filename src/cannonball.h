@@ -46,6 +46,7 @@ typedef struct stcDoubleValues dblXY;
 typedef struct stcPhysicalProperties PP;
 typedef struct stcBox BOX;
 typedef struct stcColor clr;
+typedef struct stcXYZVector XYZ;
 
 typedef std::vector<LOC> VPath;
 /*****************************************************************************/
@@ -72,6 +73,7 @@ class clsCannonball {
     bool blncheckphysics_; /**< If physics should be checked. It is disabled if the ball collides,
                                 so that when looping through all of the balls, it doesn't mark
                                 the same collision twice */
+    void addForce(dblXY);
   private:
 
     uint ballID_;  /**< The ball ID which is basically just its number in the array */
@@ -91,11 +93,16 @@ class clsCannonball {
         based on how much time has past since the last update to keep
         the movements looking realistic. See clsTick::getTimeDifference */
 
+    dblXY forces_; /**< Forces on the ball in x and y */
+    double spin_; /**< The angular velocity of the ball (in rad/s) for the Magnus Effect  */
+
     void show(void);
     void drawPath(LOC);
     void dragCalcValues(void);
     void dragUpdateAcc(void);
+    void doFriction(void);
     void updateCollisionBox(void);
+    void doMagnusEffect(void);
 };
 /*****************************************************************************/
 #endif // __CANNONBALL_HEADER__

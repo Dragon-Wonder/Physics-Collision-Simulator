@@ -20,26 +20,23 @@ clsCannonball::clsCannonball() {
   blndragenabled_ = false;
   blnstarted_ = false;
   blncheckphysics_ = true;
-  deltat_ = (1.00 / 60.00) ;
-  acc_.x = 0.00;
-  acc_.y = global::physics::kGravity;
+  deltat_ = (1.00 / 60.00);
+  forces_ = {0,0};
+  acc_ = {0.00, global::physics::kGravity};
+  spin_ = 1.0;
 
   props_.radius = 5.0; //in meters
   props_.density = global::physics::kBallDensity; //density of steel in kg/m^3
 
-  place_.x = 0;
-  place_.y = 0;
+  place_ = {0,0};
   dblLOC_.x = (double) place_.x;
   dblLOC_.y = (double) place_.y;
 
-  vel_.x = 0;
-  vel_.y = 0;
+  vel_ = {0,0};
 
   srand (time(NULL));
 
-  color_.Red = rand() % 255;
-  color_.Green = rand() % 255;
-  color_.Blue = rand() % 255;
+  color_ = {(Uint8)rand() % 255,(Uint8)rand() % 255,(Uint8)rand() % 255};
 
   if(global::config.values.blnDrawPathOnScreen) {
     // Reserve element spots equal to the number of max
@@ -47,7 +44,7 @@ clsCannonball::clsCannonball() {
     path_.reserve(global::config.values.uintMaxNumPastPoints);
 
     // fill the new vector with "empty" values
-    for(uchar i = 0; i < global::config.values.uintMaxNumPastPoints; ++i) {
+    for(int i = 0; i < global::config.values.uintMaxNumPastPoints; ++i) {
       path_.push_back({0,0});
     } // end for max past points
     if (global::blnDebugMode) { printf("Path values initialized.\n"); }
@@ -91,37 +88,41 @@ void clsCannonball::dragUpdateAcc(void) {
   ///
   /////////////////////////////////////////////////
 
-  acc_.x = 0.0;
-  acc_.y = global::physics::kGravity;
   if (vel_.x != 0.0 && vel_.y != 0.0 && props_.mass != 0.0) {
     double flow_velocity = sqrt(pow(vel_.x,2) + pow(vel_.y,2));
-    double drag_force = (double) (0.5 * global::physics::kDensityAir *
-                              flow_velocity * global::physics::kDragCofficient
-                              * props_.area);
-    double drag_acc = (double) (drag_force / props_.mass);
+    double Re = (global::physics::kDensityAir * props_.radius * 2 * flow_velocity);
+    Re /= global::physics::kAirDynViscosity;
+    double drag_force;
+
+    if (Re < 1) {
+      // use Stokes' Law for drag
+      drag_force = 6.0 * M_PI * global::physics::kAirDynViscosity *
+                    props_.radius * flow_velocity;
+    } else {
+      // use newton drag
+
+      drag_force = (double) (0.5 * global::physics::kDensityAir *
+                                pow(flow_velocity,2) * global::physics::kDragCofficient
+                                * props_.area);
+    } // end if re < 1
+
+    // convert force to acceleration
     double angle;
 
-    angle = (vel_.x != 0.0) ? atan(vel_.y / vel_.x) : M_PI / 2.0;
+    angle = (vel_.x != 0.0) ? atan(vel_.y / vel_.x) : M_PI / 2;
     angle += vel_.x < 0.0 ? M_PI : 0.0;
 
-    acc_.x += drag_acc * cos (angle);
-    acc_.y += drag_acc * sin (angle);
-    //Please recall fGravity is negative
-    double friction = (double)global::physics::kKineticFriction *
-                      (double)global::physics::kGravity * props_.mass;
-    updateCollisionBox();
-    //Update acc for Friction values
-    if ( collisionbox_.bottom < screen_place_.h ||
-         collisionbox_.top > screen::screenatt.height ) {
-      //Ball is in contact with floor or ceiling update x acc
-      acc_.x += friction * (vel_.x < 0.0 ? -1.0 : 1.0);
-    }
+    // update force values
+    forces_.x -= drag_force * cos (angle);
+    forces_.y -= drag_force * sin (angle);
 
-    if ( collisionbox_.left < (screen_place_.w /2 ) ||
-         collisionbox_.right > screen::screenatt.width ) {
-      // Ball is in contact with the wall update y acc.
-      acc_.y += friction * (vel_.y < 0.0 ? -1.0 : 1.0);
-    }
+
+    // Calculate Buoyancy
+    double force_buoyancy;
+    force_buoyancy = global::physics::kDensityAir * props_.volume *
+                     -1 * global::physics::kGravity;
+
+     forces_.y += force_buoyancy;
   } //end if things equal 0
 }
 /*****************************************************************************/
@@ -143,37 +144,51 @@ void clsCannonball::update(double newdeltat) {
   blncheckphysics_ = true; // enable on update
   deltat_ = newdeltat;
 
-  if (blndragenabled_) { dragUpdateAcc(); }
+  // reset the forces so strange things don't happen
+  forces_ = {0.0, props_.mass * global::physics::kGravity};
+
+  if (blndragenabled_) {
+    doMagnusEffect();
+    dragUpdateAcc();
+  }
+  doFriction();
+
+  acc_.x = forces_.x / props_.mass;
+  acc_.y = forces_.y / props_.mass;
 
 	vel_.x = (vel_.x + acc_.x * deltat_);
 	vel_.y = (vel_.y + acc_.y * deltat_);
 
 	// get new velocities if collision with edges
+
+	double coefres = (global::config.values.uchrCollisionMethod == CollideInelastic) ?
+                   global::physics::kCoefficientRestitution : 1.0;
+
+
 	/* TODO (GamerMan7799#2#): Make this stuff simpler */
   if (collisionbox_.left < screen_place_.w / 2) {
-    vel_.x *= -1 * global::physics::kCoefficientRestitution;
-    vel_.y *= global::physics::kCoefficientRestitution;
-    dblLOC_.x++;
+    vel_.x *= -1 * coefres;
+    vel_.y *= coefres;
+    dblLOC_.x = screen_place_.w;
   }
 
   if (collisionbox_.right > (screen::screenatt.width)) {
-    vel_.x *= -1 * global::physics::kCoefficientRestitution;
-    vel_.y *= global::physics::kCoefficientRestitution;
-    dblLOC_.x--;
+    vel_.x *= -1 * coefres;
+    vel_.y *= coefres;
+    dblLOC_.x = screen::screenatt.width - screen_place_.w / 2;
   }
 
   if (collisionbox_.bottom > (screen::screenatt.height)) {
-    vel_.x *= global::physics::kCoefficientRestitution;
-    vel_.y *= -1 * global::physics::kCoefficientRestitution;
-    dblLOC_.y++;
+    vel_.x *= coefres;
+    vel_.y *= -1 * coefres;
+    dblLOC_.y = screen_place_.h / 2;
   }
 
   if (collisionbox_.top < 0 ) {
-    vel_.x *= global::physics::kCoefficientRestitution;
-    vel_.y *= -1 * global::physics::kCoefficientRestitution;
-    dblLOC_.y--;
+    vel_.x *= coefres;
+    vel_.y *= -1 * coefres;
+    dblLOC_.y = (screen::screenatt.height) - screen_place_.h / 2;
   }
-
 
   dblLOC_.x = dblLOC_.x + vel_.x * deltat_ /*+ 0.5 * acc_.x * pow(deltat_,2)*/;
   dblLOC_.y = dblLOC_.y + vel_.y * deltat_ /*+ 0.5 * acc_.y * pow(deltat_,2)*/;
@@ -262,6 +277,9 @@ void clsCannonball::setValues(double r, LOC init_place,
 
   acc_ = {0.00, global::physics::kGravity};
 
+  spin_ = (rand() % 1000 - 500) / 500;
+
+
   place_ = init_place;
   dblLOC_ = { (double) place_.x,
               (double) place_.y };
@@ -271,6 +289,8 @@ void clsCannonball::setValues(double r, LOC init_place,
 	blnstarted_ = true;
 
   dragCalcValues();
+
+  forces_ = {0.00, global::physics::kGravity * props_.mass};
   blndragenabled_ = global::config.values.blnDragMode;
 }
 /*****************************************************************************/
@@ -350,7 +370,7 @@ void clsCannonball::drawPath(LOC newplace) {
   //Now draw the path
   SDL_Rect dst;
   dst.w = dst.h = 1;
-  for (uint i = 0; i < global::config.values.uintMaxNumPastPoints; ++i) {
+  for (uint i = 0; i < path_.size(); ++i) {
     dst.y = screen::screenatt.height - (path_[i].y);
     dst.x = (path_[i].x);
     SDL_RenderCopy(screen::screenatt.ren, screen::screenatt.pixel, NULL, &dst);
@@ -370,4 +390,57 @@ void clsCannonball::updateCollisionBox() {
 	collisionbox_.right = collisionbox_.left + screen_place_.w;
 }
 /*****************************************************************************/
+void clsCannonball::doFriction() {
+  /////////////////////////////////////////////////
+  /// @brief Updates values based on friction
+  /////////////////////////////////////////////////
 
+  // normal force is mass * gravity - buoyancy (if drag is enabled)
+  double normal_force = (-1) * props_.mass * global::physics::kGravity;
+  double buoyancy = (-1) * global::physics::kDensityAir *
+                    global::physics::kGravity *
+                    props_.volume;
+  if (blndragenabled_) { normal_force -= buoyancy; }
+
+  double friction = (double)global::physics::kKineticFriction *
+                    normal_force;
+  updateCollisionBox();
+  //Update acc for Friction values
+  if ( collisionbox_.bottom < screen_place_.h ||
+       collisionbox_.top > screen::screenatt.height ) {
+    //Ball is in contact with floor or ceiling update x acc
+    forces_.x += friction * (vel_.x < 0.0 ? -1.0 : 1.0);
+  } // end if touching top/bottom
+
+
+  // Since there really isn't a normal force when the ball contacts
+  // the edges, this section is commented out.
+  /*
+  if ( collisionbox_.left < (screen_place_.w /2 ) ||
+       collisionbox_.right > screen::screenatt.width ) {
+    // Ball is in contact with the wall update y acc.
+    forces_.y += friction * (vel_.y < 0.0 ? -1.0 : 1.0);
+    // add normal force
+    forces_.x += normal_force * (collisionbox_.right > screen::screenatt.width) ?
+                  1.0 : -1.0;
+  } // end if touching side edges */
+}
+/*****************************************************************************/
+void clsCannonball::doMagnusEffect() {
+  /////////////////////////////////////////////////
+  /// @brief Calculates the Magnus Effect caused by the ball's spin
+  /////////////////////////////////////////////////
+
+  double magnus_force = pow(M_PI,2) * pow(props_.radius,3) *
+                        global::physics::kDensityAir;
+
+  forces_.x -= magnus_force * vel_.y * spin_;
+  forces_.y += magnus_force * vel_.x * spin_;
+}
+/*****************************************************************************/
+void clsCannonball::addForce(dblXY newforces) {
+
+  forces_.x += newforces.x;
+  forces_.y += newforces.y;
+}
+/*****************************************************************************/

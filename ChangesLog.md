@@ -3,13 +3,28 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [1.2.1] - 2017-03-06
+### Updated
+* Added offset to random fire so it should be possible to have a 0 mass any more
+* Changed the scaling factors for alpha and time to size. Done so the difference between 0.25 s and 10 s isn't as massive (was > 500, now 16 ish).
+
+
+## [1.2.0] - 2017-02-27
+### Added
+* Buoyancy force
+* Magnus effect
+
+### Updated
+* Drag equation
+* System is force based instead of acceleation
+
+
 ## [1.1.2] - 2017-02-24
 ### Added
 * "f" key now causes random balls to be fired off in different directions.
 
 ### Updated
 * Various Code improvements
-* Collision detection is now per pixel based.
 * Cannonball location is now based on its center point
 * Changed some of the scaling factors
 * Changed how collisions with the edges are handled.
