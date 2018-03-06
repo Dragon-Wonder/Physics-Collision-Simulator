@@ -3,6 +3,13 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [1.3.0] - 2018-03-06
+### Added
+* Interia/energy from spins
+
+### Notes
+* Pretty pointless addition, just wanted to add something since its been a year.
+
 ## [1.2.1] - 2017-03-06
 ### Updated
 * Added offset to random fire so it should be possible to have a 0 mass any more

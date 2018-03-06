@@ -289,6 +289,7 @@ void clsCannonball::setValues(double r, LOC init_place,
 	blnstarted_ = true;
 
   dragCalcValues();
+  props_.interia = 2 * props_.mass * pow(props_.radius,2) / 5.0;
 
   forces_ = {0.00, global::physics::kGravity * props_.mass};
   blndragenabled_ = global::config.values.blnDragMode;
@@ -442,5 +443,19 @@ void clsCannonball::addForce(dblXY newforces) {
 
   forces_.x += newforces.x;
   forces_.y += newforces.y;
+}
+/*****************************************************************************/
+double clsCannonball::getSpin() {
+  /////////////////////////////////////////////////
+  /// @brief Returns the ball's spin
+  /////////////////////////////////////////////////
+  return spin_;
+}
+/*****************************************************************************/
+void clsCannonball::setSpin(double newspin) {
+  /////////////////////////////////////////////////
+  /// @brief Sets the ball's spin
+  /////////////////////////////////////////////////
+  spin_ = newspin;
 }
 /*****************************************************************************/

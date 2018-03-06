@@ -24,6 +24,7 @@ struct stcPhysicalProperties {
                     and it saves me from having to divide. */
   double volume; /**< Volume of the ball in m^3 */
   double density; /**< Density of the ball in kg/m^3 see Global::Physics::uBallDensity */
+  double interia; /**< Interia of the ball in kg-m^2 */
 };
 
 /** Holds a box which specifics the space that the ball occupies, used to see if it is colliding with another
@@ -57,6 +58,7 @@ class clsCannonball {
     void setValues(double, LOC, double, double, int);
     LOC getplace(void);
     void setplace(LOC);
+    void setSpin(double);
 
     void update(double);
     //void setSDLScreen(SDL_Texture*, SDL_Texture*, WINATT, uint);
@@ -65,6 +67,7 @@ class clsCannonball {
     PP getPhysicalProps(void);
     void setPhysicalProps(PP);
     BOX getBOX(void);
+    double getSpin(void);
 
 
     bool blnstarted_; /**< Whether or not the ball is "started" if it is, the program will update

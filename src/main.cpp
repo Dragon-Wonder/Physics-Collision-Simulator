@@ -149,7 +149,6 @@ int main(int argc, char *argv[]) {
           //stop all motion of balls
           for (int i = 0; i < cannonballs::balls.size(); ++i)
             { cannonballs::balls[i].setVelocity({0.0,0.0}); }
-
           break;
         case SDLK_f:
           if(global::blnDebugMode) { printf("Random fire triggered\n"); }
@@ -296,12 +295,17 @@ void cannonballs::doCollide(uint numA, uint numB) {
 
   dblXY Avel, Bvel;
   PP Aprops, Bprops;
+  double aspin, bspin;
+  
 
   Avel = balls[numA].getVelocity();
   Bvel = balls[numB].getVelocity();
   Aprops = balls[numA].getPhysicalProps();
   Bprops = balls[numB].getPhysicalProps();
 
+  aspin = balls[numA].getSpin();
+  bspin = balls[numB].getSpin();
+  
 #ifdef DEFINED_USE_R2_VEL_MODDER
   //This part here has no actual basis on real life,
   //it is just my attempt at preventing the cannonballs from sticking together
@@ -326,8 +330,15 @@ void cannonballs::doCollide(uint numA, uint numB) {
 
   double Aangle, Bangle, ContactAngle;
   double Atotal_v, Btotal_v;
+  double spin_energy, aspin_energy, bspin_energy;
 
   dblXY TotalAMomentum, TotalBMomentum;
+  
+  // Negative energy is not realistic, but this is just to keep the direction
+  // of the spin
+  aspin_energy = copysign (0.5 * Aprops.interia * pow(aspin,2.0), aspin);
+  bspin_energy = copysign (0.5 * Bprops.interia * pow(bspin,2.0), bspin);
+  spin_energy = aspin_energy + bspin_energy;
 
   if ( global::physics::collisionmethod != CollidePerfectInelastic ) {
     //The equations for Perfect Inelastic is much simpler than if not
@@ -399,13 +410,16 @@ void cannonballs::doCollide(uint numA, uint numB) {
     //cbrt = cube root
     Aprops.radius = cbrt( (double) (3.0*Aprops.volume) / (double) (4.0*M_PI) );
     Aprops.area = (double) (2.0 * M_PI * pow(Aprops.radius, 2) );
+    Aprops.interia = (double) (2*Aprops.mass* pow(Aprops.radius,2.0) /5.0);
     //Now calculate the new velocity
     Avel.x = TotalAMomentum.x / Aprops.mass;
     Avel.y = TotalAMomentum.y / Aprops.mass;
+    aspin = copysign( sqrt( 2.0 * abs(spin_energy) / Aprops.interia ), spin_energy);
     //now "kill" cannonball B and update ball A
     balls[numB].blnstarted_ = false;
     balls[numA].setPhysicalProps(Aprops);
     balls[numA].setVelocity(Avel);
+    balls[numA].setSpin(aspin);
     break;
   case CollideInelastic:
     //uses the same equations as below but some energy is lost.
@@ -413,13 +427,19 @@ void cannonballs::doCollide(uint numA, uint numB) {
     TotalAMomentum.y *= (double)global::physics::kCoefficientRestitution;
     TotalBMomentum.x *= (double)global::physics::kCoefficientRestitution;
     TotalBMomentum.y *= (double)global::physics::kCoefficientRestitution;
+    spin_energy *= (double)global::physics::kCoefficientRestitution;
 
   case CollideElastic:
+    aspin = copysign( sqrt( abs(spin_energy) / Aprops.interia ), spin_energy); 
+    bspin = copysign( sqrt( abs(spin_energy) / Bprops.interia ), spin_energy); 
+    
     //The balls collide and bounce away from each other
-
+       
     //All of the heavy lifting is handled above.
     balls[numA].setVelocity(TotalAMomentum);
     balls[numB].setVelocity(TotalBMomentum);
+    balls[numA].setSpin(aspin);
+    balls[numB].setSpin(bspin);
 
 #ifdef DEFINED_COLLISION_NORMAL_FORCE
     if (TotalAMomentum.x != 0.0) { Aangle = atan(TotalAMomentum.y/TotalAMomentum.x); }
@@ -454,7 +474,6 @@ void cannonballs::clean_up() {
   /// @brief Removes any "dead" balls from the balls vector and shrinks it
   ///        to reduce memory usage
   /////////////////////////////////////////////////
-
   int new_cannon_num = 0; // keeps track of the number of valid balls found
 
   for(int i = 0; i < intCannonBallNum; ++i) {
