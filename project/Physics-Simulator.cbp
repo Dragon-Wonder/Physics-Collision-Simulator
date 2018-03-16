@@ -22,6 +22,7 @@
 					<Add option="-g" />
 					<Add option="-DDEFINED_BUILD_MODE_PRIVATE" />
 					<Add directory="src/" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
@@ -46,6 +47,7 @@
 					<Add option="-w" />
 					<Add option="-D__NO_INLINE__" />
 					<Add directory="src/" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -73,6 +75,7 @@
 					<Add option="-g" />
 					<Add option="-DDEFINED_BUILD_MODE_PRIVATE" />
 					<Add directory="src/" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg" />
@@ -96,6 +99,7 @@
 					<Add option="-std=c++11" />
 					<Add option="-w" />
 					<Add directory="src/" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -143,6 +147,8 @@
 		<Unit filename="../src/screen.h" />
 		<Unit filename="../src/tick.cpp" />
 		<Unit filename="../src/tick.h" />
+		<Unit filename="../src/toolbox.cpp" />
+		<Unit filename="../src/toolbox.h" />
 		<Unit filename="../src/version.h" />
 		<Extensions>
 			<code_completion />

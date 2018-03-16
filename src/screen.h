@@ -14,6 +14,7 @@ struct stcWinAtt {
   SDL_Renderer *ren; /**< A pointer to the SDL renderer that is being used */
   SDL_Texture *ball; /**< The ball texture */
   SDL_Texture *pixel; /**< The pixel texture, used to draw lines */
+  SDL_Texture *toolbar_frame; /**< The toolbox frame. */
 };
 /*****************************************************************************/
 /** This structure will hold place values in terms of X and Y*/
@@ -50,6 +51,7 @@ class clsScreen {
     bool blnRenderer_; /**< If renderer is loaded. */
     bool blnBall_; /**< If ball image is loaded. */
     bool blnPixel_; /**< If pixel image is loaded. */
+    bool blnToolbox_; /**< If the toolbox is loaded. */
     bool bln_SDL_started_; /**< If SDL is started and without issues. */
 
     SDL_Texture* loadIMG(std::string);

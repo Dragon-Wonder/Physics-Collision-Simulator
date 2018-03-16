@@ -27,6 +27,9 @@ clsCannonball::clsCannonball() {
 
   props_.radius = 5.0; //in meters
   props_.density = global::physics::kBallDensity; //density of steel in kg/m^3
+  props_.volume = (double) ((4.0/3.0) * M_PI * pow(props_.radius,3));
+	props_.mass = props_.density * props_.volume;
+  props_.interia = 2 * props_.mass * pow(props_.radius,2) / 5.0;
 
   place_ = {0,0};
   dblLOC_.x = (double) place_.x;

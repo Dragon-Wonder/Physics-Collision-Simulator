@@ -23,7 +23,7 @@ or you can read [here](http://unlicense.org) for infomation of the Unlicense in 
 
 In order to run the program properly you will need to download SDL2-2.0.3 or higher AND SDL2-image (these are two different libraries). 
 
-A link for SDL2 can be found [here] (https://www.libsdl.org/download-2.0.php).
+A link for SDL2 can be found [here](https://www.libsdl.org/download-2.0.php).
 
 A link for SDL2 image can be found [here](https://www.libsdl.org/projects/SDL_image/) .
 

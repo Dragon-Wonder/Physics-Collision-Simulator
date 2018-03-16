@@ -3,6 +3,17 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [1.4.0] - 2018-03-16
+### Added
+* Code of Conduct
+* Doc Folder
+* Toolbar
+* More tools
+
+### Changed
+* Moved docs files into doc folder
+
+
 ## [1.3.0] - 2018-03-06
 ### Added
 * Interia/energy from spins

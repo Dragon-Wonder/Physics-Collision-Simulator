@@ -4,6 +4,7 @@
 //Include the xpm files which present the images.
 #include "image_ball.xpm"
 #include "image_pixel.xpm"
+#include "image_toolbox_frame.xpm"
 /*****************************************************************************/
 namespace screen {
   WINATT screenatt;
@@ -102,6 +103,19 @@ clsScreen::clsScreen() {
   } else {
     blnPixel_ = true;
     if (global::blnDebugMode) { printf("Pixel loading successful\n"); }
+  }
+
+  //Load the toolbar frame texture
+  screen::screenatt.toolbar_frame = loadIMG("toolbox");
+  if (screen::screenatt.toolbar_frame == nullptr) {
+    printf("SDL Failed to create ball texture.\n");
+    cleanup();
+    error();
+    bln_SDL_started_ = false;
+    return;
+  } else {
+    blnToolbox_ = true;
+    if (global::blnDebugMode) { printf("Toolbox frame loading successful\n"); }
   }
 
 } //end of constructor
@@ -203,6 +217,7 @@ SDL_Texture* clsScreen::loadIMG(std::string filename) {
 
   if (filename == "ball") { temp = IMG_ReadXPMFromArray(image_ball_xpm); }
   else if (filename == "pixel") { temp = IMG_ReadXPMFromArray(image_pixel_xpm); }
+  else if (filename == "toolbox") { temp = IMG_ReadXPMFromArray(image_toolbox_frame_xpm); }
   else { return nullptr; }
 
 	SDL_Texture *tex = (temp == nullptr) ? nullptr :

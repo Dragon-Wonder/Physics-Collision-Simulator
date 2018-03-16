@@ -21,7 +21,7 @@ typedef std::vector<clsCannonball> VectorCannon;
 //#define DEFINED_COLLISION_NORMAL_FORCE
 /**< If this is defined, then program will use apply a normal force to any
      colliding balls. The forces are along the same direction as the velocities
-     are. It doesn;t make sense in the real world.*/
+     are. It doesn't make sense in the real world.*/
 /*****************************************************************************/
 /** Holds functions that deal with the balls colliding, and creating new balls
     that are currently in main.cpp. I wanted to get them out of the global scope. */
