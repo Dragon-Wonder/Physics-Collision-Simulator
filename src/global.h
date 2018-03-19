@@ -50,4 +50,13 @@ enum Collisions {
   CollideNone /**< No collisions, balls pass through each other. */
 };
 /*****************************************************************************/
+/** The current tool being used in the toolbox. */
+enum Tools {
+  ToolFire = 0, /**< The basic firing tool. */
+  ToolDrop,     /**< Drops a ball without velocity. */
+  ToolRope,     /**< Tool to add a rope between balls, or pin ball to wall. */
+  ToolDele,   /**< Tool to delete selected ball. */
+  ToolDrag,     /**< Tool that allows ball to be dragged around. */
+};
+/*****************************************************************************/
 #endif // __GLOBAL_H_INCLUDED__

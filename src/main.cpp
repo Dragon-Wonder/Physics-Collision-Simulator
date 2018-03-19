@@ -1,16 +1,18 @@
 /*****************************************************************************/
 //General Todos
-/* FIXME (GamerMan7799#1#): The balls will become stuck together for seemingly random reasons */
-/* FIXME (GamerMan7799#3#): Balls' velocity becomes NaN quite often */
-/* TODO (GamerMan7799#9#): Allow setting of some Physics Values in Config */
+/** BUG (GamerMan7799#1#): The balls will become stuck together for seemingly random reasons */
+/** BUG (GamerMan7799#3#): Balls' velocity becomes NaN quite often */
+/** TODO (GamerMan7799#9#): Allow setting of some Physics Values in Config */
 /*****************************************************************************/
 #include "version.h"
-#include "screen.h"
+#include "toolbar.h"
 #include "cannonball.h"
 #include "tick.h"
+#include "rope.h"
 /*****************************************************************************/
 #include <vector>
 typedef std::vector<clsCannonball> VectorCannon;
+typedef std::vector<clsRope> VectorRope;
 /*****************************************************************************/
 //#define DEFINED_USE_R2_VEL_MODDER
 /**< If this is defined, then program will use unrealistic method that will
@@ -31,9 +33,18 @@ namespace cannonballs {
   void checkCollisons(uint);
   bool checkOverlap(BOX, BOX);
   void doCollide(uint, uint);
-  void fireRandom(void);
   uint intCannonBallNum = 0;
   VectorCannon balls;
+  VectorRope ropes;
+}
+/*****************************************************************************/
+/** Holds functions some core functions for the main */
+namespace core {
+  void fireRandom(void);
+  void handleEvent(void);
+  //clsToolbar toolbar;
+  //clsTick tick;
+  //clsScreen cannonwindow;
 }
 /*****************************************************************************/
 namespace global {
@@ -104,9 +115,11 @@ int main(int argc, char *argv[]) {
     fclose(logfile);
   } //end if logging
 
+  clsScreen cannonwindow;
+  clsTick tick;
+  clsToolbar toolbar;
+
   if (global::blnDebugMode) { printf("OS: %s\n",global::config.values.OperatingSystem); }
-  clsTick tick; //create tick object
-  clsScreen cannonwindow; //Start the screen
   if ( !cannonwindow.getSDLStarted() ) { return 1; } //exit program if there was an error
 
   bool quit = false, holding = false, random_fire = false;
@@ -116,6 +129,7 @@ int main(int argc, char *argv[]) {
   SDL_Event event;
 
   uint ticks_since_clean = 0;
+
   do {
     cannonwindow.clearscreen(); //Clear the screen so new stuff can be drawn
 
@@ -154,15 +168,42 @@ int main(int argc, char *argv[]) {
           if(global::blnDebugMode) { printf("Random fire triggered\n"); }
           random_fire = !random_fire;
           break;
+        case SDLK_t:
+          if(global::blnDebugMode) {printf("Toolbox toggled.\n");}
+          toolbar.toggleToolbox();
+          break;
+        case SDLK_RIGHT:
+          toolbar.incrementTool(1);
+          break;
+        case SDLK_LEFT:
+          toolbar.incrementTool(-1);
+          break;
+        case SDLK_1:
+          toolbar.setTool(ToolFire);
+          break;
+        case SDLK_2:
+          toolbar.setTool(ToolDrop);
+          break;
+        case SDLK_3:
+          toolbar.setTool(ToolRope);
+          break;
+        case SDLK_4:
+          toolbar.setTool(ToolDele);
+          break;
+        case SDLK_5:
+          toolbar.setTool(ToolDrag);
+          break;
         } //end switch key
       } //end if event
     } //end if event
 
-    if (holding) { cannonwindow.drawline(currentmouse, oldmouse); }
+    if (holding && toolbar.getTool() == ToolFire)
+      { cannonwindow.drawline(currentmouse, oldmouse); }
+
     if (random_fire) {
       fire_tick++;
       if (fire_tick > 250) {
-        cannonballs::fireRandom();
+        core::fireRandom();
         fire_tick = 0;
       }
     }
@@ -180,6 +221,7 @@ int main(int argc, char *argv[]) {
       } //end if started
     } //end for loop
 
+    toolbar.show();
     cannonwindow.update(); //Update the screen
     ticks_since_clean++;
     // run a clean up on dead balls if past a certain number
@@ -195,6 +237,9 @@ int main(int argc, char *argv[]) {
   //cannonballs::balls.shrink_to_fit();
   cannonballs::balls = VectorCannon();
 
+  //cannonwindow.~clsScreen();
+  //tick.~clsTick();
+  //toolbar.~clsToolbar();
   return 0;
 }
 /*****************************************************************************/
@@ -296,7 +341,7 @@ void cannonballs::doCollide(uint numA, uint numB) {
   dblXY Avel, Bvel;
   PP Aprops, Bprops;
   double aspin, bspin;
-  
+
 
   Avel = balls[numA].getVelocity();
   Bvel = balls[numB].getVelocity();
@@ -305,7 +350,7 @@ void cannonballs::doCollide(uint numA, uint numB) {
 
   aspin = balls[numA].getSpin();
   bspin = balls[numB].getSpin();
-  
+
 #ifdef DEFINED_USE_R2_VEL_MODDER
   //This part here has no actual basis on real life,
   //it is just my attempt at preventing the cannonballs from sticking together
@@ -333,7 +378,7 @@ void cannonballs::doCollide(uint numA, uint numB) {
   double spin_energy, aspin_energy, bspin_energy;
 
   dblXY TotalAMomentum, TotalBMomentum;
-  
+
   // Negative energy is not realistic, but this is just to keep the direction
   // of the spin
   aspin_energy = copysign (0.5 * Aprops.interia * pow(aspin,2.0), aspin);
@@ -430,11 +475,11 @@ void cannonballs::doCollide(uint numA, uint numB) {
     spin_energy *= (double)global::physics::kCoefficientRestitution;
 
   case CollideElastic:
-    aspin = copysign( sqrt( abs(spin_energy) / Aprops.interia ), spin_energy); 
-    bspin = copysign( sqrt( abs(spin_energy) / Bprops.interia ), spin_energy); 
-    
+    aspin = copysign( sqrt( abs(spin_energy) / Aprops.interia ), spin_energy);
+    bspin = copysign( sqrt( abs(spin_energy) / Bprops.interia ), spin_energy);
+
     //The balls collide and bounce away from each other
-       
+
     //All of the heavy lifting is handled above.
     balls[numA].setVelocity(TotalAMomentum);
     balls[numB].setVelocity(TotalBMomentum);
@@ -491,7 +536,7 @@ void cannonballs::clean_up() {
   balls.shrink_to_fit();
 }
 /*****************************************************************************/
-void cannonballs::fireRandom() {
+void core::fireRandom() {
   /////////////////////////////////////////////////
   /// @brief Causes cannonballs to be fired randomly
   /////////////////////////////////////////////////
@@ -506,7 +551,7 @@ void cannonballs::fireRandom() {
   mousec.x = rand() % cnfg.uintScreenWidth;
   mousec.y = rand() % cnfg.uintScreenHeight;
 
-  addNew(mousec, mouseo, time_delay);
+  cannonballs::addNew(mousec, mouseo, time_delay);
 
 }
 /*****************************************************************************/

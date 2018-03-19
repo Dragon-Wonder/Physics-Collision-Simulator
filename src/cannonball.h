@@ -2,7 +2,6 @@
 #define __CANNONBALL_HEADER__
 /*****************************************************************************/
 #include <math.h>
-#include <cstdio>
 #include <cstdlib>
 #include <vector>
 #include <time.h>

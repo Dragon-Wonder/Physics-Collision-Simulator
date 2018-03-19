@@ -15,17 +15,18 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-pg" />
+					<Add option="-m32" />
 					<Add option="-g" />
 					<Add option="-DDEFINED_BUILD_MODE_PRIVATE" />
 					<Add directory="src/" />
-					<Add directory="include" />
+					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
+					<Add option="-m32" />
 					<Add library="mingw32" />
 					<Add library="SDL2main" />
 					<Add library="SDL2" />
@@ -45,12 +46,14 @@
 				<Compiler>
 					<Add option="-Os" />
 					<Add option="-w" />
+					<Add option="-m32" />
 					<Add option="-D__NO_INLINE__" />
 					<Add directory="src/" />
-					<Add directory="include" />
+					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-m32" />
 					<Add library="mingw32" />
 					<Add library="SDL2main" />
 					<Add library="SDL2" />
@@ -75,7 +78,7 @@
 					<Add option="-g" />
 					<Add option="-DDEFINED_BUILD_MODE_PRIVATE" />
 					<Add directory="src/" />
-					<Add directory="include" />
+					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg" />
@@ -99,7 +102,7 @@
 					<Add option="-std=c++11" />
 					<Add option="-w" />
 					<Add directory="src/" />
-					<Add directory="include" />
+					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -113,12 +116,14 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-std=c++11" />
+			<Add option="-m32" />
 			<Add option="-Wno-write-strings" />
+			<Add option="-std=c++11" />
 			<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/include" />
 			<Add directory="../SDL2Stuff/include" />
 		</Compiler>
 		<Linker>
+			<Add option="-m32" />
 			<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/lib" />
 			<Add directory="../SDL2Stuff/lib" />
 		</Linker>
@@ -140,15 +145,19 @@
 		<Unit filename="../src/global.h" />
 		<Unit filename="../src/image_ball.xpm" />
 		<Unit filename="../src/image_pixel.xpm" />
+		<Unit filename="../src/image_toolbox_frame.xpm" />
+		<Unit filename="../src/image_tools.xpm" />
 		<Unit filename="../src/main.cpp" />
+		<Unit filename="../src/rope.cpp" />
+		<Unit filename="../src/rope.h" />
 		<Unit filename="../src/screen.cpp">
 			<Option weight="28" />
 		</Unit>
 		<Unit filename="../src/screen.h" />
 		<Unit filename="../src/tick.cpp" />
 		<Unit filename="../src/tick.h" />
-		<Unit filename="../src/toolbox.cpp" />
-		<Unit filename="../src/toolbox.h" />
+		<Unit filename="../src/toolbar.cpp" />
+		<Unit filename="../src/toolbar.h" />
 		<Unit filename="../src/version.h" />
 		<Extensions>
 			<code_completion />
@@ -157,7 +166,7 @@
 			<lib_finder disable_auto="1" />
 			<DoxyBlocks>
 				<comment_style block="5" line="0" />
-				<doxyfile_project project_number="v1.2.5" />
+				<doxyfile_project project_number="v1.4.0-beta.2" output_directory="gh-pages" />
 				<doxyfile_build extract_all="1" />
 				<doxyfile_warnings />
 				<doxyfile_output />

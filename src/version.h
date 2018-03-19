@@ -2,7 +2,7 @@
 #define __VERSION_HEADER__
 /*****************************************************************************/
 	//Date Version Types
-	#define DEFINED_VER_DATE "16"
+	#define DEFINED_VER_DATE "19"
 	/**< Day of the last build */
 
 	#define DEFINED_VER_MONTH "03"
@@ -47,7 +47,7 @@
 	#define DEFINED_VER_RC_FILEVERSION_STRING "1, 4, 0, 0\0"
 	/**< Is the same as DEFINED_VER_RC_FILEVERSION but is a null terminated string */
 
-	#define DEFINED_VER_FULLVERSION_STRING  "1.4.0-Beta.1"
+	#define DEFINED_VER_FULLVERSION_STRING  "1.4.0-Beta.2"
 	/**< The full string of the version number */
 
 /*****************************************************************************/

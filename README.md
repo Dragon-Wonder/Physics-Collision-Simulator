@@ -8,7 +8,7 @@ There are a few branches of this that use different programming languages.
 
 # License
 
-This program has been released in the Public Domain meaning you can use it however you wish, read the license file [here](https://github.com/Dragon-Wonder/Physics-Collision-Simulator/blob/master/LICENSE.md) 
+This program has been released in the Public Domain meaning you can use it however you wish, read the license file [here](https://github.com/Dragon-Wonder/Physics-Collision-Simulator/blob/master/docs/LICENSE.md) 
 or you can read [here](http://unlicense.org) for infomation of the Unlicense in general.
 
 ## Summary of what license means
@@ -33,7 +33,7 @@ When all is said and done you should have the following files in your folder. (A
 
 ```
 FolderName\
-FolderName\Cannon.exe
+FolderName\Physics-Simulation.exe
 FolderName\SDL2.dll
 FolderName\SDL2_image.dll
 ```
@@ -46,7 +46,7 @@ The first time you run the program a "Config.ini" will be created it should look
 
 ```
 Config File for the Cannon.exe
-1.0.0
+1.4.0
 Screen Width: 640
 Screen Height: 480
 Log Ball's path: 0
@@ -88,6 +88,8 @@ When you are happy with the angle and speed simply release the mouse button and 
 The longer you hold down the mouse button the larger the radius of the ball will be and as a result, the more mass the ball will have. You can get an 
 idea of how much mass a ball has based on how transparent it is, the more transparent it is the lighter its mass.
 
+## Keybinds
+
 You can also press the following keys to yield effects
 
 ```
@@ -95,4 +97,36 @@ K = All Balls will be "killed".
 R = All motion will be stopped.
 Q / ESC = Program will exit.
 F = Every so often a randomly generated cannonball will be created
+T = Toggle toolbox on/off
+Right Arrow = Select next tool
+Left Arrow = Select previous tool
+1 = Select Fire tool
+2 = Select Drop tool
+3 = Select Rope tool
+4 = Select Delete tool
+5 = Select Drag tool
 ```
+
+## Tools
+
+### Fire tool
+
+Clicking a dragging on screen will cause a white line to drawn from original click location to current mouse condition. 
+When mouse is released a ball will be fired in the direction from the first click location to where released. The ball's velocity will be proportional to the distance between the two points.  
+The mass of the ball will be proportional to the length of time that the mouse was held down for.
+
+### Drop tool - WIP
+
+Clicking on the screen will cause a ball to be created at selected location. The ball will have no velocity and its mass will be proportional to the length of time the mouse is held down for.
+
+### Rope tool - WIP
+
+Clicking on a ball will cause it to be attached to one end of a rope. The rope can then be attached to another ball, or pinned to background. 
+
+### Delete tool - WIP
+
+Clicking on a ball will delete it.
+
+### Drag tool - WIP
+
+Clicking and dragging on a ball will allow you to move a ball where the mouse is. When released the ball will still have its inital velocity.

@@ -3,12 +3,20 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## [1.4.0] - 2018-03-16
+## [1.4.0-beta.2] - WIP
+### Added
+* Toolbar with different tools including: drag, fire, drop, rope, and delete. Not all are fully working at the moment.
+* SDL Licenses
+* Credits to Docs
+
+### Changed
+* Moved Docs to Doc folder
+
+
+## [1.3.1] - 2018-03-16
 ### Added
 * Code of Conduct
 * Doc Folder
-* Toolbar
-* More tools
 
 ### Changed
 * Moved docs files into doc folder

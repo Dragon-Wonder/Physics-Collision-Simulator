@@ -5,6 +5,7 @@
 #include "image_ball.xpm"
 #include "image_pixel.xpm"
 #include "image_toolbox_frame.xpm"
+#include "image_tools.xpm"
 /*****************************************************************************/
 namespace screen {
   WINATT screenatt;
@@ -95,7 +96,7 @@ clsScreen::clsScreen() {
   //Load the pixel texture
   screen::screenatt.pixel = loadIMG("pixel");
   if (screen::screenatt.pixel == nullptr) {
-    printf("SDL Failed to create ball texture.\n");
+    printf("SDL Failed to create pixel texture.\n");
     cleanup();
     error();
     bln_SDL_started_ = false;
@@ -105,18 +106,33 @@ clsScreen::clsScreen() {
     if (global::blnDebugMode) { printf("Pixel loading successful\n"); }
   }
 
-  //Load the toolbar frame texture
-  screen::screenatt.toolbar_frame = loadIMG("toolbox");
-  if (screen::screenatt.toolbar_frame == nullptr) {
-    printf("SDL Failed to create ball texture.\n");
+  //Load the toolbox frame texture
+  screen::screenatt.toolbox = loadIMG("toolbox");
+  if (screen::screenatt.toolbox == nullptr) {
+    printf("SDL Failed to create toolbox texture.\n");
     cleanup();
     error();
     bln_SDL_started_ = false;
     return;
   } else {
     blnToolbox_ = true;
-    if (global::blnDebugMode) { printf("Toolbox frame loading successful\n"); }
+    if (global::blnDebugMode) { printf("Toolbox loading successful\n"); }
   }
+
+  //Load the tool textures
+  screen::screenatt.tools = loadIMG("tools");
+  if (screen::screenatt.tools == nullptr) {
+    printf("SDL Failed to create tools texture.\n");
+    cleanup();
+    error();
+    bln_SDL_started_ = false;
+    return;
+  } else {
+    blnTools_ = true;
+    if (global::blnDebugMode) { printf("Tool loading successful\n"); }
+  }
+
+  setClips();
 
 } //end of constructor
 /*****************************************************************************/
@@ -176,6 +192,18 @@ void clsScreen::cleanup() {
     if (global::blnDebugMode) { printf("Pixel texture destroyed\n"); }
   }
 
+  if (blnToolbox_) {
+    SDL_DestroyTexture(screen::screenatt.toolbox);
+    blnToolbox_ = false;
+    if (global::blnDebugMode) { printf("Toolbox texture destroyed\n"); }
+  }
+
+  if (blnTools_) {
+    SDL_DestroyTexture(screen::screenatt.tools);
+    blnTools_ = false;
+    if (global::blnDebugMode) { printf("Tools texture destroyed\n"); }
+  }
+
   if (blnRenderer_) {
     SDL_DestroyRenderer(screen::screenatt.ren);
     blnRenderer_ = false;
@@ -218,6 +246,7 @@ SDL_Texture* clsScreen::loadIMG(std::string filename) {
   if (filename == "ball") { temp = IMG_ReadXPMFromArray(image_ball_xpm); }
   else if (filename == "pixel") { temp = IMG_ReadXPMFromArray(image_pixel_xpm); }
   else if (filename == "toolbox") { temp = IMG_ReadXPMFromArray(image_toolbox_frame_xpm); }
+  else if (filename == "tools") { temp = IMG_ReadXPMFromArray(image_tools_xpm) ;}
   else { return nullptr; }
 
 	SDL_Texture *tex = (temp == nullptr) ? nullptr :
@@ -271,5 +300,38 @@ void clsScreen::drawline(LOC Current, LOC Old) {
       SDL_RenderCopy(screen::screenatt.ren, screen::screenatt.pixel, NULL, &dst);
     } //end for length
   } //end if
+}
+/*****************************************************************************/
+void clsScreen::setClips() {
+  /////////////////////////////////////////////////
+  /// @brief Sets the clips for the tools textures
+  /// @param void
+  /// @return void
+  /////////////////////////////////////////////////
+
+
+    /*     The Picture Coordinates (x,y)
+   *     we multiply this by the pic size to get the clip
+   *     +-----+
+   *     |(0,0)|
+   *     +-----+
+   *     |(0,1)|
+   *     +-----+
+   *     |(0,2)|
+   *     +-----+
+   *     |(0,3)|
+   *     +-----+
+   *     |(0,4)|
+   *     +-----+
+   */
+
+   int pic_size = 24;
+
+   screen::screenatt.toolclips[ToolFire] = {0 * pic_size, 0 * pic_size, pic_size, pic_size};
+   screen::screenatt.toolclips[ToolDrop] = {0 * pic_size, 1 * pic_size, pic_size, pic_size};
+   screen::screenatt.toolclips[ToolRope] = {0 * pic_size, 2 * pic_size, pic_size, pic_size};
+   screen::screenatt.toolclips[ToolDele] = {0 * pic_size, 3 * pic_size, pic_size, pic_size};
+   screen::screenatt.toolclips[ToolDrag] = {0 * pic_size, 4 * pic_size, pic_size, pic_size};
+
 }
 /*****************************************************************************/
