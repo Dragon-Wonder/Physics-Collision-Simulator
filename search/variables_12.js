@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['width',['width',['../d2/d1f/a00083.html#a4538ff29626ed1d7d1b142f6f2c57eb7',1,'stcWinAtt']]],
-  ['win',['win',['../d2/d1f/a00083.html#a5e0a32d8c181fc7a17ad1097e0004bd8',1,'stcWinAtt']]]
+  ['x',['x',['../structstc_double_values.html#ab06764e0a3ac3c1e3b6a8dca4f7ffa8a',1,'stcDoubleValues::x()'],['../structstc_location.html#a2c7cc40549bb2fe1e6af0576a5330fff',1,'stcLocation::x()']]]
 ];

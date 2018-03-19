@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['y',['y',['../d4/d6d/a00055.html#aef093677cde3c0c814ad75f24c3edcf9',1,'stcDoubleValues::y()'],['../d1/d1e/a00087.html#ae3ad95b44a60701b36e377f119d93dde',1,'stcLocation::y()']]]
+  ['_7eclscannonball',['~clsCannonball',['../classcls_cannonball.html#a00284ae3fa99073ef96ab00ebd45c21d',1,'clsCannonball']]],
+  ['_7eclsrope',['~clsRope',['../classcls_rope.html#a78ae156f0d46312afaa4197065eb83f6',1,'clsRope']]],
+  ['_7eclsscreen',['~clsScreen',['../classcls_screen.html#ad2f68af8eac3dc3f54dc807520d909ef',1,'clsScreen']]],
+  ['_7eclstoolbar',['~clsToolbar',['../classcls_toolbar.html#a9a689f2149046f3d52410643bf55df43',1,'clsToolbar']]]
 ];

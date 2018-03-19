@@ -1,15 +1,17 @@
 var annotated_dup =
 [
-    [ "global", "d4/dca/a00048.html", null ],
-    [ "clsCannonball", "d0/d89/a00071.html", "d0/d89/a00071" ],
-    [ "clsConfig", "d1/d51/a00079.html", "d1/d51/a00079" ],
-    [ "clsScreen", "da/d82/a00091.html", "da/d82/a00091" ],
-    [ "clsTick", "d9/d77/a00095.html", "d9/d77/a00095" ],
-    [ "ConfigValues", "d9/da5/a00075.html", "d9/da5/a00075" ],
-    [ "stcBox", "d1/d6f/a00063.html", "d1/d6f/a00063" ],
-    [ "stcColor", "dc/ddf/a00067.html", "dc/ddf/a00067" ],
-    [ "stcDoubleValues", "d4/d6d/a00055.html", "d4/d6d/a00055" ],
-    [ "stcLocation", "d1/d1e/a00087.html", "d1/d1e/a00087" ],
-    [ "stcPhysicalProperties", "d3/d8b/a00059.html", "d3/d8b/a00059" ],
-    [ "stcWinAtt", "d2/d1f/a00083.html", "d2/d1f/a00083" ]
+    [ "global", "namespaceglobal.html", null ],
+    [ "clsCannonball", "classcls_cannonball.html", "classcls_cannonball" ],
+    [ "clsConfig", "classcls_config.html", "classcls_config" ],
+    [ "clsRope", "classcls_rope.html", "classcls_rope" ],
+    [ "clsScreen", "classcls_screen.html", "classcls_screen" ],
+    [ "clsTick", "classcls_tick.html", "classcls_tick" ],
+    [ "clsToolbar", "classcls_toolbar.html", "classcls_toolbar" ],
+    [ "ConfigValues", "struct_config_values.html", "struct_config_values" ],
+    [ "stcBox", "structstc_box.html", "structstc_box" ],
+    [ "stcColor", "structstc_color.html", "structstc_color" ],
+    [ "stcDoubleValues", "structstc_double_values.html", "structstc_double_values" ],
+    [ "stcLocation", "structstc_location.html", "structstc_location" ],
+    [ "stcPhysicalProperties", "structstc_physical_properties.html", "structstc_physical_properties" ],
+    [ "stcWinAtt", "structstc_win_att.html", "structstc_win_att" ]
 ];

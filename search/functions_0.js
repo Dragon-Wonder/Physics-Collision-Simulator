@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['addnew',['addNew',['../d6/d2d/a00047.html#af7954884906124fbf9c503b2d08b1121',1,'cannonballs']]]
+  ['addforce',['addForce',['../classcls_cannonball.html#acea08e3d8ed05a1627f0d7155e70fa9e',1,'clsCannonball']]],
+  ['addnew',['addNew',['../namespacecannonballs.html#af7954884906124fbf9c503b2d08b1121',1,'cannonballs']]]
 ];

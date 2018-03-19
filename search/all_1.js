@@ -1,21 +1,14 @@
 var searchData=
 [
-  ['ball',['ball',['../d2/d1f/a00083.html#a16711fa2e96e138756b2c5b0ed6da903',1,'stcWinAtt']]],
-  ['ballid_5f',['ballID_',['../d0/d89/a00071.html#ad3313b18d94f6156a74061bca58746eb',1,'clsCannonball']]],
-  ['balls',['balls',['../d6/d2d/a00047.html#a5f9896f7adfae8ea1df3ac0ddea47e6d',1,'cannonballs']]],
-  ['bln_5fsdl_5fstarted_5f',['bln_SDL_started_',['../da/d82/a00091.html#a90a1d876b2496455cf8f5cdfebe78d33',1,'clsScreen']]],
-  ['blnball_5f',['blnBall_',['../da/d82/a00091.html#a465f417a011d62b7637d1ade28880d9a',1,'clsScreen']]],
-  ['blncheckphysics_5f',['blncheckphysics_',['../d0/d89/a00071.html#a1095f80805e59c87a95bd1bc95cde165',1,'clsCannonball']]],
-  ['blndebugmode',['blnDebugMode',['../d4/dca/a00048.html#ac421221d18c2d655c99253e5f0a5aa93',1,'global']]],
-  ['blndragenabled_5f',['blndragenabled_',['../d0/d89/a00071.html#ac09eac6bee4a17b0012840fdc690f40e',1,'clsCannonball']]],
-  ['blndragmode',['blnDragMode',['../d9/da5/a00075.html#a64d9daadce2da5e7b57d5d80ada51bc3',1,'ConfigValues']]],
-  ['blndrawpathonscreen',['blnDrawPathOnScreen',['../d9/da5/a00075.html#a011eaf6857549201d01d4ad133c8417e',1,'ConfigValues']]],
-  ['blnlogging',['blnLogging',['../d9/da5/a00075.html#a12cc83386660d52d6b9d569713153b5e',1,'ConfigValues']]],
-  ['blnpixel_5f',['blnPixel_',['../da/d82/a00091.html#ab1384d51344b8859977cce396dc6b7c3',1,'clsScreen']]],
-  ['blnrenderer_5f',['blnRenderer_',['../da/d82/a00091.html#a0c8d6444f08c07549ee3307c58456aef',1,'clsScreen']]],
-  ['blnstarted_5f',['blnstarted_',['../d0/d89/a00071.html#a9faafa60c0e86684419fd0914182c0ac',1,'clsCannonball']]],
-  ['blnwindow_5f',['blnWindow_',['../da/d82/a00091.html#ad0b62b39b11c1169ad8eb17a00c3e391',1,'clsScreen']]],
-  ['blue',['Blue',['../dc/ddf/a00067.html#a909cbc6bbf7a37fd9f1e6485a231a431',1,'stcColor']]],
-  ['bottom',['bottom',['../d1/d6f/a00063.html#a9a6014a56e5c2b337d0f2103677ae792',1,'stcBox']]],
-  ['box',['BOX',['../d4/dee/a00008.html#a13b597f88fe3a7bdc0d6861ad3cf53d8',1,'cannonball.h']]]
+  ['ball',['ball',['../structstc_win_att.html#a16711fa2e96e138756b2c5b0ed6da903',1,'stcWinAtt']]],
+  ['balls',['balls',['../namespacecannonballs.html#a5f9896f7adfae8ea1df3ac0ddea47e6d',1,'cannonballs']]],
+  ['blncheckphysics_5f',['blncheckphysics_',['../classcls_cannonball.html#a1095f80805e59c87a95bd1bc95cde165',1,'clsCannonball']]],
+  ['blndebugmode',['blnDebugMode',['../namespaceglobal.html#ac421221d18c2d655c99253e5f0a5aa93',1,'global']]],
+  ['blndragmode',['blnDragMode',['../struct_config_values.html#a64d9daadce2da5e7b57d5d80ada51bc3',1,'ConfigValues']]],
+  ['blndrawpathonscreen',['blnDrawPathOnScreen',['../struct_config_values.html#a011eaf6857549201d01d4ad133c8417e',1,'ConfigValues']]],
+  ['blnlogging',['blnLogging',['../struct_config_values.html#a12cc83386660d52d6b9d569713153b5e',1,'ConfigValues']]],
+  ['blnstarted_5f',['blnstarted_',['../classcls_cannonball.html#a9faafa60c0e86684419fd0914182c0ac',1,'clsCannonball']]],
+  ['blue',['Blue',['../structstc_color.html#a909cbc6bbf7a37fd9f1e6485a231a431',1,'stcColor']]],
+  ['bottom',['bottom',['../structstc_box.html#a9a6014a56e5c2b337d0f2103677ae792',1,'stcBox']]],
+  ['box',['BOX',['../cannonball_8h.html#a13b597f88fe3a7bdc0d6861ad3cf53d8',1,'cannonball.h']]]
 ];
