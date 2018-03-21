@@ -1,6 +1,11 @@
 /*****************************************************************************/
 #include "cannonball.h"
 /*****************************************************************************/
+/////////////////////////////////////////////////
+/// @file cannonball.cpp
+/// @brief Holds all of the functions for the cannonballs
+/////////////////////////////////////////////////
+/*****************************************************************************/
 clsCannonball::clsCannonball() {
   /////////////////////////////////////////////////
   /// @brief The default Constructor for the cannonballs. It has to call
@@ -80,6 +85,8 @@ void clsCannonball::dragCalcValues(void) {
 	props_.area = (double) (2.0 * M_PI * pow(props_.radius,2));
 	props_.volume = (double) ((4.0/3.0) * M_PI * pow(props_.radius,3));
 	props_.mass = props_.density * props_.volume;
+	props_.interia = 2 * props_.mass * pow(props_.radius,2) / 5.0;
+	if(global::blnDebugMode) { printf("Ball %i mass is %5.5f kg.\n",ballID_,props_.mass);}
 }
 /*****************************************************************************/
 void clsCannonball::dragUpdateAcc(void) {
@@ -292,7 +299,7 @@ void clsCannonball::setValues(double r, LOC init_place,
 	blnstarted_ = true;
 
   dragCalcValues();
-  props_.interia = 2 * props_.mass * pow(props_.radius,2) / 5.0;
+
 
   forces_ = {0.00, global::physics::kGravity * props_.mass};
   blndragenabled_ = global::config.values.blnDragMode;

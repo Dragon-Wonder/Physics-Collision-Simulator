@@ -7,14 +7,27 @@
 #include <time.h>
 #include "screen.h"
 /*****************************************************************************/
-/** Holds X and Y values that are related together, the values are doubles
-     (Used for location, velocity and accelerations) */
+/////////////////////////////////////////////////
+/// @class clsCannonball cannonball.h "source/cannonball.h"
+/// @brief This class is used to create and control each of the balls.
+/////////////////////////////////////////////////
+/*****************************************************************************/
+/////////////////////////////////////////////////
+/// @defgroup BallStuff Stuff for Cannonballs
+/// @brief Important items for the cannonballs
+/// @{
+/////////////////////////////////////////////////
+/*****************************************************************************/
+/** @struct stcDoubleValues
+    Holds X and Y values that are related together, the values are doubles
+    (Used for location, velocity and accelerations) */
 struct stcDoubleValues {
   double x; /**< X direction values */
   double y; /**< Y direction values */
 };
 
-/** Holds the physical properties of the cannonball. */
+/** @struct stcPhysicsProperties
+    Holds the physical properties of the cannonball. */
 struct stcPhysicalProperties {
   double radius; /**< Radius in meters */
   double mass; /**< Mass of the ball in kilograms */
@@ -26,8 +39,10 @@ struct stcPhysicalProperties {
   double interia; /**< Interia of the ball in kg-m^2 */
 };
 
-/** Holds a box which specifics the space that the ball occupies, used to see if it is colliding with another
-     ball. The box is defined with the values of it left-most edge, its right-most edge, its top-most edge, and its bottom-most edge */
+/** @struct stcBox
+    Holds a box which specifics the space that the ball occupies, used to see if
+    it is colliding with another ball. The box is defined with the values of it
+    left-most edge, its right-most edge, its top-most edge, and its bottom-most edge */
 struct stcBox {
   int left; /**< Left-most edge in term of pixels from the left window edge */
   int right; /**< Right-most edge in term of pixels from the left window edge */
@@ -35,7 +50,8 @@ struct stcBox {
   int bottom; /**< Bottom-most edge in term of pixels from the top window edge */
 };
 
-/** The color based on red, green, and blue */
+/** @struct stcColor
+    The color based on red, green, and blue */
 struct stcColor {
   Uint8 Red; /**< Amount of Red in Color, can vary from 0 to 255 */
   Uint8 Green; /**< Amount of Green in Color, can vary from 0 to 255 */
@@ -49,6 +65,7 @@ typedef struct stcColor clr;
 typedef struct stcXYZVector XYZ;
 
 typedef std::vector<LOC> VPath;
+/// @}
 /*****************************************************************************/
 class clsCannonball {
   public:

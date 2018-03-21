@@ -6,7 +6,19 @@
 #include <string>
 #include "config.h"
 /*****************************************************************************/
-/** This structure will hold certain attributes of the screen. */
+/////////////////////////////////////////////////
+/// @class clsScreen screen.h "source/screen.h"
+/// @brief This class will hold all of the functions for the SDL screen.
+/////////////////////////////////////////////////
+/*****************************************************************************/
+/////////////////////////////////////////////////
+/// @defgroup ScreenStuff Stuff for SDL
+/// @brief Important items for the SDL screen
+/// @{
+/////////////////////////////////////////////////
+/*****************************************************************************/
+/** @struct stcWinAtt
+    This structure will hold certain attributes of the screen. */
 struct stcWinAtt {
   unsigned int width; /**< The width of the screen in terms of pixels. */
   unsigned int height; /**< The height of the screen in terms of pixels. */
@@ -19,7 +31,8 @@ struct stcWinAtt {
   SDL_Rect toolclips[5]; /**< Clips for the different tools. */
 };
 /*****************************************************************************/
-/** This structure will hold place values in terms of X and Y*/
+/** @struct stcLocation
+    This structure will hold place values in terms of X and Y*/
 struct stcLocation {
   int x; /**< X location */
   int y; /**< Y location */
@@ -27,6 +40,7 @@ struct stcLocation {
 
 typedef struct stcWinAtt WINATT;
 typedef struct stcLocation LOC;
+/// @}
 /*****************************************************************************/
 // It is likely bad practice to hold values like this...
 /* TODO (GamerMan7799#9#): Find a better method */

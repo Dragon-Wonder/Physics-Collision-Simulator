@@ -1,12 +1,14 @@
 #ifndef __ROPE_HEADER__
 #define __ROPE_HEADER__
 /*****************************************************************************/
+/////////////////////////////////////////////////
+/// @class clsRope rope.h "source/rope.h"
+/// @brief This class will hold all of the functions for the rope.
+/////////////////////////////////////////////////
+/*****************************************************************************/
 class clsRope {
     public:
         clsRope();
-        ~clsRope();
-
-    protected:
 
     private:
 };

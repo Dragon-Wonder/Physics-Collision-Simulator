@@ -142,6 +142,8 @@
 		<Unit filename="../src/cannonball.h" />
 		<Unit filename="../src/config.cpp" />
 		<Unit filename="../src/config.h" />
+		<Unit filename="../src/core.cpp" />
+		<Unit filename="../src/core.h" />
 		<Unit filename="../src/global.h" />
 		<Unit filename="../src/image_ball.xpm" />
 		<Unit filename="../src/image_pixel.xpm" />

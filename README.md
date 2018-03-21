@@ -38,6 +38,16 @@ FolderName\SDL2.dll
 FolderName\SDL2_image.dll
 ```
 
+If you are using the verision I complie, which can be found in the [release tab](https://github.com/Dragon-Wonder/Physics-Collision-Simulator/releases) 
+you will also need the following binaries. 
+
+```
+FolderName\libgcc_s_dw2-1.dll
+FolderName\libstdc++-6.dll
+```
+
+They should be included in the release. 
+
 Let me know if I am missing a dependences that I might have forgotten about due to my own system set up.
 
 # Using the Program
@@ -115,7 +125,7 @@ Clicking a dragging on screen will cause a white line to drawn from original cli
 When mouse is released a ball will be fired in the direction from the first click location to where released. The ball's velocity will be proportional to the distance between the two points.  
 The mass of the ball will be proportional to the length of time that the mouse was held down for.
 
-### Drop tool - WIP
+### Drop tool
 
 Clicking on the screen will cause a ball to be created at selected location. The ball will have no velocity and its mass will be proportional to the length of time the mouse is held down for.
 
@@ -123,7 +133,7 @@ Clicking on the screen will cause a ball to be created at selected location. The
 
 Clicking on a ball will cause it to be attached to one end of a rope. The rope can then be attached to another ball, or pinned to background. 
 
-### Delete tool - WIP
+### Delete tool
 
 Clicking on a ball will delete it.
 

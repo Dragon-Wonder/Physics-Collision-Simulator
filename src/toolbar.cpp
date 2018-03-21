@@ -1,19 +1,22 @@
 /*****************************************************************************/
 #include "toolbar.h"
 /*****************************************************************************/
+/////////////////////////////////////////////////
+/// @file toolbar.cpp
+/// @brief Holds all of the functions for the toolbar class
+/////////////////////////////////////////////////
+/*****************************************************************************/
 clsToolbar::clsToolbar() {
     //ctor
 
     selected_tool_ = ToolFire;
     show_toolbox_ = true;
+    /** TODO (GamerMan7799#9#): Change toolbar to bottom left. */
+    /** TODO (GamerMan7799#9#): Make toolbar bigger? */
     position_ = {0,0,28,28};
 
     //position_ = {screen::screenatt.height - 28, screen::screenatt.width - 28,
     //              28,28};
-}
-/*****************************************************************************/
-clsToolbar::~clsToolbar() {
-    //dtor
 }
 /*****************************************************************************/
 void clsToolbar::show() {
