@@ -359,6 +359,9 @@ char core::handleEvent(SDL_Event* e ) {
     // there is a mouse-based event, so now we have to check what tool we are using.
     if (global::blnDebugMode) { printf("Mouse event found.\n"); }
     switch ( toolbar.getTool() ) {
+    /** @todo (GamerMan7799#9#) Simplify the cases, merge similar tool functions
+              such as ToolFire, and ToolDrop, and ToolRope, ToolDele, ToolDrag, and ToolInfo.
+              I want to get them all working on their own first before I try to merge them. */
     case ToolFire:
     default: // make tool fire the default
       if(global::blnDebugMode) { printf("Tool Fire event\n"); }
@@ -399,6 +402,18 @@ char core::handleEvent(SDL_Event* e ) {
       return 0;
     case ToolDrag:
       if(global::blnDebugMode) { printf("Tool Drag event\n"); }
+      SDL_GetMouseState(&currentmouse.x, &currentmouse.y);
+      ball_num = findSelectedBall(currentmouse);
+      if (ball_num == -1) {return 0;}
+      return 0;
+    case ToolInfo:
+      if(global::blnDebugMode) { printf("Tool Info event\n"); }
+      if ( e->type == SDL_MOUSEBUTTONDOWN ) {
+        SDL_GetMouseState(&currentmouse.x, &currentmouse.y);
+        ball_num = findSelectedBall(currentmouse);
+        if (ball_num == -1) {return 0;}
+        cannonballs::balls[ball_num].writeInfo();
+      }
       return 0;
     } // end switch tool type
   } else if ( e->type == SDL_KEYDOWN ) {
@@ -415,6 +430,14 @@ char core::handleEvent(SDL_Event* e ) {
       //stop all motion of balls
       for (int i = 0; i < cannonballs::balls.size(); ++i)
         { cannonballs::balls[i].setVelocity({0.0,0.0}); }
+      return 0;
+    case SDLK_p:
+      //"pauses" the simulation by preventing ball from updating
+      /** @bug (GamerMan7799#1#): If you create a ball while the simulation is paused,
+               the newly created ball won't be paused. And it will be inverse the rest
+               of the simulation. */
+      for (int i = 0; i < cannonballs::balls.size(); ++i)
+        { cannonballs::balls[i].togglePause(); }
       return 0;
     case SDLK_f:
       if(global::blnDebugMode) { printf("Random fire triggered\n"); }
@@ -444,6 +467,9 @@ char core::handleEvent(SDL_Event* e ) {
     case SDLK_5:
       core::toolbar.setTool(ToolDrag);
       return 0;
+    case SDLK_6:
+      core::toolbar.setTool(ToolInfo);
+      return 0;
     default:
       return 0;
     } //end switch key
@@ -465,7 +491,8 @@ int core::findSelectedBall(LOC mouseplace) {
     ball_box = cannonballs::balls[i].getBOX();
 
     if ( mouseplace.x >= ball_box.left && mouseplace.x <= ball_box.right) {
-      if ( mouseplace.y >= ball_box.top && mouseplace.y >= ball_box.bottom) {
+      // SDL y coordinates are measured from top of screen
+      if ( mouseplace.y >= ball_box.top && mouseplace.y <= ball_box.bottom) {
         return i;
       }
     }

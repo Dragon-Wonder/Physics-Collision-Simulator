@@ -62,7 +62,7 @@ typedef struct stcDoubleValues dblXY;
 typedef struct stcPhysicalProperties PP;
 typedef struct stcBox BOX;
 typedef struct stcColor clr;
-typedef struct stcXYZVector XYZ;
+//typedef struct stcXYZVector XYZ;
 
 typedef std::vector<LOC> VPath;
 /// @}
@@ -75,17 +75,15 @@ class clsCannonball {
     LOC getplace(void);
     void setplace(LOC);
     void setSpin(double);
-
     void update(double);
-    //void setSDLScreen(SDL_Texture*, SDL_Texture*, WINATT, uint);
     dblXY getVelocity(void);
     void setVelocity(dblXY);
     PP getPhysicalProps(void);
     void setPhysicalProps(PP);
     BOX getBOX(void);
     double getSpin(void);
-
-
+    void writeInfo(void);
+    void togglePause(void);
     bool blnstarted_; /**< Whether or not the ball is "started" if it is, the program will update
         it and won't let a new ball replace it in its array spot. */
 
@@ -114,6 +112,7 @@ class clsCannonball {
 
     dblXY forces_; /**< Forces on the ball in x and y */
     double spin_; /**< The angular velocity of the ball (in rad/s) for the Magnus Effect  */
+    bool paused_; /**< If the simulation is paused or not.  */
 
     void show(void);
     void drawPath(LOC);

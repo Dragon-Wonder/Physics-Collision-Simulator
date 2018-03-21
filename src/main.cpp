@@ -4,17 +4,17 @@
 /// @brief      Holds all the main functions.
 /// @author     GamerMan7799
 /// @author     xPUREx
-/// @version    1.4.0-beta.3
+/// @version    1.4.0-beta.4
 /// @date       2018
 /// @copyright  Public Domain Unlicense.
 /////////////////////////////////////////////////
 /*****************************************************************************/
 //General Todos
-/** BUG (GamerMan7799#1#): The balls will become stuck together for seemingly random reasons */
-/** BUG (GamerMan7799#3#): Balls' velocity becomes NaN quite often */
-/** TODO (GamerMan7799#9#): Allow setting of some Physics Values in Config */
-/** TODO (GamerMan7799#5#): Make balls bigger? */
-/** TODO (GamerMan7799#9#): Set Max/Min values for mass? */
+/** @bug (GamerMan7799#1#): The balls will become stuck together for seemingly random reasons */
+/** @bug (GamerMan7799#3#): Balls' velocity becomes NaN quite often */
+/** @todo (GamerMan7799#9#): Allow setting of some Physics Values in Config */
+/** @todo (GamerMan7799#9#): Set Max/Min values for mass? */
+/** @bug  (GamerMan7799#3#): Balls sometimes get stuck in walls, likely caused by the ball size increase. */
 /*****************************************************************************/
 //#define DEFINED_USE_R2_VEL_MODDER
 /**< If this is defined, then program will use unrealistic method that will

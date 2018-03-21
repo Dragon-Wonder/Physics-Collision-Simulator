@@ -11,8 +11,8 @@ clsToolbar::clsToolbar() {
 
     selected_tool_ = ToolFire;
     show_toolbox_ = true;
-    /** TODO (GamerMan7799#9#): Change toolbar to bottom left. */
-    /** TODO (GamerMan7799#9#): Make toolbar bigger? */
+    /** @todo (GamerMan7799#9#): Change toolbar to bottom left. */
+    /** @todo (GamerMan7799#9#): Make toolbar bigger? */
     position_ = {0,0,28,28};
 
     //position_ = {screen::screenatt.height - 28, screen::screenatt.width - 28,
@@ -54,7 +54,7 @@ void clsToolbar::incrementTool(char dir) {
   /////////////////////////////////////////////////
 
   if (dir == -1 && selected_tool_ != ToolFire) { selected_tool_--; }
-  else if (dir == 1 && selected_tool_ != ToolDrag) { selected_tool_++; }
+  else if (dir == 1 && selected_tool_ != ToolInfo) { selected_tool_++; }
 }
 /*****************************************************************************/
 uchar clsToolbar::getTool() {

@@ -85,8 +85,9 @@ enum Tools {
   ToolFire = 0, /**< The basic firing tool. */
   ToolDrop,     /**< Drops a ball without velocity. */
   ToolRope,     /**< Tool to add a rope between balls, or pin ball to wall. */
-  ToolDele,   /**< Tool to delete selected ball. */
+  ToolDele,     /**< Tool to delete selected ball. */
   ToolDrag,     /**< Tool that allows ball to be dragged around. */
+  ToolInfo     /**< Tool that writes information about the selected ball to screen */
 };
 /*****************************************************************************/
 #endif // __GLOBAL_H_INCLUDED__

@@ -151,78 +151,77 @@ void clsCannonball::update(double newdeltat) {
   ///
   /////////////////////////////////////////////////
 
-  blncheckphysics_ = true; // enable on update
-  deltat_ = newdeltat;
+  if (!paused_) {
+    blncheckphysics_ = true; // enable on update
+    deltat_ = newdeltat;
 
-  // reset the forces so strange things don't happen
-  forces_ = {0.0, props_.mass * global::physics::kGravity};
+    // reset the forces so strange things don't happen
+    forces_ = {0.0, props_.mass * global::physics::kGravity};
 
-  if (blndragenabled_) {
-    doMagnusEffect();
-    dragUpdateAcc();
-  }
-  doFriction();
+    if (blndragenabled_) {
+      doMagnusEffect();
+      dragUpdateAcc();
+    }
+    doFriction();
 
-  acc_.x = forces_.x / props_.mass;
-  acc_.y = forces_.y / props_.mass;
+    acc_.x = forces_.x / props_.mass;
+    acc_.y = forces_.y / props_.mass;
 
-	vel_.x = (vel_.x + acc_.x * deltat_);
-	vel_.y = (vel_.y + acc_.y * deltat_);
+    vel_.x = (vel_.x + acc_.x * deltat_);
+    vel_.y = (vel_.y + acc_.y * deltat_);
 
-	// get new velocities if collision with edges
+    // get new velocities if collision with edges
+    double coefres = (global::config.values.uchrCollisionMethod == CollideInelastic) ?
+                     global::physics::kCoefficientRestitution : 1.0;
 
-	double coefres = (global::config.values.uchrCollisionMethod == CollideInelastic) ?
-                   global::physics::kCoefficientRestitution : 1.0;
+    if (collisionbox_.left < screen_place_.w / 2) {
+      vel_.x *= -1 * coefres;
+      vel_.y *= coefres;
+      dblLOC_.x = screen_place_.w;
+    }
 
+    if (collisionbox_.right > (screen::screenatt.width)) {
+      vel_.x *= -1 * coefres;
+      vel_.y *= coefres;
+      dblLOC_.x = screen::screenatt.width - screen_place_.w / 2;
+    }
 
-	/* TODO (GamerMan7799#2#): Make this stuff simpler */
-  if (collisionbox_.left < screen_place_.w / 2) {
-    vel_.x *= -1 * coefres;
-    vel_.y *= coefres;
-    dblLOC_.x = screen_place_.w;
-  }
+    if (collisionbox_.bottom > (screen::screenatt.height)) {
+      vel_.x *= coefres;
+      vel_.y *= -1 * coefres;
+      dblLOC_.y = screen_place_.h / 2;
+    }
 
-  if (collisionbox_.right > (screen::screenatt.width)) {
-    vel_.x *= -1 * coefres;
-    vel_.y *= coefres;
-    dblLOC_.x = screen::screenatt.width - screen_place_.w / 2;
-  }
+    if (collisionbox_.top < 0 ) {
+      vel_.x *= coefres;
+      vel_.y *= -1 * coefres;
+      dblLOC_.y = (screen::screenatt.height) - screen_place_.h / 2;
+    }
 
-  if (collisionbox_.bottom > (screen::screenatt.height)) {
-    vel_.x *= coefres;
-    vel_.y *= -1 * coefres;
-    dblLOC_.y = screen_place_.h / 2;
-  }
+    dblLOC_.x = dblLOC_.x + vel_.x * deltat_ /*+ 0.5 * acc_.x * pow(deltat_,2)*/;
+    dblLOC_.y = dblLOC_.y + vel_.y * deltat_ /*+ 0.5 * acc_.y * pow(deltat_,2)*/;
 
-  if (collisionbox_.top < 0 ) {
-    vel_.x *= coefres;
-    vel_.y *= -1 * coefres;
-    dblLOC_.y = (screen::screenatt.height) - screen_place_.h / 2;
-  }
+    // update place and collision box again in case something changed
+    place_.x = round(dblLOC_.x);
+    place_.y = round(dblLOC_.y);
+    updateCollisionBox();
 
-  dblLOC_.x = dblLOC_.x + vel_.x * deltat_ /*+ 0.5 * acc_.x * pow(deltat_,2)*/;
-  dblLOC_.y = dblLOC_.y + vel_.y * deltat_ /*+ 0.5 * acc_.y * pow(deltat_,2)*/;
+    if (global::config.values.blnLogging) {
+      FILE* logfile = fopen("logfile.log","a");
+      fprintf(logfile,"Ball %3u \t (%.3f, %.3f)\n",ballID_, dblLOC_.x,dblLOC_.y);
+      fclose(logfile);
+    }
 
-  // update place and collision box again in case something changed
-  place_.x = round(dblLOC_.x);
-  place_.y = round(dblLOC_.y);
-  updateCollisionBox();
-
-	if (global::config.values.blnLogging) {
-    FILE* logfile = fopen("logfile.log","a");
-    fprintf(logfile,"Ball %3u \t (%.3f, %.3f)\n",ballID_, dblLOC_.x,dblLOC_.y);
-    fclose(logfile);
-	}
-
-  double total_v;
-  total_v = sqrt( pow(vel_.x,2) + pow(vel_.y,2) );
-  if (total_v < global::physics::kMinVelocity || isnan(total_v) ) {
-    blnstarted_ = false;
-    if (global::blnDebugMode) {
-      if ( isnan(total_v) ) { printf("Ball velocity is NaN; killing it.\n"); }
-      else { printf("Ball moving too slow; killing it.\n"); }
-    } //end if debug mode
-  } //end if should kill
+    double total_v;
+    total_v = sqrt( pow(vel_.x,2) + pow(vel_.y,2) );
+    if (total_v < global::physics::kMinVelocity || isnan(total_v) ) {
+      blnstarted_ = false;
+      if (global::blnDebugMode) {
+        if ( isnan(total_v) ) { printf("Ball velocity is NaN; killing it.\n"); }
+        else { printf("Ball moving too slow; killing it.\n"); }
+      } //end if debug mode
+    } //end if should kill
+  } // end if not paused
 	show(); //show the ball on the screen
 }
 /*****************************************************************************/
@@ -278,6 +277,7 @@ void clsCannonball::setValues(double r, LOC init_place,
   /////////////////////////////////////////////////
 
   ballID_ = newID;
+  paused_ = false;
 
   props_.radius = r; //in meters
 
@@ -417,8 +417,8 @@ void clsCannonball::doFriction() {
                     normal_force;
   updateCollisionBox();
   //Update acc for Friction values
-  if ( collisionbox_.bottom < screen_place_.h ||
-       collisionbox_.top > screen::screenatt.height ) {
+  if ( collisionbox_.bottom <= screen_place_.h ||
+       collisionbox_.top >= screen::screenatt.height ) {
     //Ball is in contact with floor or ceiling update x acc
     forces_.x += friction * (vel_.x < 0.0 ? -1.0 : 1.0);
   } // end if touching top/bottom
@@ -467,5 +467,29 @@ void clsCannonball::setSpin(double newspin) {
   /// @brief Sets the ball's spin
   /////////////////////////////////////////////////
   spin_ = newspin;
+}
+/*****************************************************************************/
+void clsCannonball::writeInfo() {
+  /////////////////////////////////////////////////
+  /// @brief Writes information bout the ball to the console
+  /////////////////////////////////////////////////
+
+  printf("\n\n");
+  printf("Information about Ball: %i\n",ballID_);
+  printf("Color: \t \t \t (%i, %i, %i)\n",color_.Red, color_.Green, color_.Blue);
+  printf("Location: \t \t (%5.5f, %5.5f)\n",dblLOC_.x,dblLOC_.y);
+  printf("Velocity: \t \t (%5.5f, %5.5f)\n",vel_.x,vel_.y);
+  printf("Acceleration: \t \t (%5.5f, %5.5f)\n",acc_.x,acc_.y);
+  printf("Forces: \t \t (%5.5f, %5.5f)\n", forces_.x, forces_.y);
+  printf("Spin: \t \t \t (%5.5f)\n\n\n", spin_);
+
+}
+/*****************************************************************************/
+void clsCannonball::togglePause() {
+  /////////////////////////////////////////////////
+  /// @brief Enable/disable pause
+  /////////////////////////////////////////////////
+
+  paused_ = !(paused_);
 }
 /*****************************************************************************/

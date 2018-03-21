@@ -28,7 +28,7 @@ struct stcWinAtt {
   SDL_Texture *pixel; /**< The pixel texture, used to draw lines */
   SDL_Texture *toolbox; /**< Toolbox frame texture. */
   SDL_Texture *tools; /**< Textures for the tools in the toolbox. */
-  SDL_Rect toolclips[5]; /**< Clips for the different tools. */
+  SDL_Rect toolclips[6]; /**< Clips for the different tools. */
 };
 /*****************************************************************************/
 /** @struct stcLocation
@@ -43,7 +43,7 @@ typedef struct stcLocation LOC;
 /// @}
 /*****************************************************************************/
 // It is likely bad practice to hold values like this...
-/* TODO (GamerMan7799#9#): Find a better method */
+/** @todo (GamerMan7799#9#): Find a better method */
 namespace screen {
   extern WINATT screenatt;
 }

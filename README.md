@@ -108,6 +108,7 @@ R = All motion will be stopped.
 Q / ESC = Program will exit.
 F = Every so often a randomly generated cannonball will be created
 T = Toggle toolbox on/off
+P = Toggle pause for the simulation
 Right Arrow = Select next tool
 Left Arrow = Select previous tool
 1 = Select Fire tool
@@ -115,6 +116,7 @@ Left Arrow = Select previous tool
 3 = Select Rope tool
 4 = Select Delete tool
 5 = Select Drag tool
+6 = Select Info tool
 ```
 
 ## Tools
@@ -140,3 +142,7 @@ Clicking on a ball will delete it.
 ### Drag tool - WIP
 
 Clicking and dragging on a ball will allow you to move a ball where the mouse is. When released the ball will still have its inital velocity.
+
+### Info Tool - WIP
+
+Clicking on a ball will write infomation about it to the console
