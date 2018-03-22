@@ -38,7 +38,7 @@ FolderName\SDL2.dll
 FolderName\SDL2_image.dll
 ```
 
-If you are using the verision I complie, which can be found in the [release tab](https://github.com/Dragon-Wonder/Physics-Collision-Simulator/releases) 
+If you are using the verision I compile, which can be found in the [release tab](https://github.com/Dragon-Wonder/Physics-Collision-Simulator/releases) 
 you will also need the following binaries. 
 
 ```
@@ -143,6 +143,6 @@ Clicking on a ball will delete it.
 
 Clicking and dragging on a ball will allow you to move a ball where the mouse is. When released the ball will still have its inital velocity.
 
-### Info Tool - WIP
+### Info Tool
 
 Clicking on a ball will write infomation about it to the console

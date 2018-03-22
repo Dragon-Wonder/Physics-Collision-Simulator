@@ -2,23 +2,23 @@
 id ICON "Icon_App.ico"
 /**********************************************************************************************************************************************/
 #include <windows.h>
-//#include <string>
 #include "../src/version.h"
 /**********************************************************************************************************************************************/
 //General stuff that should need to be changed
 #define VER_COMPANYNAME_STR "Public Domain"
 #define VER_FILEDESCRIPTION_STR "A simple program that stimulates collisions between different objects"
 #define VER_FILENAME_STR "SDL Physics Simulation"
-#define VER_ORIGINALFILENAME_STR "Physics-Simulation.exe"
 #define VER_LEGALCOPYRIGHT_STR "http://unlicense.org"
 #define VER_COMMENTS_STR "Source Code found at: https://github.com/Dragon-Wonder/Physics-Collision-Simulator"
 /**********************************************************************************************************************************************/
 //If Private is define above, indicting that it was a build not meant to be released define these variables
 #ifndef DEFINED_BUILD_MODE_PRIVATE
+  #define VER_ORIGINALFILENAME_STR "Physics-Simulation.exe"
 	#define VER_DEBUG 0
 	#define VER_PRIVATEBUILD 0
 	#define VER_PRERELEASE 0
 #else
+  #define VER_ORIGINALFILENAME_STR "Physics-Simulation-DEBUG.exe"
 	#define VER_DEBUG VS_FF_DEBUG
 	#define VER_PRIVATEBUILD VS_FF_PRIVATEBUILD
 	#define VER_PRERELEASE VS_FF_PRERELEASE

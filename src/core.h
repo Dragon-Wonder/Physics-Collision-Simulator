@@ -43,6 +43,13 @@ namespace core {
   char handleEvent(SDL_Event*);
   int findSelectedBall(LOC);
 
+  void doFireTool(SDL_Event*);
+  void doDeleTool(SDL_Event*);
+  void doDragTool(SDL_Event*);
+  void doDropTool(SDL_Event*);
+  void doInfoTool(SDL_Event*);
+  void doRopeTool(SDL_Event*);
+
   extern LOC oldmouse;
   extern LOC currentmouse;
   extern bool holding;

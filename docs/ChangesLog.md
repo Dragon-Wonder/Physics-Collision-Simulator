@@ -3,14 +3,14 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## [1.4.0-beta.4] - WIP
+## [1.4.0-beta.5] - WIP
 ### Added
 * Toolbar with different tools including: drag, fire, drop, rope, delete, and info. Not all are fully working at the moment. 
-* Currently finished tools: fire, drop, delete, info
+* Currently finished tools: fire, drag, drop, delete, and info.
 * SDL Licenses.
 * Credits to Docs.
 * More Doxygen stuff.
-* Debug message that prints ball mass. 
+* Debug message that prints ball mass when created. 
 * Ability to pause the simulation.
 
 ### Changed

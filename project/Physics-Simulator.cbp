@@ -9,7 +9,7 @@
 		<Build>
 			<Target title="Debug-Windows">
 				<Option platforms="Windows;" />
-				<Option output="../Physics-Simulator-PRIVATE" prefix_auto="1" extension_auto="1" />
+				<Option output="../Physics-Simulator-DEBUG" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -65,7 +65,7 @@
 			</Target>
 			<Target title="Debug-Linux">
 				<Option platforms="Unix;" />
-				<Option output="../Physics-Simulator-PRIVATE" prefix_auto="1" extension_auto="1" />
+				<Option output="../Physics-Simulator-DEBUG" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />

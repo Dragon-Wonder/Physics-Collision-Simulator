@@ -151,12 +151,45 @@ void clsCannonball::update(double newdeltat) {
   ///
   /////////////////////////////////////////////////
 
+  blncheckphysics_ = true; // enable on update
   if (!paused_) {
-    blncheckphysics_ = true; // enable on update
+
     deltat_ = newdeltat;
 
     // reset the forces so strange things don't happen
     forces_ = {0.0, props_.mass * global::physics::kGravity};
+
+    // get new velocities if collision with edges
+    double coefres = (global::config.values.uchrCollisionMethod == CollideInelastic) ?
+                     global::physics::kCoefficientRestitution : 1.0;
+
+    if (collisionbox_.left < screen_place_.w / 2) {
+      vel_.x *= -1 * coefres;
+      vel_.y *= coefres;
+      forces_.x -= props_.mass * global::physics::kGravity;
+      dblLOC_.x = screen_place_.w;
+    }
+
+    if (collisionbox_.right > (screen::screenatt.width)) {
+      vel_.x *= -1 * coefres;
+      vel_.y *= coefres;
+      forces_.x += props_.mass * global::physics::kGravity;
+      dblLOC_.x = screen::screenatt.width - screen_place_.w / 2;
+    }
+
+    if (collisionbox_.bottom > (screen::screenatt.height)) {
+      vel_.x *= coefres;
+      vel_.y *= -1 * coefres;
+      forces_.y -= props_.mass * global::physics::kGravity;
+      dblLOC_.y = screen_place_.h / 2;
+    }
+
+    if (collisionbox_.top < 0 ) {
+      vel_.x *= coefres;
+      vel_.y *= -1 * coefres;
+      forces_.y += props_.mass * global::physics::kGravity;
+      dblLOC_.y = (screen::screenatt.height) - screen_place_.h / 2;
+    }
 
     if (blndragenabled_) {
       doMagnusEffect();
@@ -170,41 +203,10 @@ void clsCannonball::update(double newdeltat) {
     vel_.x = (vel_.x + acc_.x * deltat_);
     vel_.y = (vel_.y + acc_.y * deltat_);
 
-    // get new velocities if collision with edges
-    double coefres = (global::config.values.uchrCollisionMethod == CollideInelastic) ?
-                     global::physics::kCoefficientRestitution : 1.0;
 
-    if (collisionbox_.left < screen_place_.w / 2) {
-      vel_.x *= -1 * coefres;
-      vel_.y *= coefres;
-      dblLOC_.x = screen_place_.w;
-    }
-
-    if (collisionbox_.right > (screen::screenatt.width)) {
-      vel_.x *= -1 * coefres;
-      vel_.y *= coefres;
-      dblLOC_.x = screen::screenatt.width - screen_place_.w / 2;
-    }
-
-    if (collisionbox_.bottom > (screen::screenatt.height)) {
-      vel_.x *= coefres;
-      vel_.y *= -1 * coefres;
-      dblLOC_.y = screen_place_.h / 2;
-    }
-
-    if (collisionbox_.top < 0 ) {
-      vel_.x *= coefres;
-      vel_.y *= -1 * coefres;
-      dblLOC_.y = (screen::screenatt.height) - screen_place_.h / 2;
-    }
 
     dblLOC_.x = dblLOC_.x + vel_.x * deltat_ /*+ 0.5 * acc_.x * pow(deltat_,2)*/;
     dblLOC_.y = dblLOC_.y + vel_.y * deltat_ /*+ 0.5 * acc_.y * pow(deltat_,2)*/;
-
-    // update place and collision box again in case something changed
-    place_.x = round(dblLOC_.x);
-    place_.y = round(dblLOC_.y);
-    updateCollisionBox();
 
     if (global::config.values.blnLogging) {
       FILE* logfile = fopen("logfile.log","a");
@@ -222,6 +224,7 @@ void clsCannonball::update(double newdeltat) {
       } //end if debug mode
     } //end if should kill
   } // end if not paused
+  updateCollisionBox();
 	show(); //show the ball on the screen
 }
 /*****************************************************************************/
@@ -299,6 +302,7 @@ void clsCannonball::setValues(double r, LOC init_place,
 	blnstarted_ = true;
 
   dragCalcValues();
+  updateCollisionBox();
 
 
   forces_ = {0.00, global::physics::kGravity * props_.mass};
@@ -394,6 +398,10 @@ void clsCannonball::updateCollisionBox() {
   /// @brief Updates the collision box
   /////////////////////////////////////////////////
 
+  // update place and collision box again in case something changed
+  place_.x = round(dblLOC_.x);
+  place_.y = round(dblLOC_.y);
+
 	//Update the collision box for the new location
 	collisionbox_.left = place_.x - floor(screen_place_.w / 2);
 	collisionbox_.top = screen::screenatt.height - (place_.y + floor(screen_place_.h / 2));
@@ -417,24 +425,10 @@ void clsCannonball::doFriction() {
                     normal_force;
   updateCollisionBox();
   //Update acc for Friction values
-  if ( collisionbox_.bottom <= screen_place_.h ||
-       collisionbox_.top >= screen::screenatt.height ) {
-    //Ball is in contact with floor or ceiling update x acc
+  if ( collisionbox_.bottom <= screen_place_.h ) {
+    //Ball is in contact with floor
     forces_.x += friction * (vel_.x < 0.0 ? -1.0 : 1.0);
-  } // end if touching top/bottom
-
-
-  // Since there really isn't a normal force when the ball contacts
-  // the edges, this section is commented out.
-  /*
-  if ( collisionbox_.left < (screen_place_.w /2 ) ||
-       collisionbox_.right > screen::screenatt.width ) {
-    // Ball is in contact with the wall update y acc.
-    forces_.y += friction * (vel_.y < 0.0 ? -1.0 : 1.0);
-    // add normal force
-    forces_.x += normal_force * (collisionbox_.right > screen::screenatt.width) ?
-                  1.0 : -1.0;
-  } // end if touching side edges */
+  }
 }
 /*****************************************************************************/
 void clsCannonball::doMagnusEffect() {
@@ -491,5 +485,13 @@ void clsCannonball::togglePause() {
   /////////////////////////////////////////////////
 
   paused_ = !(paused_);
+}
+/*****************************************************************************/
+bool clsCannonball::isPaused() {
+  /////////////////////////////////////////////////
+  /// @brief Returns if paused or not
+  /////////////////////////////////////////////////
+
+  return paused_;
 }
 /*****************************************************************************/

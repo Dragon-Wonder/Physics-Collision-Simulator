@@ -34,7 +34,8 @@ void cannonballs::addNew(LOC mouseC, LOC mouseO, double HoldTime ) {
   ///
   /////////////////////////////////////////////////
 
-  //Get location, vel, and angle
+  /** @todo (GamerMan7799#3#): Make simpler since new way to hold needed values */
+    //Get location, vel, and angle
   double fire_v;
   double angle;
   double radius = (double)global::equations::kTimeSizeRatio * sqrt(HoldTime);
@@ -57,6 +58,9 @@ void cannonballs::addNew(LOC mouseC, LOC mouseO, double HoldTime ) {
   intCannonBallNum++;
   clsCannonball tempBall;
   tempBall.setValues(radius, mouseO,fire_v, angle, intCannonBallNum);
+  if (intCannonBallNum > 1) {
+    if(balls[0].isPaused()) { tempBall.togglePause(); }
+  }
   balls.push_back(tempBall);
 
   return;
@@ -353,69 +357,9 @@ char core::handleEvent(SDL_Event* e ) {
     // while holding down mouse button.
 
   if ( e->type == SDL_QUIT ) { return 'q'; }
-  else if (e->type == SDL_MOUSEMOTION && holding) {
+  else if (e->type == SDL_MOUSEMOTION) {
     SDL_GetMouseState(&currentmouse.x, &currentmouse.y );
-  } else if ( e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP ) {
-    // there is a mouse-based event, so now we have to check what tool we are using.
-    if (global::blnDebugMode) { printf("Mouse event found.\n"); }
-    switch ( toolbar.getTool() ) {
-    /** @todo (GamerMan7799#9#) Simplify the cases, merge similar tool functions
-              such as ToolFire, and ToolDrop, and ToolRope, ToolDele, ToolDrag, and ToolInfo.
-              I want to get them all working on their own first before I try to merge them. */
-    case ToolFire:
-    default: // make tool fire the default
-      if(global::blnDebugMode) { printf("Tool Fire event\n"); }
-      if ( e->type == SDL_MOUSEBUTTONDOWN ) {
-        holding = true;
-        tick.startHolding();
-        SDL_GetMouseState(&oldmouse.x, &oldmouse.y);
-        currentmouse = oldmouse;
-      } else if ( e->type == SDL_MOUSEBUTTONUP ) {
-        holding = false;
-        cannonballs::addNew(currentmouse, oldmouse, tick.stopHolding() );
-      } // end if event type
-      return 0;
-    case ToolDrop:
-      if(global::blnDebugMode) { printf("Tool Drop event\n"); }
-      if ( e->type == SDL_MOUSEBUTTONDOWN ) {
-        holding = true;
-        tick.startHolding();
-        SDL_GetMouseState(&oldmouse.x, &oldmouse.y);
-      } else if ( e->type == SDL_MOUSEBUTTONUP ) {
-        holding = false;
-        cannonballs::addNew(oldmouse, oldmouse, tick.stopHolding() );
-      } // end if event type
-      return 0;
-
-    case ToolRope:
-      if(global::blnDebugMode) { printf("Tool Rope event\n"); }
-      return 0;
-
-    case ToolDele:
-      if(global::blnDebugMode) { printf("Tool Dele event\n"); }
-      if( e->type == SDL_MOUSEBUTTONDOWN ){
-        SDL_GetMouseState(&currentmouse.x, &currentmouse.y);
-        ball_num = findSelectedBall(currentmouse);
-        if (ball_num == -1) {return 0;}
-        cannonballs::balls[ball_num].blnstarted_ = false;
-      }
-      return 0;
-    case ToolDrag:
-      if(global::blnDebugMode) { printf("Tool Drag event\n"); }
-      SDL_GetMouseState(&currentmouse.x, &currentmouse.y);
-      ball_num = findSelectedBall(currentmouse);
-      if (ball_num == -1) {return 0;}
-      return 0;
-    case ToolInfo:
-      if(global::blnDebugMode) { printf("Tool Info event\n"); }
-      if ( e->type == SDL_MOUSEBUTTONDOWN ) {
-        SDL_GetMouseState(&currentmouse.x, &currentmouse.y);
-        ball_num = findSelectedBall(currentmouse);
-        if (ball_num == -1) {return 0;}
-        cannonballs::balls[ball_num].writeInfo();
-      }
-      return 0;
-    } // end switch tool type
+    if(toolbar.getTool() == ToolDrag) { doDragTool(e); }
   } else if ( e->type == SDL_KEYDOWN ) {
     switch ( e->key.keysym.sym ) {
     case SDLK_k:
@@ -433,9 +377,6 @@ char core::handleEvent(SDL_Event* e ) {
       return 0;
     case SDLK_p:
       //"pauses" the simulation by preventing ball from updating
-      /** @bug (GamerMan7799#1#): If you create a ball while the simulation is paused,
-               the newly created ball won't be paused. And it will be inverse the rest
-               of the simulation. */
       for (int i = 0; i < cannonballs::balls.size(); ++i)
         { cannonballs::balls[i].togglePause(); }
       return 0;
@@ -474,6 +415,37 @@ char core::handleEvent(SDL_Event* e ) {
       return 0;
     } //end switch key
   } //end if event
+
+  if ( e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP ) {
+    if (e->type == SDL_MOUSEBUTTONDOWN) {holding = true;}
+    else if (e->type == SDL_MOUSEBUTTONUP) {holding = false;}
+    // there is a mouse-based event, so now we have to check what tool we are using.
+    if (global::blnDebugMode) { printf("Mouse event found.\n"); }
+    switch ( toolbar.getTool() ) {
+    /** @todo (GamerMan7799#9#) Simplify the cases, merge similar tool functions
+              such as ToolFire, and ToolDrop, and ToolRope, ToolDele, ToolDrag, and ToolInfo.
+              I want to get them all working on their own first before I try to merge them. */
+    case ToolFire:
+    default: // make tool fire the default
+      doFireTool(e);
+      return 0;
+    case ToolDrop:
+      doDropTool(e);
+      return 0;
+    case ToolRope:
+      doRopeTool(e);
+      return 0;
+    case ToolDele:
+      doDeleTool(e);
+      return 0;
+    case ToolDrag:
+      doDragTool(e);
+      return 0;
+    case ToolInfo:
+      doInfoTool(e);
+      return 0;
+    } // end switch tool type
+  }
   return 0; // main doesn't have to do anything else, return 0.
 }
 /*****************************************************************************/
@@ -485,7 +457,6 @@ int core::findSelectedBall(LOC mouseplace) {
   /////////////////////////////////////////////////
 
   BOX ball_box;
-
 
   for (int i = 0; i < cannonballs::balls.size(); ++i){
     ball_box = cannonballs::balls[i].getBOX();
@@ -501,4 +472,114 @@ int core::findSelectedBall(LOC mouseplace) {
   return -1; // if not ball found to be selected
 }
 /*****************************************************************************/
+void core::doFireTool(SDL_Event* e) {
+  /////////////////////////////////////////////////
+  /// @brief Function for the fire tool
+  /// @param e = SDL_event passed through handle event
+  /////////////////////////////////////////////////
 
+  if(global::blnDebugMode) { printf("Tool Fire event\n"); }
+  if ( e->type == SDL_MOUSEBUTTONDOWN ) {
+    holding = true;
+    tick.startHolding();
+    SDL_GetMouseState(&oldmouse.x, &oldmouse.y);
+    currentmouse = oldmouse;
+  } else if ( e->type == SDL_MOUSEBUTTONUP ) {
+    holding = false;
+    cannonballs::addNew(currentmouse, oldmouse, tick.stopHolding() );
+  } // end if event type
+}
+/*****************************************************************************/
+void core::doDeleTool(SDL_Event* e) {
+  /////////////////////////////////////////////////
+  /// @brief Function for the delete tool
+  /// @param e = SDL_event passed through handle event
+  /////////////////////////////////////////////////
+
+  int ball_num;
+
+  if(global::blnDebugMode) { printf("Tool Dele event\n"); }
+  if( e->type == SDL_MOUSEBUTTONDOWN ){
+    SDL_GetMouseState(&currentmouse.x, &currentmouse.y);
+    ball_num = findSelectedBall(currentmouse);
+    if (ball_num == -1) {return;}
+    cannonballs::balls[ball_num].blnstarted_ = false;
+  }
+}
+/*****************************************************************************/
+void core::doDropTool(SDL_Event* e) {
+  /////////////////////////////////////////////////
+  /// @brief Function for the drop tool
+  /// @param e = SDL_event passed through handle event
+  /////////////////////////////////////////////////
+
+  if(global::blnDebugMode) { printf("Tool Drop event\n"); }
+  if ( e->type == SDL_MOUSEBUTTONDOWN ) {
+    holding = true;
+    tick.startHolding();
+    SDL_GetMouseState(&oldmouse.x, &oldmouse.y);
+  } else if ( e->type == SDL_MOUSEBUTTONUP ) {
+    holding = false;
+    cannonballs::addNew(oldmouse, oldmouse, tick.stopHolding() );
+  } // end if event type
+
+}
+/*****************************************************************************/
+void core::doDragTool(SDL_Event* e) {
+  /////////////////////////////////////////////////
+  /// @brief Function for the drag tool
+  /// @param e = SDL_event passed through handle event
+  /////////////////////////////////////////////////
+
+  /** @todo (GamerMan7799#3#): This function is a mess. Lots of redundant pieces of code. Clean it up. */
+
+
+  static int ball_num = -1;
+
+  if (e->type == SDL_MOUSEBUTTONDOWN) { ball_num = findSelectedBall(currentmouse); }
+  else if (e->type == SDL_MOUSEBUTTONUP) { ball_num = -1; }
+
+  if (ball_num == -1) {return;}
+
+  if (e->type == SDL_MOUSEMOTION && holding) {
+    currentmouse.y = global::config.values.uintScreenHeight - currentmouse.y;
+    cannonballs::balls[ball_num].setplace(currentmouse);
+  }
+
+  //if(global::blnDebugMode) { printf("Tool Drag event\n"); }
+  if ( holding && !(cannonballs::balls[ball_num].isPaused()) ) {
+    cannonballs::balls[ball_num].togglePause();
+  } else if (!(holding) && cannonballs::balls[ball_num].isPaused()) {
+    cannonballs::balls[ball_num].togglePause();
+  }
+}
+/*****************************************************************************/
+void core::doInfoTool(SDL_Event* e) {
+  /////////////////////////////////////////////////
+  /// @brief Function for the info tool
+  /// @param e = SDL_event passed through handle event
+  /////////////////////////////////////////////////
+
+  int ball_num;
+
+  if(global::blnDebugMode) { printf("Tool Info event\n"); }
+  if ( e->type == SDL_MOUSEBUTTONDOWN ) {
+    SDL_GetMouseState(&currentmouse.x, &currentmouse.y);
+    ball_num = findSelectedBall(currentmouse);
+    if (ball_num == -1) {return;}
+    cannonballs::balls[ball_num].writeInfo();
+  }
+}
+/*****************************************************************************/
+void core::doRopeTool(SDL_Event* e) {
+  /////////////////////////////////////////////////
+  /// @brief Function for the rope tool
+  /// @param e = SDL_event passed through handle event
+  /////////////////////////////////////////////////
+
+  int ball_num;
+
+  if(global::blnDebugMode) { printf("Tool Rope event\n"); }
+
+}
+/*****************************************************************************/

@@ -84,6 +84,7 @@ class clsCannonball {
     double getSpin(void);
     void writeInfo(void);
     void togglePause(void);
+    bool isPaused(void);
     bool blnstarted_; /**< Whether or not the ball is "started" if it is, the program will update
         it and won't let a new ball replace it in its array spot. */
 

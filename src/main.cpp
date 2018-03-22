@@ -4,17 +4,21 @@
 /// @brief      Holds all the main functions.
 /// @author     GamerMan7799
 /// @author     xPUREx
-/// @version    1.4.0-beta.4
+/// @version    1.4.0-beta.5
 /// @date       2018
 /// @copyright  Public Domain Unlicense.
 /////////////////////////////////////////////////
 /*****************************************************************************/
 //General Todos
 /** @bug (GamerMan7799#1#): The balls will become stuck together for seemingly random reasons */
-/** @bug (GamerMan7799#3#): Balls' velocity becomes NaN quite often */
-/** @todo (GamerMan7799#9#): Allow setting of some Physics Values in Config */
-/** @todo (GamerMan7799#9#): Set Max/Min values for mass? */
-/** @bug  (GamerMan7799#3#): Balls sometimes get stuck in walls, likely caused by the ball size increase. */
+/** @bug (GamerMan7799#9#): Balls' velocity becomes NaN quite often.
+                            Fixed? (haven't seen issue in a while, will remove it
+                            if I don't see it for several more updates) */
+/** @todo (GamerMan7799#8#): Allow setting of some Physics Values in Config */
+/** @todo (GamerMan7799#8#): Set Max/Min values for mass? */
+/** @bug  (GamerMan7799#9#): Balls sometimes get stuck in walls, likely caused by the ball size increase.
+                             Fixed? (haven't seen issue in a while, will remove it
+                                     if I don't see it for several more updates)*/
 /*****************************************************************************/
 //#define DEFINED_USE_R2_VEL_MODDER
 /**< If this is defined, then program will use unrealistic method that will
@@ -146,7 +150,6 @@ int main(int argc, char *argv[]) {
 
    if (core::holding && core::toolbar.getTool() == ToolFire)
     { core::cannonwindow.drawline(core::currentmouse, core::oldmouse); }
-
 
     core::toolbar.show();
     core::cannonwindow.update(); //Update the screen
