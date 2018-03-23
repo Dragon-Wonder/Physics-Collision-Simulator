@@ -1,5 +1,6 @@
 /*****************************************************************************/
 #include "core.h"
+#include "rope.h"
 /*****************************************************************************/
 /////////////////////////////////////////////////
 /// @file core.cpp
@@ -18,6 +19,7 @@ namespace core {
 /*****************************************************************************/
 namespace cannonballs {
   uint intCannonBallNum = 0;
+  uint intRopeNum = 0;
   VectorCannon balls;
   VectorRope ropes;
 }
@@ -299,8 +301,8 @@ void cannonballs::doCollide(uint numA, uint numB) {
 /*****************************************************************************/
 void cannonballs::clean_up() {
   /////////////////////////////////////////////////
-  /// @brief Removes any "dead" balls from the balls vector and shrinks it
-  ///        to reduce memory usage
+  /// @brief Removes any "dead" balls/rope from the balls/rope vector and
+  ///        shrinks it to reduce memory usage
   /////////////////////////////////////////////////
   int new_cannon_num = 0; // keeps track of the number of valid balls found
 
@@ -312,11 +314,27 @@ void cannonballs::clean_up() {
 
   if (global::blnDebugMode) {
     printf("Clean up has been run.\n");
-    printf("%3i entities have been cleared\n",intCannonBallNum-new_cannon_num);
-    printf("%3i entities remain\n",new_cannon_num);
+    printf("%3i balls have been cleared\n",intCannonBallNum-new_cannon_num);
+    printf("%3i balls remain\n",new_cannon_num);
   }
   intCannonBallNum = new_cannon_num;
-  balls.shrink_to_fit();
+  if(!balls.empty()) { balls.shrink_to_fit(); }
+
+
+  int new_rope_num = 0; // keeps track of the number of valid ropes found
+
+  for(int i = 0; i < intRopeNum; ++i) {
+    if ( !(ropes[i].blncheckphysics_) ) {
+      ropes.erase(ropes.begin()+i);
+    } else { new_rope_num++; }
+  }
+
+  if (global::blnDebugMode) {
+    printf("%3i ropes have been cleared\n",intRopeNum-new_rope_num);
+    printf("%3i ropes remain\n",new_rope_num);
+  }
+  intRopeNum = new_rope_num;
+  if(!ropes.empty()) { ropes.shrink_to_fit(); }
 }
 /*****************************************************************************/
 void core::fireRandom() {
@@ -420,7 +438,7 @@ char core::handleEvent(SDL_Event* e ) {
     if (e->type == SDL_MOUSEBUTTONDOWN) {holding = true;}
     else if (e->type == SDL_MOUSEBUTTONUP) {holding = false;}
     // there is a mouse-based event, so now we have to check what tool we are using.
-    if (global::blnDebugMode) { printf("Mouse event found.\n"); }
+    //if (global::blnDebugMode) { printf("Mouse event found.\n"); }
     switch ( toolbar.getTool() ) {
     /** @todo (GamerMan7799#9#) Simplify the cases, merge similar tool functions
               such as ToolFire, and ToolDrop, and ToolRope, ToolDele, ToolDrag, and ToolInfo.
@@ -532,6 +550,8 @@ void core::doDragTool(SDL_Event* e) {
   /////////////////////////////////////////////////
 
   /** @todo (GamerMan7799#3#): This function is a mess. Lots of redundant pieces of code. Clean it up. */
+  /** @bug (GamerMan7799#1#): Drag doesn't always reset pause value correctly. */
+
 
 
   static int ball_num = -1;
@@ -578,8 +598,50 @@ void core::doRopeTool(SDL_Event* e) {
   /////////////////////////////////////////////////
 
   int ball_num;
+  clsRope tempRope;
 
-  if(global::blnDebugMode) { printf("Tool Rope event\n"); }
-
+  if ( e->type == SDL_MOUSEBUTTONDOWN ) {
+    SDL_GetMouseState(&currentmouse.x, &currentmouse.y);
+    ball_num = findSelectedBall(currentmouse);
+    //mod mouse start, once again because the top left is 0,0 to SDL
+    //currentmouse.y = global::config.values.uintScreenHeight - currentmouse.y;
+    if(global::blnDebugMode) { printf("Tool Rope event\n"); }
+    if( !cannonballs::ropes.empty() ){
+      // not first rope, therefore check if previous rope is incomplete
+      // aka missing second attachment point, or if a new rope is needed.
+      if (cannonballs::ropes.back().blncheckphysics_) {
+        // previous rope is complete, therefore make new rope.
+        if (ball_num == -1) {
+          // not clicking on a ball therefore attach to wall
+          tempRope.setAttachment(1,currentmouse);
+        } else {
+          // clicking on ball
+          tempRope.setAttachment(1,&cannonballs::balls[ball_num]);
+        }
+        cannonballs::intRopeNum++;
+        cannonballs::ropes.push_back(tempRope);
+      } else { // previous rope is not complete, there second attachment
+        if (ball_num == -1) {
+          // not clicking on a ball therefore attach to wall
+          cannonballs::ropes.back().setAttachment(2,currentmouse);
+        } else {
+          // clicking on ball
+          cannonballs::ropes.back().setAttachment(2,&cannonballs::balls[ball_num]);
+        }
+        cannonballs::ropes.back().activate();
+      } // end if first or second attachment.
+    } else { // first rope.
+      // first rope, just set everything up.
+      if (ball_num == -1) {
+        // not clicking on a ball therefore attach to wall
+        tempRope.setAttachment(1,currentmouse);
+      } else {
+        // clicking on ball
+        tempRope.setAttachment(1,&cannonballs::balls[ball_num]);
+      }
+      cannonballs::intRopeNum++;
+      cannonballs::ropes.push_back(tempRope);
+    } // end if more than 1 rope
+  } // end if mouse down
 }
 /*****************************************************************************/

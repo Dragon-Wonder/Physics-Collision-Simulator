@@ -73,6 +73,7 @@ class clsCannonball {
     ~clsCannonball();
     void setValues(double, LOC, double, double, int);
     LOC getplace(void);
+    LOC getScreenPlace(void);
     void setplace(LOC);
     void setSpin(double);
     void update(double);
@@ -85,6 +86,7 @@ class clsCannonball {
     void writeInfo(void);
     void togglePause(void);
     bool isPaused(void);
+    void checkEdges(void);
     bool blnstarted_; /**< Whether or not the ball is "started" if it is, the program will update
         it and won't let a new ball replace it in its array spot. */
 

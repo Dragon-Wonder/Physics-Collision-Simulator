@@ -4,7 +4,7 @@
 /// @brief      Holds all the main functions.
 /// @author     GamerMan7799
 /// @author     xPUREx
-/// @version    1.4.0-beta.5
+/// @version    1.4.0-beta.6
 /// @date       2018
 /// @copyright  Public Domain Unlicense.
 /////////////////////////////////////////////////
@@ -19,6 +19,8 @@
 /** @bug  (GamerMan7799#9#): Balls sometimes get stuck in walls, likely caused by the ball size increase.
                              Fixed? (haven't seen issue in a while, will remove it
                                      if I don't see it for several more updates)*/
+/** @todo (GamerMan7799#2#): Add pixel to meter factor. Currently it is assumed that 1 pixel = 1
+                            Which isn't accurate. Add a factor to change this.  */
 /*****************************************************************************/
 //#define DEFINED_USE_R2_VEL_MODDER
 /**< If this is defined, then program will use unrealistic method that will
@@ -137,6 +139,11 @@ int main(int argc, char *argv[]) {
 
     //Update every ball
     tempdeltat = core::tick.getTimeDifference();
+    for (int i = 0; i < cannonballs::ropes.size(); ++i) {
+      //Loop through each rope
+      cannonballs::ropes[i].update();
+    } //end for loop
+
     for (int i = 0; i < cannonballs::balls.size(); ++i) {
       //Loop through each cannonball
       if (cannonballs::balls[i].blnstarted_) {
@@ -161,7 +168,11 @@ int main(int argc, char *argv[]) {
     }
   } while (!quit); //keep looping until we get a quit
 
-  cannonballs::balls = VectorCannon();
+  if(!cannonballs::ropes.empty()) {cannonballs::ropes = VectorRope();}
+  if(global::blnDebugMode) {printf("Ropes cleared.\n");}
+
+  if(!cannonballs::balls.empty()) {cannonballs::balls = VectorCannon();}
+  if(global::blnDebugMode) {printf("Balls cleared.\n");}
   return 0;
 }
 /*****************************************************************************/

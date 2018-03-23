@@ -139,7 +139,7 @@ Clicking on a ball will cause it to be attached to one end of a rope. The rope c
 
 Clicking on a ball will delete it.
 
-### Drag tool - WIP
+### Drag tool
 
 Clicking and dragging on a ball will allow you to move a ball where the mouse is. When released the ball will still have its inital velocity.
 

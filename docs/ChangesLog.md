@@ -3,10 +3,11 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## [1.4.0-beta.5] - WIP
+## [1.4.0-beta.6] - WIP
 ### Added
 * Toolbar with different tools including: drag, fire, drop, rope, delete, and info. Not all are fully working at the moment. 
 * Currently finished tools: fire, drag, drop, delete, and info.
+* Rope tool now creates rope between two balls or ball and wall. (Does nothing else at the moment)
 * SDL Licenses.
 * Credits to Docs.
 * More Doxygen stuff.
@@ -16,6 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 ### Changed
 * Moved Docs to Doc folder.
 * Moved various items out of main.cpp into core.cpp to avoid main becoming too large.
+* How balls are updated (order and a few equations) to make it hopefully more realistic. 
 
 
 ### Updated

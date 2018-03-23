@@ -2,9 +2,9 @@
 #define __CORE_HEADER__
 /*****************************************************************************/
 #include "cannonball.h"
-#include "rope.h"
 #include "toolbar.h"
 #include "tick.h"
+#include "rope.h"
 /*****************************************************************************/
 /////////////////////////////////////////////////
 /// @file core.h
@@ -28,6 +28,7 @@ namespace cannonballs {
   bool checkOverlap(BOX, BOX);
   void doCollide(uint, uint);
   extern uint intCannonBallNum;
+  extern uint intRopeNum;
   extern VectorCannon balls;
   extern VectorRope ropes;
 }

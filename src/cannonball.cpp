@@ -156,57 +156,21 @@ void clsCannonball::update(double newdeltat) {
 
     deltat_ = newdeltat;
 
-    // reset the forces so strange things don't happen
-    forces_ = {0.0, props_.mass * global::physics::kGravity};
-
-    // get new velocities if collision with edges
-    double coefres = (global::config.values.uchrCollisionMethod == CollideInelastic) ?
-                     global::physics::kCoefficientRestitution : 1.0;
-
-    if (collisionbox_.left < screen_place_.w / 2) {
-      vel_.x *= -1 * coefres;
-      vel_.y *= coefres;
-      forces_.x -= props_.mass * global::physics::kGravity;
-      dblLOC_.x = screen_place_.w;
-    }
-
-    if (collisionbox_.right > (screen::screenatt.width)) {
-      vel_.x *= -1 * coefres;
-      vel_.y *= coefres;
-      forces_.x += props_.mass * global::physics::kGravity;
-      dblLOC_.x = screen::screenatt.width - screen_place_.w / 2;
-    }
-
-    if (collisionbox_.bottom > (screen::screenatt.height)) {
-      vel_.x *= coefres;
-      vel_.y *= -1 * coefres;
-      forces_.y -= props_.mass * global::physics::kGravity;
-      dblLOC_.y = screen_place_.h / 2;
-    }
-
-    if (collisionbox_.top < 0 ) {
-      vel_.x *= coefres;
-      vel_.y *= -1 * coefres;
-      forces_.y += props_.mass * global::physics::kGravity;
-      dblLOC_.y = (screen::screenatt.height) - screen_place_.h / 2;
-    }
-
     if (blndragenabled_) {
       doMagnusEffect();
       dragUpdateAcc();
     }
     doFriction();
+    checkEdges();
 
     acc_.x = forces_.x / props_.mass;
     acc_.y = forces_.y / props_.mass;
 
-    vel_.x = (vel_.x + acc_.x * deltat_);
-    vel_.y = (vel_.y + acc_.y * deltat_);
+    vel_.x += acc_.x * deltat_;
+    vel_.y += acc_.y * deltat_;
 
-
-
-    dblLOC_.x = dblLOC_.x + vel_.x * deltat_ /*+ 0.5 * acc_.x * pow(deltat_,2)*/;
-    dblLOC_.y = dblLOC_.y + vel_.y * deltat_ /*+ 0.5 * acc_.y * pow(deltat_,2)*/;
+    dblLOC_.x += vel_.x * deltat_ /*+ 0.5 * acc_.x * pow(deltat_,2)*/;
+    dblLOC_.y += vel_.y * deltat_ /*+ 0.5 * acc_.y * pow(deltat_,2)*/;
 
     if (global::config.values.blnLogging) {
       FILE* logfile = fopen("logfile.log","a");
@@ -226,6 +190,8 @@ void clsCannonball::update(double newdeltat) {
   } // end if not paused
   updateCollisionBox();
 	show(); //show the ball on the screen
+  // reset the forces so strange things don't happen
+  forces_ = {0.0, props_.mass * global::physics::kGravity};
 }
 /*****************************************************************************/
 void clsCannonball::show() {
@@ -415,12 +381,7 @@ void clsCannonball::doFriction() {
   /////////////////////////////////////////////////
 
   // normal force is mass * gravity - buoyancy (if drag is enabled)
-  double normal_force = (-1) * props_.mass * global::physics::kGravity;
-  double buoyancy = (-1) * global::physics::kDensityAir *
-                    global::physics::kGravity *
-                    props_.volume;
-  if (blndragenabled_) { normal_force -= buoyancy; }
-
+  double normal_force = (-1) * forces_.y;
   double friction = (double)global::physics::kKineticFriction *
                     normal_force;
   updateCollisionBox();
@@ -493,5 +454,58 @@ bool clsCannonball::isPaused() {
   /////////////////////////////////////////////////
 
   return paused_;
+}
+/*****************************************************************************/
+LOC clsCannonball::getScreenPlace() {
+  /////////////////////////////////////////////////
+  /// @brief Returns center of ball in terms of screen coordinates
+  /////////////////////////////////////////////////
+  LOC temp;
+  temp.x = screen_place_.x;
+  temp.x += floor (screen_place_.w/2);
+  temp.y = screen_place_.y;
+  temp.y += floor(screen_place_.h/2);
+  return temp;
+}
+/*****************************************************************************/
+void clsCannonball::checkEdges() {
+  /////////////////////////////////////////////////
+  /// @brief Checks and does stuff if ball is colliding with edges.
+  /////////////////////////////////////////////////
+
+  /** @bug (GamerMan7799#1#): Balls appear to bounce forever because position is updated again after
+  running this function.  */
+
+  // get new velocities if collision with edges
+  double coefres = (global::config.values.uchrCollisionMethod == CollideInelastic) ?
+                   global::physics::kCoefficientRestitution : 1.0;
+
+  if (collisionbox_.left < screen_place_.w / 2) {
+    vel_.x *= -1 * coefres;
+    vel_.y *= coefres;
+    forces_.x = 0;
+    dblLOC_.x = screen_place_.w + 1;
+  }
+
+  if (collisionbox_.right > (screen::screenatt.width)) {
+    vel_.x *= -1 * coefres;
+    vel_.y *= coefres;
+    forces_.x = 0;
+    dblLOC_.x = screen::screenatt.width - screen_place_.w / 2 - 1;
+  }
+
+  if (collisionbox_.bottom > (screen::screenatt.height)) {
+    vel_.x *= coefres;
+    vel_.y *= -1 * coefres;
+    forces_.y = 0;
+    dblLOC_.y = screen_place_.h / 2 + 1;
+  }
+
+  if (collisionbox_.top < 0 ) {
+    vel_.x *= coefres;
+    vel_.y *= -1 * coefres;
+    forces_.y = 2 * props_.mass * global::physics::kGravity;
+    dblLOC_.y = (screen::screenatt.height) - screen_place_.h / 2 - 1;
+  }
 }
 /*****************************************************************************/
