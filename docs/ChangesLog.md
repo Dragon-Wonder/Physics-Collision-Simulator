@@ -3,26 +3,33 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## [1.4.0-beta.6] - WIP
+## [1.4.0-RC.1] - WIP
 ### Added
-* Toolbar with different tools including: drag, fire, drop, rope, delete, and info. Not all are fully working at the moment. 
+* Toolbar with different tools including: drag, fire, drop, rope, delete, and info. (Issue #5)
 * Currently finished tools: fire, drag, drop, delete, and info.
-* Rope tool now creates rope between two balls or ball and wall. (Does nothing else at the moment)
 * SDL Licenses.
 * Credits to Docs.
 * More Doxygen stuff.
 * Debug message that prints ball mass when created. 
 * Ability to pause the simulation.
+* Changable Ratio of meters to Pixels (default is 10 pixels/meter)
 
 ### Changed
 * Moved Docs to Doc folder.
 * Moved various items out of main.cpp into core.cpp to avoid main becoming too large.
 * How balls are updated (order and a few equations) to make it hopefully more realistic. 
-
-
-### Updated
-* Various code improvements.
 * Increased ball size from 10x10 pixels to 25x25 pixels.
+* Various code improvements.
+* Disabled rope tool, still need to work on some of the equations. (Issue #4)
+* Reduced kVelocityScalar from 1 -> 0.1
+* Floors to casts (due to large number of calls of the floor functions).
+
+### Removed 
+* Interia/engergy from spins, because it did nothing.
+
+### Fixed
+* Bug of balls getting stuck in walls.
+* Bug of balls velocity becoming NaN. (Issue #3)
 
 ## [1.3.1-R] - 2018-03-16
 ### Added

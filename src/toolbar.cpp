@@ -11,12 +11,8 @@ clsToolbar::clsToolbar() {
 
     selected_tool_ = ToolFire;
     show_toolbox_ = true;
-    /** @todo (GamerMan7799#9#): Change toolbar to bottom left. */
     /** @todo (GamerMan7799#9#): Make toolbar bigger? */
     position_ = {0,0,28,28};
-
-    //position_ = {screen::screenatt.height - 28, screen::screenatt.width - 28,
-    //              28,28};
 }
 /*****************************************************************************/
 void clsToolbar::show() {

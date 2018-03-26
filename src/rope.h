@@ -64,6 +64,7 @@ class clsRope {
     private:
 
       void update_spots(void);
+      dblXY ballWallForces(dblXY, double);
 
       uint length_; /**< Length of the rope. */
 

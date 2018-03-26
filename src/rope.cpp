@@ -42,9 +42,36 @@ void clsRope::update() {
       return;
     }
     update_spots();
+    double angle;
+    LOC differencexy;
+    dblXY tension;
+    dblXY ball_one_forces, ball_two_forces;
+    differencexy.x = abs (spot_.one.x - spot_.two.x);
+    differencexy.y = abs (spot_.one.y - spot_.two.y);
 
-    // do physics stuff
+    // get the angle measure from spot one to spot two.
+    // some of these equations are to correct the angle value.
+    angle = (differencexy.x != 0) ? atan ((double)differencexy.y / (double)differencexy.x) :
+                                    M_PI / 2;
 
+    if (angle == M_PI/2) {angle += (spot_.one.y > spot_.two.y) ? M_PI : 0;}
+    angle += (spot_.two.x < spot_.one.x) ? M_PI : 0;
+
+    // forces only happen when rope is "tense" aka at or greater than length
+    if (sqrt(pow(differencexy.x,2) + pow(differencexy.y,2)) >= length_) {
+      if (attachments_.one == AttachmentBall && attachments_.two == AttachmentWall) {
+        ball_one_forces = balls_.one->getForces();
+        tension = ballWallForces(ball_one_forces,angle);
+        balls_.one->addForce(tension);
+      } else if (attachments_.one == AttachmentWall && attachments_.two == AttachmentBall ) {
+        ball_one_forces = balls_.two->getForces();
+        tension = ballWallForces(ball_one_forces,angle);
+        balls_.two->addForce(tension);
+      } else {
+        // rope attached to two balls
+
+      }
+    }
     draw();
   }
 }
@@ -58,7 +85,7 @@ void clsRope::activate() {
   blncheckphysics_ = true;
   update_spots();
 
-  length_ = floor (sqrt ( pow(spot_.one.x - spot_.two.x,2) +
+  length_ = (uint)(sqrt ( pow(spot_.one.x - spot_.two.x,2) +
                    pow(spot_.one.y - spot_.two.y,2) ) );
 
   draw();
@@ -111,7 +138,7 @@ void clsRope::draw() {
   /////////////////////////////////////////////////
 
   // Yay for reusing old code.
-  /** @bug (GamerMan7799#9#): Rope will only a straight line from its two points.
+  /** @bug (GamerMan7799#9#): Rope will only draw a straight line from its two points.
       Meaning that if the location of the two spots is less than the length, the rope
       just looks shorter instead of curving like it should. I may or may not
       try to fix this.  */
@@ -141,5 +168,33 @@ void clsRope::update_spots() {
 
   /*if(global::blnDebugMode) {printf("New spots are now (%i,%i) and (%i,%i).\n",
                                    spot_.one.x,spot_.one.y,spot_.two.x,spot_.two.y);} */
+}
+/*****************************************************************************/
+dblXY clsRope::ballWallForces(dblXY ball_one_forces, double angle) {
+  dblXY tension;
+  if (angle == M_PI / 2 || angle == 3/2 * M_PI ) {
+    tension.x = 0;
+    tension.y = ball_one_forces.y;
+    if (!(signbit((double)spot_.one.y-(double)spot_.two.y) ^ signbit(ball_one_forces.y))) {
+      // force and direction to spot two are both positive or both negative, therefore
+      // reverse the force for tension
+      tension.y *= -1;
+    }
+  } else if (angle < 2*M_PI && angle > M_PI) {
+    tension.y = ball_one_forces.y;
+    tension.x = tension.y / tan(angle);
+  } else if (angle > 0 && angle < M_PI) {
+    tension.y = -1 * ball_one_forces.y;
+    tension.x = tension.y / tan(angle);
+  } else {
+    tension.y = 0;
+    tension.x = ball_one_forces.x;
+    if ((signbit((double)spot_.one.x-(double)spot_.two.x) ^ signbit(ball_one_forces.x))) {
+      // force and direction to spot two are both positive or both negative, therefore
+      // reverse the force for tension
+      tension.x *= -1;
+    }
+  }
+  return tension;
 }
 /*****************************************************************************/

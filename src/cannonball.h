@@ -75,18 +75,19 @@ class clsCannonball {
     LOC getplace(void);
     LOC getScreenPlace(void);
     void setplace(LOC);
-    void setSpin(double);
     void update(double);
+    void updateForces(void);
     dblXY getVelocity(void);
+    dblXY getForces(void);
     void setVelocity(dblXY);
     PP getPhysicalProps(void);
     void setPhysicalProps(PP);
     BOX getBOX(void);
-    double getSpin(void);
     void writeInfo(void);
     void togglePause(void);
     bool isPaused(void);
     void checkEdges(void);
+    void setEdgePosition(void);
     bool blnstarted_; /**< Whether or not the ball is "started" if it is, the program will update
         it and won't let a new ball replace it in its array spot. */
 
@@ -114,7 +115,6 @@ class clsCannonball {
         the movements looking realistic. See clsTick::getTimeDifference */
 
     dblXY forces_; /**< Forces on the ball in x and y */
-    double spin_; /**< The angular velocity of the ball (in rad/s) for the Magnus Effect  */
     bool paused_; /**< If the simulation is paused or not.  */
 
     void show(void);
@@ -123,7 +123,6 @@ class clsCannonball {
     void dragUpdateAcc(void);
     void doFriction(void);
     void updateCollisionBox(void);
-    void doMagnusEffect(void);
 };
 /*****************************************************************************/
 #endif // __CANNONBALL_HEADER__

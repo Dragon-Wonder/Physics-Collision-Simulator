@@ -35,9 +35,7 @@ void cannonballs::addNew(LOC mouseC, LOC mouseO, double HoldTime ) {
   /// @return void
   ///
   /////////////////////////////////////////////////
-
-  /** @todo (GamerMan7799#3#): Make simpler since new way to hold needed values */
-    //Get location, vel, and angle
+  //Get location, vel, and angle
   double fire_v;
   double angle;
   double radius = (double)global::equations::kTimeSizeRatio * sqrt(HoldTime);
@@ -125,7 +123,6 @@ void cannonballs::doCollide(uint numA, uint numB) {
 
   dblXY Avel, Bvel;
   PP Aprops, Bprops;
-  double aspin, bspin;
 
 
   Avel = balls[numA].getVelocity();
@@ -133,10 +130,7 @@ void cannonballs::doCollide(uint numA, uint numB) {
   Aprops = balls[numA].getPhysicalProps();
   Bprops = balls[numB].getPhysicalProps();
 
-  aspin = balls[numA].getSpin();
-  bspin = balls[numB].getSpin();
-
-#ifdef DEFINED_USE_R2_VEL_MODDER
+#if DEFINED_USE_R2_VEL_MODDER == 1
   //This part here has no actual basis on real life,
   //it is just my attempt at preventing the cannonballs from sticking together
   LOC CenterA, CenterB, DeltaCenters;
@@ -160,15 +154,7 @@ void cannonballs::doCollide(uint numA, uint numB) {
 
   double Aangle, Bangle, ContactAngle;
   double Atotal_v, Btotal_v;
-  double spin_energy, aspin_energy, bspin_energy;
-
   dblXY TotalAMomentum, TotalBMomentum;
-
-  // Negative energy is not realistic, but this is just to keep the direction
-  // of the spin
-  aspin_energy = copysign (0.5 * Aprops.interia * pow(aspin,2.0), aspin);
-  bspin_energy = copysign (0.5 * Bprops.interia * pow(bspin,2.0), bspin);
-  spin_energy = aspin_energy + bspin_energy;
 
   if ( global::physics::collisionmethod != CollidePerfectInelastic ) {
     //The equations for Perfect Inelastic is much simpler than if not
@@ -244,12 +230,10 @@ void cannonballs::doCollide(uint numA, uint numB) {
     //Now calculate the new velocity
     Avel.x = TotalAMomentum.x / Aprops.mass;
     Avel.y = TotalAMomentum.y / Aprops.mass;
-    aspin = copysign( sqrt( 2.0 * abs(spin_energy) / Aprops.interia ), spin_energy);
     //now "kill" cannonball B and update ball A
     balls[numB].blnstarted_ = false;
     balls[numA].setPhysicalProps(Aprops);
     balls[numA].setVelocity(Avel);
-    balls[numA].setSpin(aspin);
     break;
   case CollideInelastic:
     //uses the same equations as below but some energy is lost.
@@ -257,21 +241,15 @@ void cannonballs::doCollide(uint numA, uint numB) {
     TotalAMomentum.y *= (double)global::physics::kCoefficientRestitution;
     TotalBMomentum.x *= (double)global::physics::kCoefficientRestitution;
     TotalBMomentum.y *= (double)global::physics::kCoefficientRestitution;
-    spin_energy *= (double)global::physics::kCoefficientRestitution;
 
   case CollideElastic:
-    aspin = copysign( sqrt( abs(spin_energy) / Aprops.interia ), spin_energy);
-    bspin = copysign( sqrt( abs(spin_energy) / Bprops.interia ), spin_energy);
-
     //The balls collide and bounce away from each other
 
     //All of the heavy lifting is handled above.
     balls[numA].setVelocity(TotalAMomentum);
     balls[numB].setVelocity(TotalBMomentum);
-    balls[numA].setSpin(aspin);
-    balls[numB].setSpin(bspin);
 
-#ifdef DEFINED_COLLISION_NORMAL_FORCE
+#if DEFINED_COLLISION_NORMAL_FORCE == 1
     if (TotalAMomentum.x != 0.0) { Aangle = atan(TotalAMomentum.y/TotalAMomentum.x); }
     else { Aangle = (TotalAMomentum.y >= 0.0) ? M_PI / 2 : -M_PI / 2; }
     if (TotalBMomentum.x != 0.0) { Bangle = atan(TotalBMomentum.y/TotalBMomentum.x); }
@@ -375,7 +353,34 @@ char core::handleEvent(SDL_Event* e ) {
     // while holding down mouse button.
 
   if ( e->type == SDL_QUIT ) { return 'q'; }
-  else if (e->type == SDL_MOUSEMOTION) {
+
+  if ( e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP ) {
+    if (e->type == SDL_MOUSEBUTTONDOWN) {holding = true;}
+    else if (e->type == SDL_MOUSEBUTTONUP) {holding = false;}
+    // there is a mouse-based event, so now we have to check what tool we are using.
+    //if (global::blnDebugMode) { printf("Mouse event found.\n"); }
+    switch ( toolbar.getTool() ) {
+    case ToolFire:
+    default: // make tool fire the default
+      doFireTool(e);
+      return 0;
+    case ToolDrop:
+      doDropTool(e);
+      return 0;
+    case ToolRope:
+      doRopeTool(e);
+      return 0;
+    case ToolDele:
+      doDeleTool(e);
+      return 0;
+    case ToolDrag:
+      doDragTool(e);
+      return 0;
+    case ToolInfo:
+      doInfoTool(e);
+      return 0;
+    } // end switch tool type
+  } else if (e->type == SDL_MOUSEMOTION) {
     SDL_GetMouseState(&currentmouse.x, &currentmouse.y );
     if(toolbar.getTool() == ToolDrag) { doDragTool(e); }
   } else if ( e->type == SDL_KEYDOWN ) {
@@ -433,37 +438,6 @@ char core::handleEvent(SDL_Event* e ) {
       return 0;
     } //end switch key
   } //end if event
-
-  if ( e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP ) {
-    if (e->type == SDL_MOUSEBUTTONDOWN) {holding = true;}
-    else if (e->type == SDL_MOUSEBUTTONUP) {holding = false;}
-    // there is a mouse-based event, so now we have to check what tool we are using.
-    //if (global::blnDebugMode) { printf("Mouse event found.\n"); }
-    switch ( toolbar.getTool() ) {
-    /** @todo (GamerMan7799#9#) Simplify the cases, merge similar tool functions
-              such as ToolFire, and ToolDrop, and ToolRope, ToolDele, ToolDrag, and ToolInfo.
-              I want to get them all working on their own first before I try to merge them. */
-    case ToolFire:
-    default: // make tool fire the default
-      doFireTool(e);
-      return 0;
-    case ToolDrop:
-      doDropTool(e);
-      return 0;
-    case ToolRope:
-      doRopeTool(e);
-      return 0;
-    case ToolDele:
-      doDeleTool(e);
-      return 0;
-    case ToolDrag:
-      doDragTool(e);
-      return 0;
-    case ToolInfo:
-      doInfoTool(e);
-      return 0;
-    } // end switch tool type
-  }
   return 0; // main doesn't have to do anything else, return 0.
 }
 /*****************************************************************************/
@@ -549,15 +523,10 @@ void core::doDragTool(SDL_Event* e) {
   /// @param e = SDL_event passed through handle event
   /////////////////////////////////////////////////
 
-  /** @todo (GamerMan7799#3#): This function is a mess. Lots of redundant pieces of code. Clean it up. */
-  /** @bug (GamerMan7799#1#): Drag doesn't always reset pause value correctly. */
-
-
-
   static int ball_num = -1;
 
   if (e->type == SDL_MOUSEBUTTONDOWN) { ball_num = findSelectedBall(currentmouse); }
-  else if (e->type == SDL_MOUSEBUTTONUP) { ball_num = -1; }
+  //else if (e->type == SDL_MOUSEBUTTONUP) { ball_num = -1; }
 
   if (ball_num == -1) {return;}
 
@@ -569,8 +538,14 @@ void core::doDragTool(SDL_Event* e) {
   //if(global::blnDebugMode) { printf("Tool Drag event\n"); }
   if ( holding && !(cannonballs::balls[ball_num].isPaused()) ) {
     cannonballs::balls[ball_num].togglePause();
-  } else if (!(holding) && cannonballs::balls[ball_num].isPaused()) {
+  } else if (!(holding) && cannonballs::balls[ball_num].isPaused()
+             && !(cannonballs::balls.back().isPaused()) &&
+                !(cannonballs::balls.front().isPaused())) {
+      // will only unpause the dragged ball if the other balls are also
+      // unpaused. I check the first and last balls to avoid the chance
+      // that the selected ball is the first or last.
     cannonballs::balls[ball_num].togglePause();
+    ball_num = -1;
   }
 }
 /*****************************************************************************/

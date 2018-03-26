@@ -4,31 +4,25 @@
 /// @brief      Holds all the main functions.
 /// @author     GamerMan7799
 /// @author     xPUREx
-/// @version    1.4.0-beta.6
+/// @version    1.4.0-RC.1
 /// @date       2018
 /// @copyright  Public Domain Unlicense.
 /////////////////////////////////////////////////
 /*****************************************************************************/
 //General Todos
-/** @bug (GamerMan7799#1#): The balls will become stuck together for seemingly random reasons */
-/** @bug (GamerMan7799#9#): Balls' velocity becomes NaN quite often.
-                            Fixed? (haven't seen issue in a while, will remove it
-                            if I don't see it for several more updates) */
+/** @bug (GamerMan7799#1#): The balls will become stuck together because not enough
+                            time passes between updates, causing the balls to "collide"
+                            again, and each time losing more energy.*/
 /** @todo (GamerMan7799#8#): Allow setting of some Physics Values in Config */
 /** @todo (GamerMan7799#8#): Set Max/Min values for mass? */
-/** @bug  (GamerMan7799#9#): Balls sometimes get stuck in walls, likely caused by the ball size increase.
-                             Fixed? (haven't seen issue in a while, will remove it
-                                     if I don't see it for several more updates)*/
-/** @todo (GamerMan7799#2#): Add pixel to meter factor. Currently it is assumed that 1 pixel = 1
-                            Which isn't accurate. Add a factor to change this.  */
 /*****************************************************************************/
-//#define DEFINED_USE_R2_VEL_MODDER
+#define DEFINED_USE_R2_VEL_MODDER 0
 /**< If this is defined, then program will use unrealistic method that will
      increase the velocity of two colliding balls the closer they are together
      it will reduce the number of times that the balls stick together,
      but also causes them to get unrealistically high velocities*/
 /*****************************************************************************/
-//#define DEFINED_COLLISION_NORMAL_FORCE
+#define DEFINED_COLLISION_NORMAL_FORCE 0
 /**< If this is defined, then program will use apply a normal force to any
      colliding balls. The forces are along the same direction as the velocities
      are. It doesn't make sense in the real world.*/
@@ -50,6 +44,7 @@ namespace global {
   /** Holds Values that are related the the physics of the world,
       these are all based on real numbers */
   namespace physics {
+    const float kMeterPixelRatio = 10; /**< 1 meter = this many pixels. */
     const float kBallDensity = 7850; /**< Density of the ball in kg/m<sup>3</sup> (7850 is steel) */
     const float kGravity = -9.81; /**< Acceleration due to gravity in m/s<sup>2</sup> */
     const float kDragCofficient = 0.47; /**< Drag coefficient in the air. \n
@@ -68,7 +63,7 @@ namespace global {
 
   /** Holds Values for different equations that are not physics related */
   namespace equations {
-    const float kVelocityScalar = 1; /**< Changing this effects the ratio
+    const float kVelocityScalar = 0.1; /**< Changing this effects the ratio
                                           of the line to the velocity when
                                           creating a cannonball */
     const float kTimeSizeRatio = 0.025; /**< One second of holding down
@@ -137,10 +132,16 @@ int main(int argc, char *argv[]) {
       }
     }
 
-    //Update every ball
-    tempdeltat = core::tick.getTimeDifference();
+    tempdeltat = core::tick.getTimeDifference(); // get the delta time
+    for (int i = 0; i < cannonballs::balls.size(); ++i) {
+      // Just update the forces for now.
+      if (cannonballs::balls[i].blnstarted_) { cannonballs::balls[i].updateForces(); } //end if started
+    } //end for loop
+
     for (int i = 0; i < cannonballs::ropes.size(); ++i) {
       //Loop through each rope
+      // forces are updated first so they are pulled correctly
+      // into the rope functions.
       cannonballs::ropes[i].update();
     } //end for loop
 
@@ -151,6 +152,7 @@ int main(int argc, char *argv[]) {
         //Check for collisions if no collide is not on
         if (global::physics::collisionmethod != CollideNone)
           { cannonballs::checkCollisons(i); }
+        // now update the position of the balls.
         cannonballs::balls[i].update(tempdeltat);
       } //end if started
     } //end for loop
@@ -168,6 +170,7 @@ int main(int argc, char *argv[]) {
     }
   } while (!quit); //keep looping until we get a quit
 
+  // clear vectors is not empty
   if(!cannonballs::ropes.empty()) {cannonballs::ropes = VectorRope();}
   if(global::blnDebugMode) {printf("Ropes cleared.\n");}
 

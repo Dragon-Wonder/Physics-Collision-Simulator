@@ -37,6 +37,7 @@ namespace global {
   /// @brief Physics values for how the program works.
   /// @{
   /////////////////////////////////////////////////
+    extern const float kMeterPixelRatio;
     extern const float kBallDensity;
     extern const float kGravity;
     extern const float kDragCofficient;
@@ -82,12 +83,12 @@ enum Collisions {
   * The current tool being used in the toolbox.
   */
 enum Tools {
-  ToolFire = 0, /**< The basic firing tool. */
+  ToolRope = 0, /**< Tool to add a rope between balls, or pin ball to wall. */
+  ToolFire,     /**< The basic firing tool. */
   ToolDrop,     /**< Drops a ball without velocity. */
-  ToolRope,     /**< Tool to add a rope between balls, or pin ball to wall. */
   ToolDele,     /**< Tool to delete selected ball. */
   ToolDrag,     /**< Tool that allows ball to be dragged around. */
-  ToolInfo     /**< Tool that writes information about the selected ball to screen */
+  ToolInfo      /**< Tool that writes information about the selected ball to screen */
 };
 /*****************************************************************************/
 #endif // __GLOBAL_H_INCLUDED__

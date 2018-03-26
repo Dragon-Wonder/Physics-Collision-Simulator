@@ -28,7 +28,6 @@ clsCannonball::clsCannonball() {
   deltat_ = (1.00 / 60.00);
   forces_ = {0,0};
   acc_ = {0.00, global::physics::kGravity};
-  spin_ = 1.0;
 
   props_.radius = 5.0; //in meters
   props_.density = global::physics::kBallDensity; //density of steel in kg/m^3
@@ -156,13 +155,6 @@ void clsCannonball::update(double newdeltat) {
 
     deltat_ = newdeltat;
 
-    if (blndragenabled_) {
-      doMagnusEffect();
-      dragUpdateAcc();
-    }
-    doFriction();
-    checkEdges();
-
     acc_.x = forces_.x / props_.mass;
     acc_.y = forces_.y / props_.mass;
 
@@ -171,6 +163,8 @@ void clsCannonball::update(double newdeltat) {
 
     dblLOC_.x += vel_.x * deltat_ /*+ 0.5 * acc_.x * pow(deltat_,2)*/;
     dblLOC_.y += vel_.y * deltat_ /*+ 0.5 * acc_.y * pow(deltat_,2)*/;
+
+    setEdgePosition();
 
     if (global::config.values.blnLogging) {
       FILE* logfile = fopen("logfile.log","a");
@@ -191,7 +185,6 @@ void clsCannonball::update(double newdeltat) {
   updateCollisionBox();
 	show(); //show the ball on the screen
   // reset the forces so strange things don't happen
-  forces_ = {0.0, props_.mass * global::physics::kGravity};
 }
 /*****************************************************************************/
 void clsCannonball::show() {
@@ -256,12 +249,9 @@ void clsCannonball::setValues(double r, LOC init_place,
 
   acc_ = {0.00, global::physics::kGravity};
 
-  spin_ = (rand() % 1000 - 500) / 500;
-
-
   place_ = init_place;
-  dblLOC_ = { (double) place_.x,
-              (double) place_.y };
+  dblLOC_ = { (double) place_.x / global::physics::kMeterPixelRatio,
+              (double) place_.y / global::physics::kMeterPixelRatio};
 
   vel_ = { (double)(init_vel) * (cos(init_angle)),
            (double)(init_vel) * (sin(init_angle)) };
@@ -307,8 +297,8 @@ void clsCannonball::setplace(LOC newplace) {
   /////////////////////////////////////////////////
   /// @brief Set the ball's place
   /////////////////////////////////////////////////
-  dblLOC_.x = (double)newplace.x;
-  dblLOC_.y = (double)newplace.y;
+  dblLOC_.x = (double)newplace.x / global::physics::kMeterPixelRatio;
+  dblLOC_.y = (double)newplace.y / global::physics::kMeterPixelRatio;
 }
 /*****************************************************************************/
 void clsCannonball::setPhysicalProps(PP newprops) {
@@ -365,12 +355,12 @@ void clsCannonball::updateCollisionBox() {
   /////////////////////////////////////////////////
 
   // update place and collision box again in case something changed
-  place_.x = round(dblLOC_.x);
-  place_.y = round(dblLOC_.y);
+  place_.x = round(dblLOC_.x * global::physics::kMeterPixelRatio);
+  place_.y = round(dblLOC_.y * global::physics::kMeterPixelRatio);
 
 	//Update the collision box for the new location
-	collisionbox_.left = place_.x - floor(screen_place_.w / 2);
-	collisionbox_.top = screen::screenatt.height - (place_.y + floor(screen_place_.h / 2));
+	collisionbox_.left = place_.x - (int)(screen_place_.w / 2);
+	collisionbox_.top = screen::screenatt.height - (place_.y + (int)(screen_place_.h / 2));
 	collisionbox_.bottom = collisionbox_.top + screen_place_.h;
 	collisionbox_.right = collisionbox_.left + screen_place_.w;
 }
@@ -392,36 +382,10 @@ void clsCannonball::doFriction() {
   }
 }
 /*****************************************************************************/
-void clsCannonball::doMagnusEffect() {
-  /////////////////////////////////////////////////
-  /// @brief Calculates the Magnus Effect caused by the ball's spin
-  /////////////////////////////////////////////////
-
-  double magnus_force = pow(M_PI,2) * pow(props_.radius,3) *
-                        global::physics::kDensityAir;
-
-  forces_.x -= magnus_force * vel_.y * spin_;
-  forces_.y += magnus_force * vel_.x * spin_;
-}
-/*****************************************************************************/
 void clsCannonball::addForce(dblXY newforces) {
 
   forces_.x += newforces.x;
   forces_.y += newforces.y;
-}
-/*****************************************************************************/
-double clsCannonball::getSpin() {
-  /////////////////////////////////////////////////
-  /// @brief Returns the ball's spin
-  /////////////////////////////////////////////////
-  return spin_;
-}
-/*****************************************************************************/
-void clsCannonball::setSpin(double newspin) {
-  /////////////////////////////////////////////////
-  /// @brief Sets the ball's spin
-  /////////////////////////////////////////////////
-  spin_ = newspin;
 }
 /*****************************************************************************/
 void clsCannonball::writeInfo() {
@@ -436,7 +400,6 @@ void clsCannonball::writeInfo() {
   printf("Velocity: \t \t (%5.5f, %5.5f)\n",vel_.x,vel_.y);
   printf("Acceleration: \t \t (%5.5f, %5.5f)\n",acc_.x,acc_.y);
   printf("Forces: \t \t (%5.5f, %5.5f)\n", forces_.x, forces_.y);
-  printf("Spin: \t \t \t (%5.5f)\n\n\n", spin_);
 
 }
 /*****************************************************************************/
@@ -462,9 +425,9 @@ LOC clsCannonball::getScreenPlace() {
   /////////////////////////////////////////////////
   LOC temp;
   temp.x = screen_place_.x;
-  temp.x += floor (screen_place_.w/2);
+  temp.x += (int)(screen_place_.w/2);
   temp.y = screen_place_.y;
-  temp.y += floor(screen_place_.h/2);
+  temp.y += (int)(screen_place_.h/2);
   return temp;
 }
 /*****************************************************************************/
@@ -472,10 +435,6 @@ void clsCannonball::checkEdges() {
   /////////////////////////////////////////////////
   /// @brief Checks and does stuff if ball is colliding with edges.
   /////////////////////////////////////////////////
-
-  /** @bug (GamerMan7799#1#): Balls appear to bounce forever because position is updated again after
-  running this function.  */
-
   // get new velocities if collision with edges
   double coefres = (global::config.values.uchrCollisionMethod == CollideInelastic) ?
                    global::physics::kCoefficientRestitution : 1.0;
@@ -484,28 +443,71 @@ void clsCannonball::checkEdges() {
     vel_.x *= -1 * coefres;
     vel_.y *= coefres;
     forces_.x = 0;
-    dblLOC_.x = screen_place_.w + 1;
   }
 
   if (collisionbox_.right > (screen::screenatt.width)) {
     vel_.x *= -1 * coefres;
     vel_.y *= coefres;
     forces_.x = 0;
-    dblLOC_.x = screen::screenatt.width - screen_place_.w / 2 - 1;
   }
 
   if (collisionbox_.bottom > (screen::screenatt.height)) {
     vel_.x *= coefres;
     vel_.y *= -1 * coefres;
     forces_.y = 0;
-    dblLOC_.y = screen_place_.h / 2 + 1;
   }
 
   if (collisionbox_.top < 0 ) {
     vel_.x *= coefres;
     vel_.y *= -1 * coefres;
     forces_.y = 2 * props_.mass * global::physics::kGravity;
-    dblLOC_.y = (screen::screenatt.height) - screen_place_.h / 2 - 1;
   }
+}
+/*****************************************************************************/
+void clsCannonball::setEdgePosition() {
+  /////////////////////////////////////////////////
+  /// @brief Set position if colliding with edges
+  /////////////////////////////////////////////////
+
+  if (collisionbox_.left < screen_place_.w / 2) {
+    dblLOC_.x = (screen_place_.w + 1);
+    dblLOC_.x /= global::physics::kMeterPixelRatio;
+  }
+
+  if (collisionbox_.right > (screen::screenatt.width)) {
+    dblLOC_.x = (screen::screenatt.width - screen_place_.w / 2 - 1);
+    dblLOC_.x /= global::physics::kMeterPixelRatio;
+  }
+
+  if (collisionbox_.bottom > (screen::screenatt.height)) {
+      dblLOC_.y = (screen_place_.h / 2 + 1 );
+      dblLOC_.y /= global::physics::kMeterPixelRatio;
+  }
+
+  if (collisionbox_.top < 0 ) {
+    dblLOC_.y = ((screen::screenatt.height) - screen_place_.h / 2 - 1);
+    dblLOC_.y /= global::physics::kMeterPixelRatio;
+  }
+}
+/*****************************************************************************/
+dblXY clsCannonball::getForces() {
+  /////////////////////////////////////////////////
+  /// @brief Returns forces on ball.
+  /////////////////////////////////////////////////
+
+  return forces_;
+}
+/*****************************************************************************/
+void clsCannonball::updateForces() {
+  /////////////////////////////////////////////////
+  /// @brief Updates all the forces on the ball.
+  /////////////////////////////////////////////////
+
+  forces_ = {0,props_.mass * global::physics::kGravity};
+
+  if (blndragenabled_) { dragUpdateAcc(); }
+  doFriction();
+  checkEdges();
+
 }
 /*****************************************************************************/

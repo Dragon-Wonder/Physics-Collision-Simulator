@@ -168,7 +168,7 @@
 			<lib_finder disable_auto="1" />
 			<DoxyBlocks>
 				<comment_style block="5" line="0" />
-				<doxyfile_project project_number="v1.4.0-beta.2" output_directory="gh-pages" />
+				<doxyfile_project project_number="v1.4.0-R" output_directory="gh-pages" />
 				<doxyfile_build extract_all="1" />
 				<doxyfile_warnings />
 				<doxyfile_output />

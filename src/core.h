@@ -1,7 +1,6 @@
 #ifndef __CORE_HEADER__
 #define __CORE_HEADER__
 /*****************************************************************************/
-#include "cannonball.h"
 #include "toolbar.h"
 #include "tick.h"
 #include "rope.h"
@@ -11,7 +10,6 @@
 /// @brief Header for core functions
 /////////////////////////////////////////////////
 /*****************************************************************************/
-#include <vector>
 typedef std::vector<clsCannonball> VectorCannon;
 typedef std::vector<clsRope> VectorRope;
 /*****************************************************************************/
