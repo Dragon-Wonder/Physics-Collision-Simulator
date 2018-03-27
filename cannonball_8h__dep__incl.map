@@ -1,8 +1,12 @@
 <map id="cannonball.h" name="cannonball.h">
-<area shape="rect" id="node2" href="$screen_8h.html" title="screen.h" alt="" coords="175,80,247,107"/>
-<area shape="rect" id="node3" href="$main_8cpp.html" title="main.cpp" alt="" coords="197,229,271,256"/>
-<area shape="rect" id="node7" href="$cannonball_8cpp.html" title="cannonball.cpp" alt="" coords="322,80,431,107"/>
-<area shape="rect" id="node4" href="$toolbar_8h.html" title="toolbar.h" alt="" coords="13,155,85,181"/>
-<area shape="rect" id="node6" href="$screen_8cpp.html" title="screen.cpp" alt="" coords="109,155,196,181"/>
-<area shape="rect" id="node5" href="$toolbar_8cpp.html" title="toolbar.cpp" alt="" coords="5,229,92,256"/>
+<area shape="rect" id="node2" href="$screen_8h.html" title="screen.h" alt="" coords="117,80,189,107"/>
+<area shape="rect" id="node10" href="$rope_8h.html" title="rope.h" alt="" coords="213,155,271,181"/>
+<area shape="rect" id="node11" href="$cannonball_8cpp.html" title="Holds all of the functions for the cannonballs. " alt="" coords="263,80,373,107"/>
+<area shape="rect" id="node3" href="$toolbar_8h.html" title="toolbar.h" alt="" coords="117,155,189,181"/>
+<area shape="rect" id="node9" href="$screen_8cpp.html" title="Holds all of the functions for the SDL screen. " alt="" coords="5,155,92,181"/>
+<area shape="rect" id="node4" href="$core_8h.html" title="Header for core functions. " alt="" coords="146,229,205,256"/>
+<area shape="rect" id="node8" href="$toolbar_8cpp.html" title="Holds all of the functions for the toolbar class. " alt="" coords="35,229,121,256"/>
+<area shape="rect" id="node5" href="$core_8cpp.html" title="Holds &quot;core&quot; functions. Made so that main.cpp doesn&#39;t get too large. " alt="" coords="161,304,233,331"/>
+<area shape="rect" id="node6" href="$main_8cpp.html" title="Holds all the main functions. " alt="" coords="62,304,137,331"/>
+<area shape="rect" id="node7" href="$rope_8cpp.html" title="Holds all of the functions for the rope. " alt="" coords="257,304,329,331"/>
 </map>

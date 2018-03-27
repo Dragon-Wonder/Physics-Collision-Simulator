@@ -1,0 +1,19 @@
+<map id="core::handleEvent" name="core::handleEvent">
+<area shape="rect" id="node2" href="$classcls_toolbar.html#aa6e547ddb6784f1189498b13a39d2a4e" title="clsToolbar::getTool" alt="" coords="199,5,329,32"/>
+<area shape="rect" id="node3" href="$classcls_tick.html#a4f446f750debf454e1e4eb46387de040" title="clsTick::stopHolding" alt="" coords="409,56,548,83"/>
+<area shape="rect" id="node4" href="$namespacecore.html#a1e1ea199ddeafec11ec9910441279513" title="core::doFireTool" alt="" coords="207,157,321,184"/>
+<area shape="rect" id="node9" href="$namespacecore.html#ac6e4e8a5438b195b05cfcb6c98748f8f" title="core::doDropTool" alt="" coords="204,107,324,133"/>
+<area shape="rect" id="node10" href="$namespacecore.html#ab0610e9296bbc645a2a0ccb5c985183d" title="core::doRopeTool" alt="" coords="203,208,325,235"/>
+<area shape="rect" id="node13" href="$namespacecore.html#a2bf402182324ba8aff31af2cfc75eb80" title="core::doDeleTool" alt="" coords="205,259,323,285"/>
+<area shape="rect" id="node14" href="$namespacecore.html#aeea8564ba68e778f1731afa442e32e05" title="core::doDragTool" alt="" coords="204,309,324,336"/>
+<area shape="rect" id="node15" href="$namespacecore.html#a3e3d26a31cab2d9d667c4191b4154bbb" title="core::doInfoTool" alt="" coords="207,360,321,387"/>
+<area shape="rect" id="node16" href="$classcls_toolbar.html#a064542f72a39f9316a10facf78baa811" title="clsToolbar::toggleToolbox" alt="" coords="179,411,349,437"/>
+<area shape="rect" id="node17" href="$classcls_toolbar.html#adb9bd7ca6ff5a2cd3e265166f6fa6aaf" title="clsToolbar::incrementTool" alt="" coords="179,461,349,488"/>
+<area shape="rect" id="node18" href="$classcls_toolbar.html#ab893a7b0dcc9b7386c8b9959c39c5e2a" title="clsToolbar::setTool" alt="" coords="199,512,329,539"/>
+<area shape="rect" id="node5" href="$classcls_tick.html#af66ef9cefe08dd0ce6f99614cb32be57" title="clsTick::startHolding" alt="" coords="409,157,549,184"/>
+<area shape="rect" id="node6" href="$namespacecannonballs.html#af7954884906124fbf9c503b2d08b1121" title="cannonballs::addNew" alt="" coords="406,107,551,133"/>
+<area shape="rect" id="node7" href="$classcls_cannonball.html#a73be08543c2d4da1e2097801b425308f" title="clsCannonball::setValues" alt="" coords="615,81,784,108"/>
+<area shape="rect" id="node8" href="$classcls_cannonball.html#ab84ed99e99bb0d888f2e8ffbb9d5baee" title="clsCannonball::togglePause" alt="" coords="608,132,791,159"/>
+<area shape="rect" id="node11" href="$namespacecore.html#a2a89c712e875543a3822d8ba0fd18970" title="core::findSelectedBall" alt="" coords="405,284,553,311"/>
+<area shape="rect" id="node12" href="$classcls_rope.html#a05063f831cebc6f37327a48e9011d12d" title="clsRope::setAttachment" alt="" coords="397,208,560,235"/>
+</map>

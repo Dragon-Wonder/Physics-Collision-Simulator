@@ -12,6 +12,10 @@ var annotated_dup =
     [ "stcColor", "structstc_color.html", "structstc_color" ],
     [ "stcDoubleValues", "structstc_double_values.html", "structstc_double_values" ],
     [ "stcLocation", "structstc_location.html", "structstc_location" ],
+    [ "stcOneTwoAttachment", "structstc_one_two_attachment.html", "structstc_one_two_attachment" ],
+    [ "stcOneTwoBalls", "structstc_one_two_balls.html", "structstc_one_two_balls" ],
+    [ "stcOneTwoPlaces", "structstc_one_two_places.html", "structstc_one_two_places" ],
     [ "stcPhysicalProperties", "structstc_physical_properties.html", "structstc_physical_properties" ],
+    [ "stcPhysicsProperties", "structstc_physics_properties.html", null ],
     [ "stcWinAtt", "structstc_win_att.html", "structstc_win_att" ]
 ];

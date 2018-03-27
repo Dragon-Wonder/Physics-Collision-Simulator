@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['radius',['radius',['../structstc_physical_properties.html#aec94ff07fb6f9480115a7020fafee119',1,'stcPhysicalProperties']]],
-  ['red',['Red',['../structstc_color.html#a677cd831442445cdd9ea88aa559d3480',1,'stcColor']]],
-  ['ren',['ren',['../structstc_win_att.html#ad76188c8dbb60e848a14008b9450b52a',1,'stcWinAtt']]],
-  ['right',['right',['../structstc_box.html#a1e599410cb52667f1aaeb0c8e2daa9b2',1,'stcBox']]],
-  ['rope_2ecpp',['rope.cpp',['../rope_8cpp.html',1,'']]],
-  ['rope_2eh',['rope.h',['../rope_8h.html',1,'']]]
+  ['oldmouse',['oldmouse',['../namespacecore.html#a0331a2b2cffc31334f92c8e6f75ca72f',1,'core']]],
+  ['one',['one',['../structstc_one_two_attachment.html#a52932657c62865e3ace2f2c1954cd49a',1,'stcOneTwoAttachment::one()'],['../structstc_one_two_places.html#a340b942d0f1af4bc0dbe465836e0341f',1,'stcOneTwoPlaces::one()'],['../structstc_one_two_balls.html#a85b14d9dc77f963aa972622680fb2a23',1,'stcOneTwoBalls::one()']]],
+  ['operatingsystem',['OperatingSystem',['../struct_config_values.html#aec6d8affc5fb1d746cb85bb150640a7b',1,'ConfigValues']]]
 ];

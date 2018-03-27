@@ -1,0 +1,5 @@
+<map id="core::fireRandom" name="core::fireRandom">
+<area shape="rect" id="node2" href="$namespacecannonballs.html#af7954884906124fbf9c503b2d08b1121" title="cannonballs::addNew" alt="" coords="173,31,319,57"/>
+<area shape="rect" id="node3" href="$classcls_cannonball.html#a73be08543c2d4da1e2097801b425308f" title="clsCannonball::setValues" alt="" coords="373,5,543,32"/>
+<area shape="rect" id="node4" href="$classcls_cannonball.html#ab84ed99e99bb0d888f2e8ffbb9d5baee" title="clsCannonball::togglePause" alt="" coords="367,56,549,83"/>
+</map>

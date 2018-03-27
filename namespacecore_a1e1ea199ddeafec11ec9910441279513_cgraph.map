@@ -1,0 +1,7 @@
+<map id="core::doFireTool" name="core::doFireTool">
+<area shape="rect" id="node2" href="$classcls_tick.html#af66ef9cefe08dd0ce6f99614cb32be57" title="clsTick::startHolding" alt="" coords="171,5,311,32"/>
+<area shape="rect" id="node3" href="$namespacecannonballs.html#af7954884906124fbf9c503b2d08b1121" title="cannonballs::addNew" alt="" coords="168,56,313,83"/>
+<area shape="rect" id="node6" href="$classcls_tick.html#a4f446f750debf454e1e4eb46387de040" title="clsTick::stopHolding" alt="" coords="171,107,310,133"/>
+<area shape="rect" id="node4" href="$classcls_cannonball.html#a73be08543c2d4da1e2097801b425308f" title="clsCannonball::setValues" alt="" coords="368,31,537,57"/>
+<area shape="rect" id="node5" href="$classcls_cannonball.html#ab84ed99e99bb0d888f2e8ffbb9d5baee" title="clsCannonball::togglePause" alt="" coords="361,81,544,108"/>
+</map>

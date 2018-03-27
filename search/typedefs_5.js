@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['uchar',['uchar',['../global_8h.html#a65f85814a8290f9797005d3b28e7e5fc',1,'global.h']]],
-  ['uint',['uint',['../global_8h.html#a91ad9478d81a7aaf2593e8d9c3d06a14',1,'global.h']]],
-  ['ulong',['ulong',['../global_8h.html#a718b4eb2652c286f4d42dc18a8e71a1a',1,'global.h']]]
+  ['placesspots',['PlacesSpots',['../rope_8h.html#abbc93f144f48a3c7a1fc3547ad1a481a',1,'rope.h']]],
+  ['pp',['PP',['../group___ball_stuff.html#ga0fbce4294df3631f386befb2c5bb2c52',1,'cannonball.h']]]
 ];

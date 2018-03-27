@@ -1,0 +1,5 @@
+<map id="clsRope::activate" name="clsRope::activate">
+<area shape="rect" id="node2" href="$classcls_rope.html#a9da9bab2d6fd4071138771842710eaec" title="clsRope::draw" alt="" coords="175,35,279,61"/>
+<area shape="rect" id="node3" href="$classcls_screen.html#ace1c130a0987a14f64bfbb5ff880fbe8" title="clsScreen::drawline" alt="" coords="345,5,479,32"/>
+<area shape="rect" id="node4" href="$classcls_cannonball.html#a33834eed2b4a47193c01340f2451a5ff" title="clsCannonball::getScreen\lPlace" alt="" coords="327,57,497,98"/>
+</map>

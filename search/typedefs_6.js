@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['vectorcannon',['VectorCannon',['../main_8cpp.html#af50f3a6efa7c71b1245623359b241239',1,'main.cpp']]],
-  ['vectorrope',['VectorRope',['../main_8cpp.html#adb9fd11d77a528c52508dc3bd2770ba5',1,'main.cpp']]],
-  ['vpath',['VPath',['../cannonball_8h.html#a0d7d281be2336851ca598bd807202160',1,'cannonball.h']]]
+  ['uchar',['uchar',['../global_8h.html#a65f85814a8290f9797005d3b28e7e5fc',1,'global.h']]],
+  ['uint',['uint',['../global_8h.html#a91ad9478d81a7aaf2593e8d9c3d06a14',1,'global.h']]],
+  ['ulong',['ulong',['../global_8h.html#a718b4eb2652c286f4d42dc18a8e71a1a',1,'global.h']]]
 ];

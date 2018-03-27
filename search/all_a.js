@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['main',['main',['../main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main.cpp']]],
-  ['main_2ecpp',['main.cpp',['../main_8cpp.html',1,'']]],
-  ['mass',['mass',['../structstc_physical_properties.html#a8beb875f87b9b14feec4c066f6107509',1,'stcPhysicalProperties']]]
+  ['left',['left',['../structstc_box.html#a4975a4067b6f3bb5816554097fc38166',1,'stcBox']]],
+  ['loc',['LOC',['../group___screen_stuff.html#ga396e4e1ec21dffa3e4b0a7f53726a150',1,'screen.h']]]
 ];

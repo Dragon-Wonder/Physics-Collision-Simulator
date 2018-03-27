@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['y',['y',['../structstc_double_values.html#aef093677cde3c0c814ad75f24c3edcf9',1,'stcDoubleValues::y()'],['../structstc_location.html#ae3ad95b44a60701b36e377f119d93dde',1,'stcLocation::y()']]]
+  ['width',['width',['../structstc_win_att.html#a4538ff29626ed1d7d1b142f6f2c57eb7',1,'stcWinAtt']]],
+  ['win',['win',['../structstc_win_att.html#a5e0a32d8c181fc7a17ad1097e0004bd8',1,'stcWinAtt']]],
+  ['winatt',['WINATT',['../group___screen_stuff.html#gad6b55e84ae8081fb3733572a47314789',1,'screen.h']]],
+  ['writeinfo',['writeInfo',['../classcls_cannonball.html#aa6303aebfe22b9dcee2d3628cbe52ab2',1,'clsCannonball']]]
 ];

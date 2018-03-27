@@ -1,23 +1,6 @@
 var searchData=
 [
-  ['screen',['screen',['../namespacescreen.html',1,'']]],
-  ['screen_2ecpp',['screen.cpp',['../screen_8cpp.html',1,'']]],
-  ['screen_2eh',['screen.h',['../screen_8h.html',1,'']]],
-  ['screenatt',['screenatt',['../namespacescreen.html#aafebbbd40d32657763037a17e2434851',1,'screen']]],
-  ['setphysicalprops',['setPhysicalProps',['../classcls_cannonball.html#ab31a04400131b00347db77d71efeb737',1,'clsCannonball']]],
-  ['setplace',['setplace',['../classcls_cannonball.html#a0eebc151595ae80beac2cd35b3ca0d11',1,'clsCannonball']]],
-  ['setspin',['setSpin',['../classcls_cannonball.html#a7c224a3a21edd6a8aa054dd55bbaa0f1',1,'clsCannonball']]],
-  ['settool',['setTool',['../classcls_toolbar.html#ab893a7b0dcc9b7386c8b9959c39c5e2a',1,'clsToolbar']]],
-  ['setvalues',['setValues',['../classcls_cannonball.html#a73be08543c2d4da1e2097801b425308f',1,'clsCannonball']]],
-  ['setvelocity',['setVelocity',['../classcls_cannonball.html#a9bc6f2c8acfd8769b6c37019e002d567',1,'clsCannonball']]],
-  ['show',['show',['../classcls_toolbar.html#ae8cd28c16094dd76146fe7164abd51fe',1,'clsToolbar']]],
-  ['startholding',['startHolding',['../classcls_tick.html#af66ef9cefe08dd0ce6f99614cb32be57',1,'clsTick']]],
-  ['starttimer',['startTimer',['../classcls_tick.html#ac4a420f4f48d124a7fdb7328715433c4',1,'clsTick']]],
-  ['stcbox',['stcBox',['../structstc_box.html',1,'']]],
-  ['stccolor',['stcColor',['../structstc_color.html',1,'']]],
-  ['stcdoublevalues',['stcDoubleValues',['../structstc_double_values.html',1,'']]],
-  ['stclocation',['stcLocation',['../structstc_location.html',1,'']]],
-  ['stcphysicalproperties',['stcPhysicalProperties',['../structstc_physical_properties.html',1,'']]],
-  ['stcwinatt',['stcWinAtt',['../structstc_win_att.html',1,'']]],
-  ['stopholding',['stopHolding',['../classcls_tick.html#a4f446f750debf454e1e4eb46387de040',1,'clsTick']]]
+  ['pixel',['pixel',['../structstc_win_att.html#a923cec913909c743d511b969a514a99a',1,'stcWinAtt']]],
+  ['placesspots',['PlacesSpots',['../rope_8h.html#abbc93f144f48a3c7a1fc3547ad1a481a',1,'rope.h']]],
+  ['pp',['PP',['../group___ball_stuff.html#ga0fbce4294df3631f386befb2c5bb2c52',1,'cannonball.h']]]
 ];

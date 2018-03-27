@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['clr',['clr',['../cannonball_8h.html#af297a8ea9bd672fb3b73677f3239e047',1,'cannonball.h']]],
-  ['configures',['Configures',['../config_8h.html#ad8efdb9daf7edeeb668f55e700ad7a23',1,'config.h']]]
+  ['ballsspots',['BallsSpots',['../rope_8h.html#a1b81700118bc2caf8d2738127966ffd7',1,'rope.h']]],
+  ['box',['BOX',['../group___ball_stuff.html#ga13b597f88fe3a7bdc0d6861ad3cf53d8',1,'cannonball.h']]]
 ];

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['update',['update',['../classcls_cannonball.html#ac20d90634036adedd016ec3f398a3ff8',1,'clsCannonball::update()'],['../classcls_screen.html#a48e3bd1e5536ca47c10d46fa36924352',1,'clsScreen::update()']]]
+  ['togglepause',['togglePause',['../classcls_cannonball.html#ab84ed99e99bb0d888f2e8ffbb9d5baee',1,'clsCannonball']]],
+  ['toggletoolbox',['toggleToolbox',['../classcls_toolbar.html#a064542f72a39f9316a10facf78baa811',1,'clsToolbar']]]
 ];

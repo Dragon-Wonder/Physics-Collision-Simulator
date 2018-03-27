@@ -1,4 +1,4 @@
 <map id="version.h" name="version.h">
-<area shape="rect" id="node2" href="$config_8cpp.html" title="config.cpp" alt="" coords="5,80,87,107"/>
-<area shape="rect" id="node3" href="$main_8cpp.html" title="main.cpp" alt="" coords="111,80,186,107"/>
+<area shape="rect" id="node2" href="$main_8cpp.html" title="Holds all the main functions. " alt="" coords="5,80,80,107"/>
+<area shape="rect" id="node3" href="$config_8cpp.html" title="This holds all the functions related to the config file, its loading, making, and holding the values ..." alt="" coords="105,80,186,107"/>
 </map>

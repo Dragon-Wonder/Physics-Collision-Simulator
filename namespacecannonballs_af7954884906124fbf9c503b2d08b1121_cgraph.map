@@ -1,3 +1,4 @@
 <map id="cannonballs::addNew" name="cannonballs::addNew">
-<area shape="rect" id="node2" href="$classcls_cannonball.html#a73be08543c2d4da1e2097801b425308f" title="clsCannonball::setValues" alt="" coords="199,5,368,32"/>
+<area shape="rect" id="node2" href="$classcls_cannonball.html#a73be08543c2d4da1e2097801b425308f" title="clsCannonball::setValues" alt="" coords="205,5,375,32"/>
+<area shape="rect" id="node3" href="$classcls_cannonball.html#ab84ed99e99bb0d888f2e8ffbb9d5baee" title="clsCannonball::togglePause" alt="" coords="199,56,381,83"/>
 </map>

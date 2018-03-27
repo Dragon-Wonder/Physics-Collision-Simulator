@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['_7eclscannonball',['~clsCannonball',['../classcls_cannonball.html#a00284ae3fa99073ef96ab00ebd45c21d',1,'clsCannonball']]],
-  ['_7eclsrope',['~clsRope',['../classcls_rope.html#a78ae156f0d46312afaa4197065eb83f6',1,'clsRope']]],
-  ['_7eclsscreen',['~clsScreen',['../classcls_screen.html#ad2f68af8eac3dc3f54dc807520d909ef',1,'clsScreen']]],
-  ['_7eclstoolbar',['~clsToolbar',['../classcls_toolbar.html#a9a689f2149046f3d52410643bf55df43',1,'clsToolbar']]]
+  ['update',['update',['../classcls_rope.html#a119c31a43a315d9e6fbcd0082361a109',1,'clsRope::update()'],['../classcls_screen.html#a48e3bd1e5536ca47c10d46fa36924352',1,'clsScreen::update()'],['../classcls_cannonball.html#ac20d90634036adedd016ec3f398a3ff8',1,'clsCannonball::update()']]],
+  ['updateforces',['updateForces',['../classcls_cannonball.html#a039414a2987fcca568c979ba31b0484e',1,'clsCannonball']]]
 ];
