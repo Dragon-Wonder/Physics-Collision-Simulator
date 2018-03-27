@@ -38,20 +38,20 @@ PROJECT_NAME           = Physics-Collision-Simulator
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = v1.0.2
+PROJECT_NUMBER         = v1.4.0
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
 # quick idea about the purpose of the project. Keep the description short.
 
-PROJECT_BRIEF          = "Simulation of Cannonballs hitting each other"
+PROJECT_BRIEF          = "Simulation of balls hitting each other"
 
 # With the PROJECT_LOGO tag one can specify a logo or an icon that is included
 # in the documentation. The maximum height of the logo should not exceed 55
 # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
 # the logo to the output directory.
 
-PROJECT_LOGO           = C:/Users/Patrick/Documents/GitHub/SDL-Cannon-Simulation/res/logo.png
+PROJECT_LOGO           = C:/Users/Patrick/Documents/GitHub/SDL-Cannon-Simulation/res/logo.bmp
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
@@ -781,8 +781,7 @@ WARN_LOGFILE           = C:\Users\Patrick.Rye\Documents\GitHub\Cannon-Simulation
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = ../../src \
-                         ../../ChangesLog.md \
-                         ../../LICENSE.md \
+                         ../../docs \
                          ../../README.md
 
 # This tag can be used to specify the character encoding of the source files

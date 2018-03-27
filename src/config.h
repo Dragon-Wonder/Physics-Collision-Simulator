@@ -5,7 +5,8 @@
 /*****************************************************************************/
 #include "global.h"
 /*****************************************************************************/
-/** Holds all of the config values in one place for easier reference */
+/** @struct ConfigValues
+    This Structure holds all of the different config values together. */
 struct ConfigValues {
 	uint uintScreenWidth; /**< Screen Width in Pixels, defaults to 640 */
 	uint uintScreenHeight; /**< Screen Height in Pixels, defaults to 480 */
@@ -19,6 +20,12 @@ struct ConfigValues {
 };
 
 typedef struct ConfigValues Configures;
+/*****************************************************************************/
+/////////////////////////////////////////////////
+/// @class clsConfig config.h "source/config.h"
+/// @brief This class will hold all of the values and functions related to the
+///        config file.
+/////////////////////////////////////////////////
 /*****************************************************************************/
 class clsConfig {
  public:

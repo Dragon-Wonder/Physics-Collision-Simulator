@@ -1,6 +1,11 @@
 /*****************************************************************************/
 #include "cannonball.h"
 /*****************************************************************************/
+/////////////////////////////////////////////////
+/// @file cannonball.cpp
+/// @brief Holds all of the functions for the cannonballs
+/////////////////////////////////////////////////
+/*****************************************************************************/
 clsCannonball::clsCannonball() {
   /////////////////////////////////////////////////
   /// @brief The default Constructor for the cannonballs. It has to call
@@ -23,10 +28,12 @@ clsCannonball::clsCannonball() {
   deltat_ = (1.00 / 60.00);
   forces_ = {0,0};
   acc_ = {0.00, global::physics::kGravity};
-  spin_ = 1.0;
 
   props_.radius = 5.0; //in meters
   props_.density = global::physics::kBallDensity; //density of steel in kg/m^3
+  props_.volume = (double) ((4.0/3.0) * M_PI * pow(props_.radius,3));
+	props_.mass = props_.density * props_.volume;
+  props_.interia = 2 * props_.mass * pow(props_.radius,2) / 5.0;
 
   place_ = {0,0};
   dblLOC_.x = (double) place_.x;
@@ -77,6 +84,8 @@ void clsCannonball::dragCalcValues(void) {
 	props_.area = (double) (2.0 * M_PI * pow(props_.radius,2));
 	props_.volume = (double) ((4.0/3.0) * M_PI * pow(props_.radius,3));
 	props_.mass = props_.density * props_.volume;
+	props_.interia = 2 * props_.mass * pow(props_.radius,2) / 5.0;
+	if(global::blnDebugMode) { printf("Ball %i mass is %5.5f kg.\n",ballID_,props_.mass);}
 }
 /*****************************************************************************/
 void clsCannonball::dragUpdateAcc(void) {
@@ -142,78 +151,40 @@ void clsCannonball::update(double newdeltat) {
   /////////////////////////////////////////////////
 
   blncheckphysics_ = true; // enable on update
-  deltat_ = newdeltat;
+  if (!paused_) {
 
-  // reset the forces so strange things don't happen
-  forces_ = {0.0, props_.mass * global::physics::kGravity};
+    deltat_ = newdeltat;
 
-  if (blndragenabled_) {
-    doMagnusEffect();
-    dragUpdateAcc();
-  }
-  doFriction();
+    acc_.x = forces_.x / props_.mass;
+    acc_.y = forces_.y / props_.mass;
 
-  acc_.x = forces_.x / props_.mass;
-  acc_.y = forces_.y / props_.mass;
+    vel_.x += acc_.x * deltat_;
+    vel_.y += acc_.y * deltat_;
 
-	vel_.x = (vel_.x + acc_.x * deltat_);
-	vel_.y = (vel_.y + acc_.y * deltat_);
+    dblLOC_.x += vel_.x * deltat_ /*+ 0.5 * acc_.x * pow(deltat_,2)*/;
+    dblLOC_.y += vel_.y * deltat_ /*+ 0.5 * acc_.y * pow(deltat_,2)*/;
 
-	// get new velocities if collision with edges
+    setEdgePosition();
 
-	double coefres = (global::config.values.uchrCollisionMethod == CollideInelastic) ?
-                   global::physics::kCoefficientRestitution : 1.0;
+    if (global::config.values.blnLogging) {
+      FILE* logfile = fopen("logfile.log","a");
+      fprintf(logfile,"Ball %3u \t (%.3f, %.3f)\n",ballID_, dblLOC_.x,dblLOC_.y);
+      fclose(logfile);
+    }
 
-
-	/* TODO (GamerMan7799#2#): Make this stuff simpler */
-  if (collisionbox_.left < screen_place_.w / 2) {
-    vel_.x *= -1 * coefres;
-    vel_.y *= coefres;
-    dblLOC_.x = screen_place_.w;
-  }
-
-  if (collisionbox_.right > (screen::screenatt.width)) {
-    vel_.x *= -1 * coefres;
-    vel_.y *= coefres;
-    dblLOC_.x = screen::screenatt.width - screen_place_.w / 2;
-  }
-
-  if (collisionbox_.bottom > (screen::screenatt.height)) {
-    vel_.x *= coefres;
-    vel_.y *= -1 * coefres;
-    dblLOC_.y = screen_place_.h / 2;
-  }
-
-  if (collisionbox_.top < 0 ) {
-    vel_.x *= coefres;
-    vel_.y *= -1 * coefres;
-    dblLOC_.y = (screen::screenatt.height) - screen_place_.h / 2;
-  }
-
-  dblLOC_.x = dblLOC_.x + vel_.x * deltat_ /*+ 0.5 * acc_.x * pow(deltat_,2)*/;
-  dblLOC_.y = dblLOC_.y + vel_.y * deltat_ /*+ 0.5 * acc_.y * pow(deltat_,2)*/;
-
-  // update place and collision box again in case something changed
-  place_.x = round(dblLOC_.x);
-  place_.y = round(dblLOC_.y);
+    double total_v;
+    total_v = sqrt( pow(vel_.x,2) + pow(vel_.y,2) );
+    if (total_v < global::physics::kMinVelocity || isnan(total_v) ) {
+      blnstarted_ = false;
+      if (global::blnDebugMode) {
+        if ( isnan(total_v) ) { printf("Ball velocity is NaN; killing it.\n"); }
+        else { printf("Ball moving too slow; killing it.\n"); }
+      } //end if debug mode
+    } //end if should kill
+  } // end if not paused
   updateCollisionBox();
-
-	if (global::config.values.blnLogging) {
-    FILE* logfile = fopen("logfile.log","a");
-    fprintf(logfile,"Ball %3u \t (%.3f, %.3f)\n",ballID_, dblLOC_.x,dblLOC_.y);
-    fclose(logfile);
-	}
-
-  double total_v;
-  total_v = sqrt( pow(vel_.x,2) + pow(vel_.y,2) );
-  if (total_v < global::physics::kMinVelocity || isnan(total_v) ) {
-    blnstarted_ = false;
-    if (global::blnDebugMode) {
-      if ( isnan(total_v) ) { printf("Ball velocity is NaN; killing it.\n"); }
-      else { printf("Ball moving too slow; killing it.\n"); }
-    } //end if debug mode
-  } //end if should kill
 	show(); //show the ball on the screen
+  // reset the forces so strange things don't happen
 }
 /*****************************************************************************/
 void clsCannonball::show() {
@@ -268,6 +239,7 @@ void clsCannonball::setValues(double r, LOC init_place,
   /////////////////////////////////////////////////
 
   ballID_ = newID;
+  paused_ = false;
 
   props_.radius = r; //in meters
 
@@ -277,18 +249,17 @@ void clsCannonball::setValues(double r, LOC init_place,
 
   acc_ = {0.00, global::physics::kGravity};
 
-  spin_ = (rand() % 1000 - 500) / 500;
-
-
   place_ = init_place;
-  dblLOC_ = { (double) place_.x,
-              (double) place_.y };
+  dblLOC_ = { (double) place_.x / global::physics::kMeterPixelRatio,
+              (double) place_.y / global::physics::kMeterPixelRatio};
 
   vel_ = { (double)(init_vel) * (cos(init_angle)),
            (double)(init_vel) * (sin(init_angle)) };
 	blnstarted_ = true;
 
   dragCalcValues();
+  updateCollisionBox();
+
 
   forces_ = {0.00, global::physics::kGravity * props_.mass};
   blndragenabled_ = global::config.values.blnDragMode;
@@ -326,8 +297,8 @@ void clsCannonball::setplace(LOC newplace) {
   /////////////////////////////////////////////////
   /// @brief Set the ball's place
   /////////////////////////////////////////////////
-  dblLOC_.x = (double)newplace.x;
-  dblLOC_.y = (double)newplace.y;
+  dblLOC_.x = (double)newplace.x / global::physics::kMeterPixelRatio;
+  dblLOC_.y = (double)newplace.y / global::physics::kMeterPixelRatio;
 }
 /*****************************************************************************/
 void clsCannonball::setPhysicalProps(PP newprops) {
@@ -383,9 +354,13 @@ void clsCannonball::updateCollisionBox() {
   /// @brief Updates the collision box
   /////////////////////////////////////////////////
 
+  // update place and collision box again in case something changed
+  place_.x = round(dblLOC_.x * global::physics::kMeterPixelRatio);
+  place_.y = round(dblLOC_.y * global::physics::kMeterPixelRatio);
+
 	//Update the collision box for the new location
-	collisionbox_.left = place_.x - floor(screen_place_.w / 2);
-	collisionbox_.top = screen::screenatt.height - (place_.y + floor(screen_place_.h / 2));
+	collisionbox_.left = place_.x - (int)(screen_place_.w / 2);
+	collisionbox_.top = screen::screenatt.height - (place_.y + (int)(screen_place_.h / 2));
 	collisionbox_.bottom = collisionbox_.top + screen_place_.h;
 	collisionbox_.right = collisionbox_.left + screen_place_.w;
 }
@@ -396,51 +371,152 @@ void clsCannonball::doFriction() {
   /////////////////////////////////////////////////
 
   // normal force is mass * gravity - buoyancy (if drag is enabled)
-  double normal_force = (-1) * props_.mass * global::physics::kGravity;
-  double buoyancy = (-1) * global::physics::kDensityAir *
-                    global::physics::kGravity *
-                    props_.volume;
-  if (blndragenabled_) { normal_force -= buoyancy; }
-
+  double normal_force = (-1) * forces_.y;
   double friction = (double)global::physics::kKineticFriction *
                     normal_force;
   updateCollisionBox();
   //Update acc for Friction values
-  if ( collisionbox_.bottom < screen_place_.h ||
-       collisionbox_.top > screen::screenatt.height ) {
-    //Ball is in contact with floor or ceiling update x acc
+  if ( collisionbox_.bottom <= screen_place_.h ) {
+    //Ball is in contact with floor
     forces_.x += friction * (vel_.x < 0.0 ? -1.0 : 1.0);
-  } // end if touching top/bottom
-
-
-  // Since there really isn't a normal force when the ball contacts
-  // the edges, this section is commented out.
-  /*
-  if ( collisionbox_.left < (screen_place_.w /2 ) ||
-       collisionbox_.right > screen::screenatt.width ) {
-    // Ball is in contact with the wall update y acc.
-    forces_.y += friction * (vel_.y < 0.0 ? -1.0 : 1.0);
-    // add normal force
-    forces_.x += normal_force * (collisionbox_.right > screen::screenatt.width) ?
-                  1.0 : -1.0;
-  } // end if touching side edges */
-}
-/*****************************************************************************/
-void clsCannonball::doMagnusEffect() {
-  /////////////////////////////////////////////////
-  /// @brief Calculates the Magnus Effect caused by the ball's spin
-  /////////////////////////////////////////////////
-
-  double magnus_force = pow(M_PI,2) * pow(props_.radius,3) *
-                        global::physics::kDensityAir;
-
-  forces_.x -= magnus_force * vel_.y * spin_;
-  forces_.y += magnus_force * vel_.x * spin_;
+  }
 }
 /*****************************************************************************/
 void clsCannonball::addForce(dblXY newforces) {
 
   forces_.x += newforces.x;
   forces_.y += newforces.y;
+}
+/*****************************************************************************/
+void clsCannonball::writeInfo() {
+  /////////////////////////////////////////////////
+  /// @brief Writes information bout the ball to the console
+  /////////////////////////////////////////////////
+
+  printf("\n\n");
+  printf("Information about Ball: %i\n",ballID_);
+  printf("Color: \t \t \t (%i, %i, %i)\n",color_.Red, color_.Green, color_.Blue);
+  printf("Location: \t \t (%5.5f, %5.5f)\n",dblLOC_.x,dblLOC_.y);
+  printf("Velocity: \t \t (%5.5f, %5.5f)\n",vel_.x,vel_.y);
+  printf("Acceleration: \t \t (%5.5f, %5.5f)\n",acc_.x,acc_.y);
+  printf("Forces: \t \t (%5.5f, %5.5f)\n", forces_.x, forces_.y);
+
+}
+/*****************************************************************************/
+void clsCannonball::togglePause() {
+  /////////////////////////////////////////////////
+  /// @brief Enable/disable pause
+  /////////////////////////////////////////////////
+
+  paused_ = !(paused_);
+}
+/*****************************************************************************/
+bool clsCannonball::isPaused() {
+  /////////////////////////////////////////////////
+  /// @brief Returns if paused or not
+  /////////////////////////////////////////////////
+
+  return paused_;
+}
+/*****************************************************************************/
+LOC clsCannonball::getScreenPlace() {
+  /////////////////////////////////////////////////
+  /// @brief Returns center of ball in terms of screen coordinates
+  /////////////////////////////////////////////////
+  LOC temp;
+  temp.x = screen_place_.x;
+  temp.x += (int)(screen_place_.w/2);
+  temp.y = screen_place_.y;
+  temp.y += (int)(screen_place_.h/2);
+  return temp;
+}
+/*****************************************************************************/
+void clsCannonball::checkEdges() {
+  /////////////////////////////////////////////////
+  /// @brief Checks and does stuff if ball is colliding with edges.
+  /////////////////////////////////////////////////
+  // get new velocities if collision with edges
+  double coefres = (global::config.values.uchrCollisionMethod == CollideInelastic) ?
+                   global::physics::kCoefficientRestitution : 1.0;
+
+  if (collisionbox_.left < screen_place_.w / 2) {
+    vel_.x *= -1 * coefres;
+    vel_.y *= coefres;
+    forces_.x = 0;
+  }
+
+  if (collisionbox_.right > (screen::screenatt.width)) {
+    vel_.x *= -1 * coefres;
+    vel_.y *= coefres;
+    forces_.x = 0;
+  }
+
+  if (collisionbox_.bottom > (screen::screenatt.height)) {
+    vel_.x *= coefres;
+    vel_.y *= -1 * coefres;
+    forces_.y = 0;
+  }
+
+  if (collisionbox_.top < 0 ) {
+    vel_.x *= coefres;
+    vel_.y *= -1 * coefres;
+    forces_.y = 2 * props_.mass * global::physics::kGravity;
+  }
+}
+/*****************************************************************************/
+void clsCannonball::setEdgePosition() {
+  /////////////////////////////////////////////////
+  /// @brief Set position if colliding with edges
+  /////////////////////////////////////////////////
+
+  if (collisionbox_.left < screen_place_.w / 2) {
+    dblLOC_.x = (screen_place_.w + 1);
+    dblLOC_.x /= global::physics::kMeterPixelRatio;
+  }
+
+  if (collisionbox_.right > (screen::screenatt.width)) {
+    dblLOC_.x = (screen::screenatt.width - screen_place_.w / 2 - 1);
+    dblLOC_.x /= global::physics::kMeterPixelRatio;
+  }
+
+  if (collisionbox_.bottom > (screen::screenatt.height)) {
+      dblLOC_.y = (screen_place_.h / 2 + 1 );
+      dblLOC_.y /= global::physics::kMeterPixelRatio;
+  }
+
+  if (collisionbox_.top < 0 ) {
+    dblLOC_.y = ((screen::screenatt.height) - screen_place_.h / 2 - 1);
+    dblLOC_.y /= global::physics::kMeterPixelRatio;
+  }
+}
+/*****************************************************************************/
+dblXY clsCannonball::getForces() {
+  /////////////////////////////////////////////////
+  /// @brief Returns forces on ball.
+  /////////////////////////////////////////////////
+
+  return forces_;
+}
+/*****************************************************************************/
+void clsCannonball::updateForces() {
+  /////////////////////////////////////////////////
+  /// @brief Updates all the forces on the ball.
+  /////////////////////////////////////////////////
+
+  forces_ = {0,props_.mass * global::physics::kGravity};
+
+  if (blndragenabled_) { dragUpdateAcc(); }
+  doFriction();
+  checkEdges();
+
+}
+/*****************************************************************************/
+dblXY clsCannonball::getdbLOC() {
+  return dblLOC_;
+}
+/*****************************************************************************/
+void clsCannonball::setdbLOC(dblXY newplace) {
+  dblLOC_ = newplace;
+  updateCollisionBox();
 }
 /*****************************************************************************/

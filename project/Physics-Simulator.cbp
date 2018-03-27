@@ -9,22 +9,24 @@
 		<Build>
 			<Target title="Debug-Windows">
 				<Option platforms="Windows;" />
-				<Option output="../Physics-Simulator-PRIVATE" prefix_auto="1" extension_auto="1" />
+				<Option output="../Physics-Simulator-DEBUG" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-pg" />
+					<Add option="-m32" />
 					<Add option="-g" />
 					<Add option="-DDEFINED_BUILD_MODE_PRIVATE" />
 					<Add directory="src/" />
+					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
+					<Add option="-m32" />
 					<Add library="mingw32" />
 					<Add library="SDL2main" />
 					<Add library="SDL2" />
@@ -44,11 +46,14 @@
 				<Compiler>
 					<Add option="-Os" />
 					<Add option="-w" />
+					<Add option="-m32" />
 					<Add option="-D__NO_INLINE__" />
 					<Add directory="src/" />
+					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-m32" />
 					<Add library="mingw32" />
 					<Add library="SDL2main" />
 					<Add library="SDL2" />
@@ -60,7 +65,7 @@
 			</Target>
 			<Target title="Debug-Linux">
 				<Option platforms="Unix;" />
-				<Option output="../Physics-Simulator-PRIVATE" prefix_auto="1" extension_auto="1" />
+				<Option output="../Physics-Simulator-DEBUG" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -73,6 +78,7 @@
 					<Add option="-g" />
 					<Add option="-DDEFINED_BUILD_MODE_PRIVATE" />
 					<Add directory="src/" />
+					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg" />
@@ -96,6 +102,7 @@
 					<Add option="-std=c++11" />
 					<Add option="-w" />
 					<Add directory="src/" />
+					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -109,12 +116,14 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-std=c++11" />
+			<Add option="-m32" />
 			<Add option="-Wno-write-strings" />
+			<Add option="-std=c++11" />
 			<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/include" />
 			<Add directory="../SDL2Stuff/include" />
 		</Compiler>
 		<Linker>
+			<Add option="-m32" />
 			<Add directory="C:/MinGW/SDL2-2.0.4/i686-w64-mingw32/lib" />
 			<Add directory="../SDL2Stuff/lib" />
 		</Linker>
@@ -133,16 +142,24 @@
 		<Unit filename="../src/cannonball.h" />
 		<Unit filename="../src/config.cpp" />
 		<Unit filename="../src/config.h" />
+		<Unit filename="../src/core.cpp" />
+		<Unit filename="../src/core.h" />
 		<Unit filename="../src/global.h" />
 		<Unit filename="../src/image_ball.xpm" />
 		<Unit filename="../src/image_pixel.xpm" />
+		<Unit filename="../src/image_toolbox_frame.xpm" />
+		<Unit filename="../src/image_tools.xpm" />
 		<Unit filename="../src/main.cpp" />
+		<Unit filename="../src/rope.cpp" />
+		<Unit filename="../src/rope.h" />
 		<Unit filename="../src/screen.cpp">
 			<Option weight="28" />
 		</Unit>
 		<Unit filename="../src/screen.h" />
 		<Unit filename="../src/tick.cpp" />
 		<Unit filename="../src/tick.h" />
+		<Unit filename="../src/toolbar.cpp" />
+		<Unit filename="../src/toolbar.h" />
 		<Unit filename="../src/version.h" />
 		<Extensions>
 			<code_completion />
@@ -151,7 +168,7 @@
 			<lib_finder disable_auto="1" />
 			<DoxyBlocks>
 				<comment_style block="5" line="0" />
-				<doxyfile_project project_number="v1.2.5" />
+				<doxyfile_project project_number="v1.4.0-R" output_directory="gh-pages" />
 				<doxyfile_build extract_all="1" />
 				<doxyfile_warnings />
 				<doxyfile_output />

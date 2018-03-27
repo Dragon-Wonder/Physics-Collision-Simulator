@@ -2,20 +2,32 @@
 #define __CANNONBALL_HEADER__
 /*****************************************************************************/
 #include <math.h>
-#include <cstdio>
 #include <cstdlib>
 #include <vector>
 #include <time.h>
 #include "screen.h"
 /*****************************************************************************/
-/** Holds X and Y values that are related together, the values are doubles
-     (Used for location, velocity and accelerations) */
+/////////////////////////////////////////////////
+/// @class clsCannonball cannonball.h "source/cannonball.h"
+/// @brief This class is used to create and control each of the balls.
+/////////////////////////////////////////////////
+/*****************************************************************************/
+/////////////////////////////////////////////////
+/// @defgroup BallStuff Stuff for Cannonballs
+/// @brief Important items for the cannonballs
+/// @{
+/////////////////////////////////////////////////
+/*****************************************************************************/
+/** @struct stcDoubleValues
+    Holds X and Y values that are related together, the values are doubles
+    (Used for location, velocity and accelerations) */
 struct stcDoubleValues {
   double x; /**< X direction values */
   double y; /**< Y direction values */
 };
 
-/** Holds the physical properties of the cannonball. */
+/** @struct stcPhysicsProperties
+    Holds the physical properties of the cannonball. */
 struct stcPhysicalProperties {
   double radius; /**< Radius in meters */
   double mass; /**< Mass of the ball in kilograms */
@@ -24,10 +36,13 @@ struct stcPhysicalProperties {
                     and it saves me from having to divide. */
   double volume; /**< Volume of the ball in m^3 */
   double density; /**< Density of the ball in kg/m^3 see Global::Physics::uBallDensity */
+  double interia; /**< Interia of the ball in kg-m^2 */
 };
 
-/** Holds a box which specifics the space that the ball occupies, used to see if it is colliding with another
-     ball. The box is defined with the values of it left-most edge, its right-most edge, its top-most edge, and its bottom-most edge */
+/** @struct stcBox
+    Holds a box which specifics the space that the ball occupies, used to see if
+    it is colliding with another ball. The box is defined with the values of it
+    left-most edge, its right-most edge, its top-most edge, and its bottom-most edge */
 struct stcBox {
   int left; /**< Left-most edge in term of pixels from the left window edge */
   int right; /**< Right-most edge in term of pixels from the left window edge */
@@ -35,7 +50,8 @@ struct stcBox {
   int bottom; /**< Bottom-most edge in term of pixels from the top window edge */
 };
 
-/** The color based on red, green, and blue */
+/** @struct stcColor
+    The color based on red, green, and blue */
 struct stcColor {
   Uint8 Red; /**< Amount of Red in Color, can vary from 0 to 255 */
   Uint8 Green; /**< Amount of Green in Color, can vary from 0 to 255 */
@@ -46,9 +62,10 @@ typedef struct stcDoubleValues dblXY;
 typedef struct stcPhysicalProperties PP;
 typedef struct stcBox BOX;
 typedef struct stcColor clr;
-typedef struct stcXYZVector XYZ;
+//typedef struct stcXYZVector XYZ;
 
 typedef std::vector<LOC> VPath;
+/// @}
 /*****************************************************************************/
 class clsCannonball {
   public:
@@ -56,17 +73,21 @@ class clsCannonball {
     ~clsCannonball();
     void setValues(double, LOC, double, double, int);
     LOC getplace(void);
+    LOC getScreenPlace(void);
     void setplace(LOC);
-
     void update(double);
-    //void setSDLScreen(SDL_Texture*, SDL_Texture*, WINATT, uint);
+    void updateForces(void);
     dblXY getVelocity(void);
+    dblXY getForces(void);
     void setVelocity(dblXY);
     PP getPhysicalProps(void);
     void setPhysicalProps(PP);
     BOX getBOX(void);
-
-
+    void writeInfo(void);
+    void togglePause(void);
+    bool isPaused(void);
+    void checkEdges(void);
+    void setEdgePosition(void);
     bool blnstarted_; /**< Whether or not the ball is "started" if it is, the program will update
         it and won't let a new ball replace it in its array spot. */
 
@@ -74,6 +95,8 @@ class clsCannonball {
                                 so that when looping through all of the balls, it doesn't mark
                                 the same collision twice */
     void addForce(dblXY);
+    dblXY getdbLOC(void);
+    void  setdbLOC(dblXY);
   private:
 
     uint ballID_;  /**< The ball ID which is basically just its number in the array */
@@ -94,7 +117,7 @@ class clsCannonball {
         the movements looking realistic. See clsTick::getTimeDifference */
 
     dblXY forces_; /**< Forces on the ball in x and y */
-    double spin_; /**< The angular velocity of the ball (in rad/s) for the Magnus Effect  */
+    bool paused_; /**< If the simulation is paused or not.  */
 
     void show(void);
     void drawPath(LOC);
@@ -102,7 +125,6 @@ class clsCannonball {
     void dragUpdateAcc(void);
     void doFriction(void);
     void updateCollisionBox(void);
-    void doMagnusEffect(void);
 };
 /*****************************************************************************/
 #endif // __CANNONBALL_HEADER__

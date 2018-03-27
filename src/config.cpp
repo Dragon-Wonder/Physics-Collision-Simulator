@@ -2,10 +2,11 @@
 #include "config.h"
 #include "version.h"
 /*****************************************************************************/
-/*
-This holds all the functions related to the config file, its loading, making,
-and holding the values pulled from the config.
-*/
+/////////////////////////////////////////////////
+/// @file config.cpp
+/// @brief This holds all the functions related to the config file, its loading, making,
+///        and holding the values pulled from the config.
+/////////////////////////////////////////////////
 /*****************************************************************************/
 clsConfig::clsConfig() {
   /////////////////////////////////////////////////

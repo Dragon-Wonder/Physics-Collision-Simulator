@@ -1,8 +1,13 @@
-#ifndef __TICK__HEADER__
-#define __TICK__HEADER__
+#ifndef __MY_TICK_HEADER__
+#define __MY_TICK_HEADER__
 /*****************************************************************************/
 #include <time.h>
 #include <cmath>
+/*****************************************************************************/
+/////////////////////////////////////////////////
+/// @class clsTick tick.h "source/tick.h"
+/// @brief This class will hold functions related to time.
+/////////////////////////////////////////////////
 /*****************************************************************************/
 class clsTick {
   public:
