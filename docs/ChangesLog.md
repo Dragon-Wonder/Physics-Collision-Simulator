@@ -3,10 +3,10 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## [1.4.0-RC.1] - WIP
+## [1.4.0-R] - 2018-03-27
 ### Added
 * Toolbar with different tools including: drag, fire, drop, rope, delete, and info. (Issue #5)
-* Currently finished tools: fire, drag, drop, delete, and info.
+* Currently finished tools: fire, drag, drop, delete, and info. (Rope tool is present, but rope equations need more work, so I disabled it for now).
 * SDL Licenses.
 * Credits to Docs.
 * More Doxygen stuff.

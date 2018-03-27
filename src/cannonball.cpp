@@ -511,3 +511,12 @@ void clsCannonball::updateForces() {
 
 }
 /*****************************************************************************/
+dblXY clsCannonball::getdbLOC() {
+  return dblLOC_;
+}
+/*****************************************************************************/
+void clsCannonball::setdbLOC(dblXY newplace) {
+  dblLOC_ = newplace;
+  updateCollisionBox();
+}
+/*****************************************************************************/

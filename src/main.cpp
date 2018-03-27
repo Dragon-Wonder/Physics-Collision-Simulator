@@ -4,7 +4,7 @@
 /// @brief      Holds all the main functions.
 /// @author     GamerMan7799
 /// @author     xPUREx
-/// @version    1.4.0-RC.1
+/// @version    1.4.0-R
 /// @date       2018
 /// @copyright  Public Domain Unlicense.
 /////////////////////////////////////////////////
@@ -20,12 +20,12 @@
 /**< If this is defined, then program will use unrealistic method that will
      increase the velocity of two colliding balls the closer they are together
      it will reduce the number of times that the balls stick together,
-     but also causes them to get unrealistically high velocities*/
+     but also causes them to get unrealistically high velocities. */
 /*****************************************************************************/
 #define DEFINED_COLLISION_NORMAL_FORCE 0
 /**< If this is defined, then program will use apply a normal force to any
      colliding balls. The forces are along the same direction as the velocities
-     are. It doesn't make sense in the real world.*/
+     are. It doesn't make sense in the real world. */
 /*****************************************************************************/
 #include "version.h"
 #include "core.h"

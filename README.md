@@ -56,7 +56,7 @@ The first time you run the program a "Config.ini" will be created it should look
 
 ```
 Config File for the Cannon.exe
-1.4.0
+1.4.0-R
 Screen Width: 640
 Screen Height: 480
 Log Ball's path: 0
@@ -113,7 +113,7 @@ Right Arrow = Select next tool
 Left Arrow = Select previous tool
 1 = Select Fire tool
 2 = Select Drop tool
-3 = Select Rope tool
+3 = Select Rope tool - DISABLED ATM
 4 = Select Delete tool
 5 = Select Drag tool
 6 = Select Info tool
@@ -131,7 +131,7 @@ The mass of the ball will be proportional to the length of time that the mouse w
 
 Clicking on the screen will cause a ball to be created at selected location. The ball will have no velocity and its mass will be proportional to the length of time the mouse is held down for.
 
-### Rope tool - WIP
+### Rope tool - DISABLED ATM
 
 Clicking on a ball will cause it to be attached to one end of a rope. The rope can then be attached to another ball, or pinned to background. 
 

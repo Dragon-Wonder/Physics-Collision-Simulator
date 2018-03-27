@@ -43,7 +43,6 @@ typedef struct stcLocation LOC;
 /// @}
 /*****************************************************************************/
 // It is likely bad practice to hold values like this...
-/** @todo (GamerMan7799#9#): Find a better method */
 namespace screen {
   extern WINATT screenatt;
 }

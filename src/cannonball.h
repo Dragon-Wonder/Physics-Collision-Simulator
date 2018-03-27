@@ -95,6 +95,8 @@ class clsCannonball {
                                 so that when looping through all of the balls, it doesn't mark
                                 the same collision twice */
     void addForce(dblXY);
+    dblXY getdbLOC(void);
+    void  setdbLOC(dblXY);
   private:
 
     uint ballID_;  /**< The ball ID which is basically just its number in the array */

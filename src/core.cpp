@@ -77,6 +77,7 @@ void cannonballs::checkCollisons(uint j) {
   /////////////////////////////////////////////////
 
   BOX A, B;
+  dblXY ball_b_loc;
   A = balls[j].getBOX();
   if (balls[j].blncheckphysics_) {
     for (int i = 0; i < balls.size(); ++i) {
@@ -84,6 +85,13 @@ void cannonballs::checkCollisons(uint j) {
         B = balls[i].getBOX();
         if ( checkOverlap(A, B) ) {
           doCollide(j, i);
+          /* ball_b_loc = balls[i].getdbLOC();
+           do {
+            ball_b_loc.x++;
+            ball_b_loc.y++;
+            balls[i].setdbLOC(ball_b_loc);
+            B = balls[i].getBOX();
+          } while (checkOverlap(A,B)); */
           balls[i].blncheckphysics_ = false;
           balls[j].blncheckphysics_ = false;
         } // end if overlap
@@ -423,7 +431,7 @@ char core::handleEvent(SDL_Event* e ) {
       core::toolbar.setTool(ToolDrop);
       return 0;
     case SDLK_3:
-      core::toolbar.setTool(ToolRope);
+      //core::toolbar.setTool(ToolRope);
       return 0;
     case SDLK_4:
       core::toolbar.setTool(ToolDele);
