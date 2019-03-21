@@ -20,7 +20,7 @@ clsRope::clsRope() {
 clsRope::~clsRope() {
   blncheckphysics_ = false;
   balls_ = {nullptr, nullptr};
-  if(global::blnDebugMode) {printf("Rope deconstructor called.\n");}
+  if(global::blnDebugMode) { printf("Rope deconstructor called.\n"); }
 }
 /*****************************************************************************/
 void clsRope::update() {
@@ -85,9 +85,7 @@ void clsRope::activate() {
   blncheckphysics_ = true;
   update_spots();
 
-  length_ = (uint)(sqrt ( pow(spot_.one.x - spot_.two.x,2) +
-                   pow(spot_.one.y - spot_.two.y,2) ) );
-
+  length_ = (uint)math::getVectorLength(math::vectorSub(spot_.one,spot_.two));
   draw();
 }
 /*****************************************************************************/

@@ -160,6 +160,8 @@
 		<Unit filename="../src/tick.h" />
 		<Unit filename="../src/toolbar.cpp" />
 		<Unit filename="../src/toolbar.h" />
+		<Unit filename="../src/vector_math.cpp" />
+		<Unit filename="../src/vector_math.h" />
 		<Unit filename="../src/version.h" />
 		<Extensions>
 			<code_completion />

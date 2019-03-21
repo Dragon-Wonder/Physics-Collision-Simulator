@@ -3,6 +3,13 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
+## [1.4.1-beta.1] - 2019-03-21
+### Added
+* Math function specifically to deal with vector math.
+
+### Fixed
+* Spelling mistakes
+
 ## [1.4.0-R] - 2018-03-27
 ### Added
 * Toolbar with different tools including: drag, fire, drop, rope, delete, and info. (Issue #5)
@@ -12,7 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * More Doxygen stuff.
 * Debug message that prints ball mass when created. 
 * Ability to pause the simulation.
-* Changable Ratio of meters to Pixels (default is 10 pixels/meter)
+* Changeable Ratio of meters to Pixels (default is 10 pixels/meter)
 
 ### Changed
 * Moved Docs to Doc folder.
@@ -25,7 +32,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Floors to casts (due to large number of calls of the floor functions).
 
 ### Removed 
-* Interia/engergy from spins, because it did nothing.
+* Inertia/energy from spins, because it did nothing.
 
 ### Fixed
 * Bug of balls getting stuck in walls.
@@ -42,7 +49,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 ## [1.3.0-R] - 2018-03-06
 ### Added
-* Interia/energy from spins.
+* Inertia/energy from spins.
 
 ### Notes
 * Pretty pointless addition, just wanted to add something since its been a year.
@@ -60,7 +67,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 ### Updated
 * Drag equation.
-* System is force based instead of acceleation.
+* System is force based instead of acceleration.
 
 
 ## [1.1.2-R] - 2017-02-24
@@ -98,7 +105,7 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Max number of past points is now a config value.
 
 ### Notes
-* There are still quite a few non-standard elements left from before I started using Google's style guide consistantly. 
+* There are still quite a few non-standard elements left from before I started using Google's style guide consistently. 
   I changed the worst offending members, but most of the rest of it will be left. 
 
 ## [1.0.0-RC] - 2015-11-21
@@ -133,8 +140,8 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 * Made most lines to be less than 80 charaters.
 
 ### Cleaned
-* Depencies on header files.
-* Depencies on exteral libraries.
+* Dependencies on header files.
+* Dependencies on external libraries.
 
 ### Added
 * More doxygen comments that I missed before.
@@ -465,4 +472,4 @@ This project adheres to [Semantic Versioning](http://semver.org/)
 
 ## [1.0.0-Alpha] - 2015-08-11
 ### Notes
-* Inital.
+* Initial.

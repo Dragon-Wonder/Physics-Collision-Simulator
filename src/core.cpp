@@ -170,8 +170,8 @@ void cannonballs::doCollide(uint numA, uint numB) {
 
     //Equations used can be found and explained here:
     //https://en.wikipedia.org/wiki/Elastic_collision
-    Atotal_v = sqrt( pow(Avel.x,2) + pow(Avel.y,2) );
-    Btotal_v = sqrt( pow(Bvel.x,2) + pow(Bvel.y,2) );
+    Atotal_v = math::getVectorLength(Avel);
+    Btotal_v = math::getVectorLength(Bvel);
 
     //get the angle for both A and B
     if (Avel.x != 0.0) { Aangle = atan(Avel.y/Avel.x); }
@@ -218,8 +218,8 @@ void cannonballs::doCollide(uint numA, uint numB) {
     TotalBMomentum.y += Btotal_v * sin(Bangle - ContactAngle) *
                         sin(ContactAngle + (M_PI / 2) );
   } else {
-    TotalAMomentum.x = Aprops.mass * Avel.x + Bprops.mass * Bvel.x;
-    TotalAMomentum.y = Aprops.mass * Avel.y + Bprops.mass * Bvel.y;
+    TotalAMomentum = math::vectorAdd(math::vectorMul(Avel,Aprops.mass),
+                                     math::vectorMul(Bvel,Bprops.mass));
   } //end if Perfect Inelastic or not
 
   switch (global::physics::collisionmethod) {
@@ -234,10 +234,8 @@ void cannonballs::doCollide(uint numA, uint numB) {
     //cbrt = cube root
     Aprops.radius = cbrt( (double) (3.0*Aprops.volume) / (double) (4.0*M_PI) );
     Aprops.area = (double) (2.0 * M_PI * pow(Aprops.radius, 2) );
-    Aprops.interia = (double) (2*Aprops.mass* pow(Aprops.radius,2.0) /5.0);
     //Now calculate the new velocity
-    Avel.x = TotalAMomentum.x / Aprops.mass;
-    Avel.y = TotalAMomentum.y / Aprops.mass;
+    Avel = math::vectorDiv(TotalAMomentum,Aprops.mass);
     //now "kill" cannonball B and update ball A
     balls[numB].blnstarted_ = false;
     balls[numA].setPhysicalProps(Aprops);
@@ -245,11 +243,11 @@ void cannonballs::doCollide(uint numA, uint numB) {
     break;
   case CollideInelastic:
     //uses the same equations as below but some energy is lost.
-    TotalAMomentum.x *= (double)global::physics::kCoefficientRestitution;
-    TotalAMomentum.y *= (double)global::physics::kCoefficientRestitution;
-    TotalBMomentum.x *= (double)global::physics::kCoefficientRestitution;
-    TotalBMomentum.y *= (double)global::physics::kCoefficientRestitution;
-
+    
+    TotalAMomentum = math::vectorMul(TotalAMomentum,
+                                    (double)global::physics::kCoefficientRestitution);
+    TotalBMomentum = math::vectorMul(TotalAMomentum,
+                                    (double)global::physics::kCoefficientRestitution);
   case CollideElastic:
     //The balls collide and bounce away from each other
 
