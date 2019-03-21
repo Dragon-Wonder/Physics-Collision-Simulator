@@ -3,7 +3,7 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## [1.4.1-beta.1] - 2019-03-21
+## [1.4.1-beta.2] - Unreleased
 ### Added
 * Math function specifically to deal with vector math.
 

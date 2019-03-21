@@ -33,7 +33,6 @@ clsCannonball::clsCannonball() {
   props_.density = global::physics::kBallDensity; //density of steel in kg/m^3
   props_.volume = (double) ((4.0/3.0) * M_PI * pow(props_.radius,3));
 	props_.mass = props_.density * props_.volume;
-  props_.interia = 2 * props_.mass * pow(props_.radius,2) / 5.0;
 
   place_ = {0,0};
   dblLOC_ = {0.0,0.0};
@@ -152,7 +151,7 @@ void clsCannonball::update(double newdeltat) {
     deltat_ = newdeltat;
     acc_ = math::vectorDiv(forces_,props_.mass);
     vel_ = math::vectorAdd(vel_,math::vectorMul(acc_,deltat_));
-    dblLoc_ = math::vectorAdd(dblLoc_,math::vectorMul(vel_,deltat_));
+    dblLOC_ = math::vectorAdd(dblLOC_,math::vectorMul(vel_,deltat_));
 
     setEdgePosition();
 

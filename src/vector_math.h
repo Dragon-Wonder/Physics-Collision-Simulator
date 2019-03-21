@@ -17,7 +17,15 @@ struct stcDoubleValues {
   double y; /**< Y direction values */
 };
 
+/** @struct stcLocation
+    This structure will hold place values in terms of X and Y*/
+struct stcLocation {
+  int x; /**< X location */
+  int y; /**< Y location */
+};
+
 typedef struct stcDoubleValues dblXY;
+typedef struct stcLocation LOC;
 /*****************************************************************************/
 namespace math {
   double getVectorLength(dblXY);
@@ -29,6 +37,7 @@ namespace math {
   dblXY vectorAdd(dblXY,dblXY);
   dblXY vectorSub(dblXY,double);
   dblXY vectorSub(dblXY,dblXY);
+  dblXY vectorSub(LOC,LOC);
   dblXY vectorMul(dblXY,double);
   dblXY vectorMul(dblXY,dblXY);
 }

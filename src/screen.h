@@ -31,15 +31,7 @@ struct stcWinAtt {
   SDL_Rect toolclips[6]; /**< Clips for the different tools. */
 };
 /*****************************************************************************/
-/** @struct stcLocation
-    This structure will hold place values in terms of X and Y*/
-struct stcLocation {
-  int x; /**< X location */
-  int y; /**< Y location */
-};
-
 typedef struct stcWinAtt WINATT;
-typedef struct stcLocation LOC;
 /// @}
 /*****************************************************************************/
 // It is likely bad practice to hold values like this...
