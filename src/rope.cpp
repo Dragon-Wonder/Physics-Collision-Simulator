@@ -173,7 +173,7 @@ dblXY clsRope::ballWallForces(dblXY ball_one_forces, double angle) {
   if (angle == M_PI / 2 || angle == 3/2 * M_PI ) {
     tension.x = 0;
     tension.y = ball_one_forces.y;
-    if (!(signbit((double)spot_.one.y-(double)spot_.two.y) ^ signbit(ball_one_forces.y))) {
+    if (!(std::signbit((double)spot_.one.y-(double)spot_.two.y) ^ std::signbit(ball_one_forces.y))) {
       // force and direction to spot two are both positive or both negative, therefore
       // reverse the force for tension
       tension.y *= -1;
@@ -187,7 +187,7 @@ dblXY clsRope::ballWallForces(dblXY ball_one_forces, double angle) {
   } else {
     tension.y = 0;
     tension.x = ball_one_forces.x;
-    if ((signbit((double)spot_.one.x-(double)spot_.two.x) ^ signbit(ball_one_forces.x))) {
+    if ((std::signbit((double)spot_.one.x-(double)spot_.two.x) ^ std::signbit(ball_one_forces.x))) {
       // force and direction to spot two are both positive or both negative, therefore
       // reverse the force for tension
       tension.x *= -1;

@@ -57,7 +57,7 @@ void cannonballs::addNew(LOC mouseC, LOC mouseO, double HoldTime ) {
   mouseO.y = global::config.values.uintScreenHeight - mouseO.y;
   intCannonBallNum++;
   clsCannonball tempBall;
-  tempBall.setValues(radius, mouseO,fire_v, angle, intCannonBallNum);
+  tempBall.setValues(radius, mouseO, fire_v, angle, intCannonBallNum);
   if (intCannonBallNum > 1) {
     if(balls[0].isPaused()) { tempBall.togglePause(); }
   }
@@ -85,8 +85,9 @@ void cannonballs::checkCollisons(uint j) {
         B = balls[i].getBOX();
         if ( checkOverlap(A, B) ) {
           doCollide(j, i);
-          /* ball_b_loc = balls[i].getdbLOC();
-           do {
+          ball_b_loc = balls[i].getdbLOC();
+          /** @todo (GamerMan7799#9#): This might work for stopping the balls from overlapping, just need to add a check on which way they are colliding */
+           /*do {
             ball_b_loc.x++;
             ball_b_loc.y++;
             balls[i].setdbLOC(ball_b_loc);
@@ -243,7 +244,7 @@ void cannonballs::doCollide(uint numA, uint numB) {
     break;
   case CollideInelastic:
     //uses the same equations as below but some energy is lost.
-    
+
     TotalAMomentum = math::vectorMul(TotalAMomentum,
                                     (double)global::physics::kCoefficientRestitution);
     TotalBMomentum = math::vectorMul(TotalAMomentum,
@@ -329,6 +330,7 @@ void core::fireRandom() {
   LOC mouseo, mousec;
   // time delay can be anywhere from 0.25 to 10 seconds
   double time_delay = ((rand() % (10000-250) + 250) / 1000);
+  if (time_delay <= 0.25) { time_delay = 0.25; }
 
   mouseo.x = rand() % cnfg.uintScreenWidth;
   mouseo.y = rand() % cnfg.uintScreenHeight;
@@ -361,8 +363,8 @@ char core::handleEvent(SDL_Event* e ) {
   if ( e->type == SDL_QUIT ) { return 'q'; }
 
   if ( e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP ) {
-    if (e->type == SDL_MOUSEBUTTONDOWN) {holding = true;}
-    else if (e->type == SDL_MOUSEBUTTONUP) {holding = false;}
+    if (e->type == SDL_MOUSEBUTTONDOWN) { holding = true; }
+    else if (e->type == SDL_MOUSEBUTTONUP) { holding = false; }
     // there is a mouse-based event, so now we have to check what tool we are using.
     //if (global::blnDebugMode) { printf("Mouse event found.\n"); }
     switch ( toolbar.getTool() ) {
@@ -500,7 +502,7 @@ void core::doDeleTool(SDL_Event* e) {
   if( e->type == SDL_MOUSEBUTTONDOWN ){
     SDL_GetMouseState(&currentmouse.x, &currentmouse.y);
     ball_num = findSelectedBall(currentmouse);
-    if (ball_num == -1) {return;}
+    if (ball_num == -1) { return; }
     cannonballs::balls[ball_num].blnstarted_ = false;
   }
 }
@@ -534,7 +536,7 @@ void core::doDragTool(SDL_Event* e) {
   if (e->type == SDL_MOUSEBUTTONDOWN) { ball_num = findSelectedBall(currentmouse); }
   //else if (e->type == SDL_MOUSEBUTTONUP) { ball_num = -1; }
 
-  if (ball_num == -1) {return;}
+  if (ball_num == -1) { return; }
 
   if (e->type == SDL_MOUSEMOTION && holding) {
     currentmouse.y = global::config.values.uintScreenHeight - currentmouse.y;
@@ -544,14 +546,21 @@ void core::doDragTool(SDL_Event* e) {
   //if(global::blnDebugMode) { printf("Tool Drag event\n"); }
   if ( holding && !(cannonballs::balls[ball_num].isPaused()) ) {
     cannonballs::balls[ball_num].togglePause();
-  } else if (!(holding) && cannonballs::balls[ball_num].isPaused()
-             && !(cannonballs::balls.back().isPaused()) &&
-                !(cannonballs::balls.front().isPaused())) {
-      // will only unpause the dragged ball if the other balls are also
-      // unpaused. I check the first and last balls to avoid the chance
-      // that the selected ball is the first or last.
-    cannonballs::balls[ball_num].togglePause();
-    ball_num = -1;
+  } else if ( !(holding) ) {
+    // check if the ball is the first or last
+    if (&cannonballs::balls[ball_num] == &cannonballs::balls.front()) {
+      if (!(cannonballs::balls.back().isPaused()) &&
+          cannonballs::balls[ball_num].isPaused()) {
+            cannonballs::balls[ball_num].togglePause();
+            ball_num = -1;
+          }
+    } else {
+      if (!(cannonballs::balls.front().isPaused()) &&
+          cannonballs::balls[ball_num].isPaused()) {
+            cannonballs::balls[ball_num].togglePause();
+            ball_num = -1;
+          }
+    }
   }
 }
 /*****************************************************************************/

@@ -3,12 +3,18 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## [1.4.1-beta.2] - Unreleased
+## [1.4.1-beta.3] - Unreleased
 ### Added
 * Math function specifically to deal with vector math.
 
 ### Fixed
 * Spelling mistakes
+* Various Code mistakes
+* Drag tool not un-pausing correctly
+
+### Changed
+* Updated Doxygen file
+* Info tool now displays if ball is paused
 
 ## [1.4.0-R] - 2018-03-27
 ### Added

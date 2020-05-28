@@ -171,11 +171,11 @@ int main(int argc, char *argv[]) {
   } while (!quit); //keep looping until we get a quit
 
   // clear vectors is not empty
-  if(!cannonballs::ropes.empty()) {cannonballs::ropes = VectorRope();}
-  if(global::blnDebugMode) {printf("Ropes cleared.\n");}
+  if(!cannonballs::ropes.empty()) { cannonballs::ropes = VectorRope(); }
+  if(global::blnDebugMode) { printf("Ropes cleared.\n"); }
 
-  if(!cannonballs::balls.empty()) {cannonballs::balls = VectorCannon();}
-  if(global::blnDebugMode) {printf("Balls cleared.\n");}
+  if(!cannonballs::balls.empty()) { cannonballs::balls = VectorCannon(); }
+  if(global::blnDebugMode) { printf("Balls cleared.\n"); }
   return 0;
 }
 /*****************************************************************************/

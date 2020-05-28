@@ -163,10 +163,10 @@ void clsCannonball::update(double newdeltat) {
 
     double total_v;
     total_v = math::getVectorLength(vel_);
-    if (total_v < global::physics::kMinVelocity || isnan(total_v) ) {
+    if (total_v < global::physics::kMinVelocity || std::isnan(total_v) ) {
       blnstarted_ = false;
       if (global::blnDebugMode) {
-        if ( isnan(total_v) ) { printf("Ball velocity is NaN; killing it.\n"); }
+        if ( std::isnan(total_v) ) { printf("Ball velocity is NaN; killing it.\n"); }
         else { printf("Ball moving too slow; killing it.\n"); }
       } //end if debug mode
     } //end if should kill
@@ -385,6 +385,11 @@ void clsCannonball::writeInfo() {
   printf("Velocity: \t \t (%5.5f, %5.5f)\n",vel_.x,vel_.y);
   printf("Acceleration: \t \t (%5.5f, %5.5f)\n",acc_.x,acc_.y);
   printf("Forces: \t \t (%5.5f, %5.5f)\n", forces_.x, forces_.y);
+  if (paused_) {
+    printf("Ball is paused.\n");
+  } else {
+    printf("Ball is not paused.\n");
+  }
 
 }
 /*****************************************************************************/
