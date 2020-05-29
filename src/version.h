@@ -37,13 +37,13 @@
 /*****************************************************************************/
 /** The version number in a format used by Boilerplate.rc, It is in the following format
     [MAJOR].[MINOR].[PATCH].[BUILDNUMBER] */
-#define DEFINED_VER_RC_FILEVERSION 1,4,1,4
+#define DEFINED_VER_RC_FILEVERSION 1,4,1,5
 
 /** Is the same as DEFINED_VER_RC_FILEVERSION but is a null terminated string */
-#define DEFINED_VER_RC_FILEVERSION_STRING "1, 4, 1, 4\0"
+#define DEFINED_VER_RC_FILEVERSION_STRING "1, 4, 1, 5\0"
 
 /** A more specific string of the file version */
-#define DEFINED_VER_FULLVERSION_STRING  "1.4.1-rc.1\0"
+#define DEFINED_VER_FULLVERSION_STRING  "1.4.1-R\0"
 
 //Software Status
 /**
@@ -55,10 +55,10 @@ Software Status can be the following:
 | Beta | b | This version will compile and / or run but does not work as expected (or crashes often). |
 | Alpha | a | This version does not work at all; it usually won't compile at all or crashes more times than it works; best not to use versions in this state. |
 */
-#define DEFINED_VER_STATUS 	"Release Candidate"
+#define DEFINED_VER_STATUS 	"Release"
 
 /** See the table for DEFINED_VER_STATUS */
-#define DEFINED_VER_STATUS_SHORT  "rc"
+#define DEFINED_VER_STATUS_SHORT  "r"
 /// @}
 /*****************************************************************************/
 #endif //__VERSION_HEADER__
