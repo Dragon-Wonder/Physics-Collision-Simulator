@@ -28,7 +28,7 @@ struct stcWinAtt {
   SDL_Texture *pixel; /**< The pixel texture, used to draw lines */
   SDL_Texture *toolbox; /**< Toolbox frame texture. */
   SDL_Texture *tools; /**< Textures for the tools in the toolbox. */
-  SDL_Rect toolclips[6]; /**< Clips for the different tools. */
+  SDL_Rect toolclips[7]; /**< Clips for the different tools. */
 };
 /*****************************************************************************/
 typedef struct stcWinAtt WINATT;

@@ -58,9 +58,7 @@ void cannonballs::addNew(LOC mouseC, LOC mouseO, double HoldTime ) {
   intCannonBallNum++;
   clsCannonball tempBall;
   tempBall.setValues(radius, mouseO, fire_v, angle, intCannonBallNum);
-  if (intCannonBallNum > 1) {
-    if(balls[0].isPaused()) { tempBall.togglePause(); }
-  }
+  if (global::blnPaused) { tempBall.togglePause(); }
   balls.push_back(tempBall);
 
   return;
@@ -77,6 +75,7 @@ void cannonballs::checkCollisons(uint j) {
   /////////////////////////////////////////////////
 
   BOX A, B;
+  dblXY ball_a_loc;
   dblXY ball_b_loc;
   A = balls[j].getBOX();
   if (balls[j].blncheckphysics_) {
@@ -85,14 +84,31 @@ void cannonballs::checkCollisons(uint j) {
         B = balls[i].getBOX();
         if ( checkOverlap(A, B) ) {
           doCollide(j, i);
-          ball_b_loc = balls[i].getdbLOC();
-          /** @todo (GamerMan7799#9#): This might work for stopping the balls from overlapping, just need to add a check on which way they are colliding */
-           /*do {
-            ball_b_loc.x++;
-            ball_b_loc.y++;
+          /** @todo (GamerMan7799#3#): This might work for stopping the balls from overlapping, just need to add a check on which way they are colliding */
+#if DEFINED_PUSH_BALLS_OUT_OF_OVERLAP == 1
+           ball_a_loc = balls[j].getdbLOC();
+           ball_b_loc = balls[i].getdbLOC();
+           do {
+              if (A.right <= B.right && A.right >= B.left) {
+                ball_a_loc.x--;
+                ball_b_loc.x++;
+              } else if (A.left >= B.left && A.left <= B.right) {
+                ball_a_loc.x++;
+                ball_b_loc.x--;
+              }
+              if (A.top >= B.top && A.top <= B.bottom) {
+                ball_a_loc.y++;
+                ball_b_loc.y--;
+              } else if (A.bottom >= B.top && A.bottom <= B.bottom) {
+                ball_a_loc.y--;
+                ball_b_loc.y++;
+              }
             balls[i].setdbLOC(ball_b_loc);
+            balls[j].setdbLOC(ball_a_loc);
+            A = balls[j].getBOX();
             B = balls[i].getBOX();
-          } while (checkOverlap(A,B)); */
+          } while (checkOverlap(A,B));
+#endif
           balls[i].blncheckphysics_ = false;
           balls[j].blncheckphysics_ = false;
         } // end if overlap
@@ -111,12 +127,24 @@ bool cannonballs::checkOverlap(BOX A, BOX B) {
   ///
   /////////////////////////////////////////////////
 
-  if( A.right < B.left ){ return false; }
+  /** @todo (GamerMan7799#9#): Improve the overlap check to allow pixel-by-pixel detection */
+
+  if (A.right <= B.right && A.right >= B.left) {
+      if (A.top >= B.top && A.top <= B.bottom) { return true; }
+      else if (A.bottom >= B.top && A.bottom <= B.bottom) { return true; }
+      else { return false; }
+  } else if (A.left >= B.left && A.left <= B.right) {
+      if (A.top >= B.top && A.top <= B.bottom) { return true; }
+      else if (A.bottom >= B.top && A.bottom <= B.bottom) { return true; }
+      else { return false; }
+  } else { return false; }
+
+  /*if( A.right < B.left ){ return false; }
   if( A.left > B.right ){ return false; }
   if( A.bottom < B.top ){ return false; }
   if( A.top > B.bottom ){ return false; }
 
-  return true;
+  return true;*/
 }
 /*****************************************************************************/
 void cannonballs::doCollide(uint numA, uint numB) {
@@ -408,6 +436,7 @@ char core::handleEvent(SDL_Event* e ) {
       return 0;
     case SDLK_p:
       //"pauses" the simulation by preventing ball from updating
+      global::blnPaused = !(global::blnPaused);
       for (int i = 0; i < cannonballs::balls.size(); ++i)
         { cannonballs::balls[i].togglePause(); }
       return 0;
@@ -544,23 +573,11 @@ void core::doDragTool(SDL_Event* e) {
   }
 
   //if(global::blnDebugMode) { printf("Tool Drag event\n"); }
-  if ( holding && !(cannonballs::balls[ball_num].isPaused()) ) {
+  if ( holding && !(cannonballs::balls[ball_num].isPaused()) && !(global::blnPaused) ) {
     cannonballs::balls[ball_num].togglePause();
-  } else if ( !(holding) ) {
-    // check if the ball is the first or last
-    if (&cannonballs::balls[ball_num] == &cannonballs::balls.front()) {
-      if (!(cannonballs::balls.back().isPaused()) &&
-          cannonballs::balls[ball_num].isPaused()) {
-            cannonballs::balls[ball_num].togglePause();
-            ball_num = -1;
-          }
-    } else {
-      if (!(cannonballs::balls.front().isPaused()) &&
-          cannonballs::balls[ball_num].isPaused()) {
-            cannonballs::balls[ball_num].togglePause();
-            ball_num = -1;
-          }
-    }
+  } else if ( !(holding) && !(global::blnPaused) ) {
+    cannonballs::balls[ball_num].togglePause();
+    ball_num = -1;
   }
 }
 /*****************************************************************************/

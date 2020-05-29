@@ -4,8 +4,8 @@
 /// @brief      Holds all the main functions.
 /// @author     GamerMan7799
 /// @author     xPUREx
-/// @version    1.4.0-R
-/// @date       2018
+/// @version    1.4.1-rc.1
+/// @date       2015-2020
 /// @copyright  Public Domain Unlicense.
 /////////////////////////////////////////////////
 /*****************************************************************************/
@@ -15,17 +15,6 @@
                             again, and each time losing more energy.*/
 /** @todo (GamerMan7799#8#): Allow setting of some Physics Values in Config */
 /** @todo (GamerMan7799#8#): Set Max/Min values for mass? */
-/*****************************************************************************/
-#define DEFINED_USE_R2_VEL_MODDER 0
-/**< If this is defined, then program will use unrealistic method that will
-     increase the velocity of two colliding balls the closer they are together
-     it will reduce the number of times that the balls stick together,
-     but also causes them to get unrealistically high velocities. */
-/*****************************************************************************/
-#define DEFINED_COLLISION_NORMAL_FORCE 0
-/**< If this is defined, then program will use apply a normal force to any
-     colliding balls. The forces are along the same direction as the velocities
-     are. It doesn't make sense in the real world. */
 /*****************************************************************************/
 #include "version.h"
 #include "core.h"
@@ -40,6 +29,7 @@ namespace global {
 #endif
 
   clsConfig config;
+  bool blnPaused = false;
 
   /** Holds Values that are related the the physics of the world,
       these are all based on real numbers */

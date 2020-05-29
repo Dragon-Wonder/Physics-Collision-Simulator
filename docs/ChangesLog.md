@@ -3,18 +3,21 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## [1.4.1-beta.3] - Unreleased
+## [1.4.1-rc.1] - Unreleased
 ### Added
 * Math function specifically to deal with vector math.
+* Pause symbol for when simulation is paused (Issue #10)
 
 ### Fixed
 * Spelling mistakes
 * Various Code mistakes
 * Drag tool not un-pausing correctly
+* Defined macros not working correctly since I moved certain functions to core.cpp
 
 ### Changed
 * Updated Doxygen file
 * Info tool now displays if ball is paused
+* Modified the check overlap function
 
 ## [1.4.0-R] - 2018-03-27
 ### Added
