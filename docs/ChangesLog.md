@@ -3,7 +3,7 @@
 All notable changes to this project will be documented here.
 This project adheres to [Semantic Versioning](http://semver.org/)
 
-## [1.4.1-rc.1] - Unreleased
+## [1.4.1-R] - 2020-05-29
 ### Added
 * Math function specifically to deal with vector math.
 * Pause symbol for when simulation is paused (Issue #10)
