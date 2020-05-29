@@ -330,6 +330,8 @@ void clsScreen::setClips() {
    *     +-----+
    *     |(0,5)|
    *     +-----+
+   *     |(0,6)|
+   *     +-----+
    */
 
    int pic_size = 24;
@@ -340,6 +342,7 @@ void clsScreen::setClips() {
    screen::screenatt.toolclips[ToolDele] = {0 * pic_size, 3 * pic_size, pic_size, pic_size};
    screen::screenatt.toolclips[ToolDrag] = {0 * pic_size, 4 * pic_size, pic_size, pic_size};
    screen::screenatt.toolclips[ToolInfo] = {0 * pic_size, 5 * pic_size, pic_size, pic_size};
+   screen::screenatt.toolclips[ToolPause] = {0 * pic_size, 6 * pic_size, pic_size, pic_size};
 
 }
 /*****************************************************************************/

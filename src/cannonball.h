@@ -1,10 +1,11 @@
 #ifndef __CANNONBALL_HEADER__
 #define __CANNONBALL_HEADER__
 /*****************************************************************************/
-#include <math.h>
+#include "vector_math.h"
 #include <cstdlib>
 #include <vector>
 #include <time.h>
+#include <cmath>
 #include "screen.h"
 /*****************************************************************************/
 /////////////////////////////////////////////////
@@ -18,14 +19,6 @@
 /// @{
 /////////////////////////////////////////////////
 /*****************************************************************************/
-/** @struct stcDoubleValues
-    Holds X and Y values that are related together, the values are doubles
-    (Used for location, velocity and accelerations) */
-struct stcDoubleValues {
-  double x; /**< X direction values */
-  double y; /**< Y direction values */
-};
-
 /** @struct stcPhysicsProperties
     Holds the physical properties of the cannonball. */
 struct stcPhysicalProperties {
@@ -36,7 +29,6 @@ struct stcPhysicalProperties {
                     and it saves me from having to divide. */
   double volume; /**< Volume of the ball in m^3 */
   double density; /**< Density of the ball in kg/m^3 see Global::Physics::uBallDensity */
-  double interia; /**< Interia of the ball in kg-m^2 */
 };
 
 /** @struct stcBox
@@ -58,7 +50,6 @@ struct stcColor {
   Uint8 Blue;/**< Amount of Blue in Color, can vary from 0 to 255 */
 };
 
-typedef struct stcDoubleValues dblXY;
 typedef struct stcPhysicalProperties PP;
 typedef struct stcBox BOX;
 typedef struct stcColor clr;

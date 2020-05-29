@@ -28,18 +28,10 @@ struct stcWinAtt {
   SDL_Texture *pixel; /**< The pixel texture, used to draw lines */
   SDL_Texture *toolbox; /**< Toolbox frame texture. */
   SDL_Texture *tools; /**< Textures for the tools in the toolbox. */
-  SDL_Rect toolclips[6]; /**< Clips for the different tools. */
+  SDL_Rect toolclips[7]; /**< Clips for the different tools. */
 };
 /*****************************************************************************/
-/** @struct stcLocation
-    This structure will hold place values in terms of X and Y*/
-struct stcLocation {
-  int x; /**< X location */
-  int y; /**< Y location */
-};
-
 typedef struct stcWinAtt WINATT;
-typedef struct stcLocation LOC;
 /// @}
 /*****************************************************************************/
 // It is likely bad practice to hold values like this...

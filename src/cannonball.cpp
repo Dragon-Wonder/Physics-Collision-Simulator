@@ -33,11 +33,9 @@ clsCannonball::clsCannonball() {
   props_.density = global::physics::kBallDensity; //density of steel in kg/m^3
   props_.volume = (double) ((4.0/3.0) * M_PI * pow(props_.radius,3));
 	props_.mass = props_.density * props_.volume;
-  props_.interia = 2 * props_.mass * pow(props_.radius,2) / 5.0;
 
   place_ = {0,0};
-  dblLOC_.x = (double) place_.x;
-  dblLOC_.y = (double) place_.y;
+  dblLOC_ = {0.0,0.0};
 
   vel_ = {0,0};
 
@@ -84,7 +82,6 @@ void clsCannonball::dragCalcValues(void) {
 	props_.area = (double) (2.0 * M_PI * pow(props_.radius,2));
 	props_.volume = (double) ((4.0/3.0) * M_PI * pow(props_.radius,3));
 	props_.mass = props_.density * props_.volume;
-	props_.interia = 2 * props_.mass * pow(props_.radius,2) / 5.0;
 	if(global::blnDebugMode) { printf("Ball %i mass is %5.5f kg.\n",ballID_,props_.mass);}
 }
 /*****************************************************************************/
@@ -98,7 +95,7 @@ void clsCannonball::dragUpdateAcc(void) {
   /////////////////////////////////////////////////
 
   if (vel_.x != 0.0 && vel_.y != 0.0 && props_.mass != 0.0) {
-    double flow_velocity = sqrt(pow(vel_.x,2) + pow(vel_.y,2));
+    double flow_velocity = math::getVectorLength(vel_);
     double Re = (global::physics::kDensityAir * props_.radius * 2 * flow_velocity);
     Re /= global::physics::kAirDynViscosity;
     double drag_force;
@@ -122,10 +119,8 @@ void clsCannonball::dragUpdateAcc(void) {
     angle += vel_.x < 0.0 ? M_PI : 0.0;
 
     // update force values
-    forces_.x -= drag_force * cos (angle);
-    forces_.y -= drag_force * sin (angle);
-
-
+    dblXY dragforces = {drag_force * cos (angle),drag_force * sin (angle)};
+    forces_ = math::vectorSub(forces_,dragforces);
     // Calculate Buoyancy
     double force_buoyancy;
     force_buoyancy = global::physics::kDensityAir * props_.volume *
@@ -154,15 +149,9 @@ void clsCannonball::update(double newdeltat) {
   if (!paused_) {
 
     deltat_ = newdeltat;
-
-    acc_.x = forces_.x / props_.mass;
-    acc_.y = forces_.y / props_.mass;
-
-    vel_.x += acc_.x * deltat_;
-    vel_.y += acc_.y * deltat_;
-
-    dblLOC_.x += vel_.x * deltat_ /*+ 0.5 * acc_.x * pow(deltat_,2)*/;
-    dblLOC_.y += vel_.y * deltat_ /*+ 0.5 * acc_.y * pow(deltat_,2)*/;
+    acc_ = math::vectorDiv(forces_,props_.mass);
+    vel_ = math::vectorAdd(vel_,math::vectorMul(acc_,deltat_));
+    dblLOC_ = math::vectorAdd(dblLOC_,math::vectorMul(vel_,deltat_));
 
     setEdgePosition();
 
@@ -173,11 +162,11 @@ void clsCannonball::update(double newdeltat) {
     }
 
     double total_v;
-    total_v = sqrt( pow(vel_.x,2) + pow(vel_.y,2) );
-    if (total_v < global::physics::kMinVelocity || isnan(total_v) ) {
+    total_v = math::getVectorLength(vel_);
+    if (total_v < global::physics::kMinVelocity || std::isnan(total_v) ) {
       blnstarted_ = false;
       if (global::blnDebugMode) {
-        if ( isnan(total_v) ) { printf("Ball velocity is NaN; killing it.\n"); }
+        if ( std::isnan(total_v) ) { printf("Ball velocity is NaN; killing it.\n"); }
         else { printf("Ball moving too slow; killing it.\n"); }
       } //end if debug mode
     } //end if should kill
@@ -382,11 +371,7 @@ void clsCannonball::doFriction() {
   }
 }
 /*****************************************************************************/
-void clsCannonball::addForce(dblXY newforces) {
-
-  forces_.x += newforces.x;
-  forces_.y += newforces.y;
-}
+void clsCannonball::addForce(dblXY newforces) {forces_ = math::vectorAdd(forces_,newforces);}
 /*****************************************************************************/
 void clsCannonball::writeInfo() {
   /////////////////////////////////////////////////
@@ -400,6 +385,11 @@ void clsCannonball::writeInfo() {
   printf("Velocity: \t \t (%5.5f, %5.5f)\n",vel_.x,vel_.y);
   printf("Acceleration: \t \t (%5.5f, %5.5f)\n",acc_.x,acc_.y);
   printf("Forces: \t \t (%5.5f, %5.5f)\n", forces_.x, forces_.y);
+  if (paused_) {
+    printf("Ball is paused.\n");
+  } else {
+    printf("Ball is not paused.\n");
+  }
 
 }
 /*****************************************************************************/

@@ -22,6 +22,10 @@ void clsToolbar::show() {
 
   // Make SDL rect just for the tool picture inside the frame
   SDL_Rect tool_pic_box = {position_.x+2,position_.y+2,24,24};
+  SDL_Rect pause_location = {screen::screenatt.width-24,2,24,24};
+
+  pause_location.x + 28;
+
 
   if(show_toolbox_) { // only show if enabled
     SDL_RenderCopy(screen::screenatt.ren,screen::screenatt.toolbox,
@@ -31,6 +35,10 @@ void clsToolbar::show() {
     SDL_RenderCopy(screen::screenatt.ren,screen::screenatt.tools,
                    &screen::screenatt.toolclips[selected_tool_], &tool_pic_box);
 
+    if (global::blnPaused) {
+      SDL_RenderCopy(screen::screenatt.ren,screen::screenatt.tools,
+                     &screen::screenatt.toolclips[ToolPause], &pause_location);
+    }
   }
 }
 /*****************************************************************************/

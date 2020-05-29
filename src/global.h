@@ -9,6 +9,21 @@
 ///        Global namespace. See Main.cpp for more details
 /////////////////////////////////////////////////
 /*****************************************************************************/
+#define DEFINED_USE_R2_VEL_MODDER 0
+/**< If this is defined, then program will use unrealistic method that will
+     increase the velocity of two colliding balls the closer they are together
+     it will reduce the number of times that the balls stick together,
+     but also causes them to get unrealistically high velocities. */
+/*****************************************************************************/
+#define DEFINED_COLLISION_NORMAL_FORCE 0
+/**< If this is defined, then program will use apply a normal force to any
+     colliding balls. The forces are along the same direction as the velocities
+     are. It doesn't make sense in the real world. */
+/*****************************************************************************/
+#define DEFINED_PUSH_BALLS_OUT_OF_OVERLAP 0
+/**< This will turn on a method that will attempt to move the balls until they
+     are no longer overlapping when detecting collision. */
+/*****************************************************************************/
 class clsConfig;
 /*****************************************************************************/
 //global typedefs
@@ -31,6 +46,7 @@ namespace cannonballs {
 namespace global {
   extern const bool blnDebugMode;
   extern clsConfig config;
+  extern bool blnPaused;
   namespace physics {
   /////////////////////////////////////////////////
   /// @defgroup ChangeablePhysics Defined Physics values
@@ -88,7 +104,8 @@ enum Tools {
   ToolDrop,     /**< Drops a ball without velocity. */
   ToolDele,     /**< Tool to delete selected ball. */
   ToolDrag,     /**< Tool that allows ball to be dragged around. */
-  ToolInfo      /**< Tool that writes information about the selected ball to screen */
+  ToolInfo,     /**< Tool that writes information about the selected ball to screen */
+  ToolPause     /**< Not really a tool, but the pause symbol */
 };
 /*****************************************************************************/
 #endif // __GLOBAL_H_INCLUDED__

@@ -9,7 +9,7 @@ There are a few branches of this that use different programming languages.
 # License
 
 This program has been released in the Public Domain meaning you can use it however you wish, read the license file [here](https://github.com/Dragon-Wonder/Physics-Collision-Simulator/blob/master/docs/LICENSE.md) 
-or you can read [here](http://unlicense.org) for infomation of the Unlicense in general.
+or you can read [here](http://unlicense.org) for information of the Unlicense in general.
 
 ## Summary of what license means
 
@@ -17,7 +17,7 @@ or you can read [here](http://unlicense.org) for infomation of the Unlicense in 
 
 * You can modify this code any way you wish without credit (but we would certainty appreciate it)
 
-* You can any/all of this code for private and/or commerical use
+* You can any/all of this code for private and/or commercial use
 
 # Running the program
 
@@ -38,7 +38,7 @@ FolderName\SDL2.dll
 FolderName\SDL2_image.dll
 ```
 
-If you are using the verision I compile, which can be found in the [release tab](https://github.com/Dragon-Wonder/Physics-Collision-Simulator/releases) 
+If you are using the version I compile, which can be found in the [release tab](https://github.com/Dragon-Wonder/Physics-Collision-Simulator/releases) 
 you will also need the following binaries. 
 
 ```
@@ -145,4 +145,4 @@ Clicking and dragging on a ball will allow you to move a ball where the mouse is
 
 ### Info Tool
 
-Clicking on a ball will write infomation about it to the console
+Clicking on a ball will write information about it to the console

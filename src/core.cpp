@@ -57,10 +57,8 @@ void cannonballs::addNew(LOC mouseC, LOC mouseO, double HoldTime ) {
   mouseO.y = global::config.values.uintScreenHeight - mouseO.y;
   intCannonBallNum++;
   clsCannonball tempBall;
-  tempBall.setValues(radius, mouseO,fire_v, angle, intCannonBallNum);
-  if (intCannonBallNum > 1) {
-    if(balls[0].isPaused()) { tempBall.togglePause(); }
-  }
+  tempBall.setValues(radius, mouseO, fire_v, angle, intCannonBallNum);
+  if (global::blnPaused) { tempBall.togglePause(); }
   balls.push_back(tempBall);
 
   return;
@@ -77,6 +75,7 @@ void cannonballs::checkCollisons(uint j) {
   /////////////////////////////////////////////////
 
   BOX A, B;
+  dblXY ball_a_loc;
   dblXY ball_b_loc;
   A = balls[j].getBOX();
   if (balls[j].blncheckphysics_) {
@@ -85,13 +84,31 @@ void cannonballs::checkCollisons(uint j) {
         B = balls[i].getBOX();
         if ( checkOverlap(A, B) ) {
           doCollide(j, i);
-          /* ball_b_loc = balls[i].getdbLOC();
+          /** @todo (GamerMan7799#3#): This might work for stopping the balls from overlapping, just need to add a check on which way they are colliding */
+#if DEFINED_PUSH_BALLS_OUT_OF_OVERLAP == 1
+           ball_a_loc = balls[j].getdbLOC();
+           ball_b_loc = balls[i].getdbLOC();
            do {
-            ball_b_loc.x++;
-            ball_b_loc.y++;
+              if (A.right <= B.right && A.right >= B.left) {
+                ball_a_loc.x--;
+                ball_b_loc.x++;
+              } else if (A.left >= B.left && A.left <= B.right) {
+                ball_a_loc.x++;
+                ball_b_loc.x--;
+              }
+              if (A.top >= B.top && A.top <= B.bottom) {
+                ball_a_loc.y++;
+                ball_b_loc.y--;
+              } else if (A.bottom >= B.top && A.bottom <= B.bottom) {
+                ball_a_loc.y--;
+                ball_b_loc.y++;
+              }
             balls[i].setdbLOC(ball_b_loc);
+            balls[j].setdbLOC(ball_a_loc);
+            A = balls[j].getBOX();
             B = balls[i].getBOX();
-          } while (checkOverlap(A,B)); */
+          } while (checkOverlap(A,B));
+#endif
           balls[i].blncheckphysics_ = false;
           balls[j].blncheckphysics_ = false;
         } // end if overlap
@@ -110,12 +127,24 @@ bool cannonballs::checkOverlap(BOX A, BOX B) {
   ///
   /////////////////////////////////////////////////
 
-  if( A.right < B.left ){ return false; }
+  /** @todo (GamerMan7799#9#): Improve the overlap check to allow pixel-by-pixel detection */
+
+  if (A.right <= B.right && A.right >= B.left) {
+      if (A.top >= B.top && A.top <= B.bottom) { return true; }
+      else if (A.bottom >= B.top && A.bottom <= B.bottom) { return true; }
+      else { return false; }
+  } else if (A.left >= B.left && A.left <= B.right) {
+      if (A.top >= B.top && A.top <= B.bottom) { return true; }
+      else if (A.bottom >= B.top && A.bottom <= B.bottom) { return true; }
+      else { return false; }
+  } else { return false; }
+
+  /*if( A.right < B.left ){ return false; }
   if( A.left > B.right ){ return false; }
   if( A.bottom < B.top ){ return false; }
   if( A.top > B.bottom ){ return false; }
 
-  return true;
+  return true;*/
 }
 /*****************************************************************************/
 void cannonballs::doCollide(uint numA, uint numB) {
@@ -170,8 +199,8 @@ void cannonballs::doCollide(uint numA, uint numB) {
 
     //Equations used can be found and explained here:
     //https://en.wikipedia.org/wiki/Elastic_collision
-    Atotal_v = sqrt( pow(Avel.x,2) + pow(Avel.y,2) );
-    Btotal_v = sqrt( pow(Bvel.x,2) + pow(Bvel.y,2) );
+    Atotal_v = math::getVectorLength(Avel);
+    Btotal_v = math::getVectorLength(Bvel);
 
     //get the angle for both A and B
     if (Avel.x != 0.0) { Aangle = atan(Avel.y/Avel.x); }
@@ -218,8 +247,8 @@ void cannonballs::doCollide(uint numA, uint numB) {
     TotalBMomentum.y += Btotal_v * sin(Bangle - ContactAngle) *
                         sin(ContactAngle + (M_PI / 2) );
   } else {
-    TotalAMomentum.x = Aprops.mass * Avel.x + Bprops.mass * Bvel.x;
-    TotalAMomentum.y = Aprops.mass * Avel.y + Bprops.mass * Bvel.y;
+    TotalAMomentum = math::vectorAdd(math::vectorMul(Avel,Aprops.mass),
+                                     math::vectorMul(Bvel,Bprops.mass));
   } //end if Perfect Inelastic or not
 
   switch (global::physics::collisionmethod) {
@@ -234,10 +263,8 @@ void cannonballs::doCollide(uint numA, uint numB) {
     //cbrt = cube root
     Aprops.radius = cbrt( (double) (3.0*Aprops.volume) / (double) (4.0*M_PI) );
     Aprops.area = (double) (2.0 * M_PI * pow(Aprops.radius, 2) );
-    Aprops.interia = (double) (2*Aprops.mass* pow(Aprops.radius,2.0) /5.0);
     //Now calculate the new velocity
-    Avel.x = TotalAMomentum.x / Aprops.mass;
-    Avel.y = TotalAMomentum.y / Aprops.mass;
+    Avel = math::vectorDiv(TotalAMomentum,Aprops.mass);
     //now "kill" cannonball B and update ball A
     balls[numB].blnstarted_ = false;
     balls[numA].setPhysicalProps(Aprops);
@@ -245,11 +272,11 @@ void cannonballs::doCollide(uint numA, uint numB) {
     break;
   case CollideInelastic:
     //uses the same equations as below but some energy is lost.
-    TotalAMomentum.x *= (double)global::physics::kCoefficientRestitution;
-    TotalAMomentum.y *= (double)global::physics::kCoefficientRestitution;
-    TotalBMomentum.x *= (double)global::physics::kCoefficientRestitution;
-    TotalBMomentum.y *= (double)global::physics::kCoefficientRestitution;
 
+    TotalAMomentum = math::vectorMul(TotalAMomentum,
+                                    (double)global::physics::kCoefficientRestitution);
+    TotalBMomentum = math::vectorMul(TotalAMomentum,
+                                    (double)global::physics::kCoefficientRestitution);
   case CollideElastic:
     //The balls collide and bounce away from each other
 
@@ -331,6 +358,7 @@ void core::fireRandom() {
   LOC mouseo, mousec;
   // time delay can be anywhere from 0.25 to 10 seconds
   double time_delay = ((rand() % (10000-250) + 250) / 1000);
+  if (time_delay <= 0.25) { time_delay = 0.25; }
 
   mouseo.x = rand() % cnfg.uintScreenWidth;
   mouseo.y = rand() % cnfg.uintScreenHeight;
@@ -363,8 +391,8 @@ char core::handleEvent(SDL_Event* e ) {
   if ( e->type == SDL_QUIT ) { return 'q'; }
 
   if ( e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP ) {
-    if (e->type == SDL_MOUSEBUTTONDOWN) {holding = true;}
-    else if (e->type == SDL_MOUSEBUTTONUP) {holding = false;}
+    if (e->type == SDL_MOUSEBUTTONDOWN) { holding = true; }
+    else if (e->type == SDL_MOUSEBUTTONUP) { holding = false; }
     // there is a mouse-based event, so now we have to check what tool we are using.
     //if (global::blnDebugMode) { printf("Mouse event found.\n"); }
     switch ( toolbar.getTool() ) {
@@ -408,6 +436,7 @@ char core::handleEvent(SDL_Event* e ) {
       return 0;
     case SDLK_p:
       //"pauses" the simulation by preventing ball from updating
+      global::blnPaused = !(global::blnPaused);
       for (int i = 0; i < cannonballs::balls.size(); ++i)
         { cannonballs::balls[i].togglePause(); }
       return 0;
@@ -502,7 +531,7 @@ void core::doDeleTool(SDL_Event* e) {
   if( e->type == SDL_MOUSEBUTTONDOWN ){
     SDL_GetMouseState(&currentmouse.x, &currentmouse.y);
     ball_num = findSelectedBall(currentmouse);
-    if (ball_num == -1) {return;}
+    if (ball_num == -1) { return; }
     cannonballs::balls[ball_num].blnstarted_ = false;
   }
 }
@@ -536,7 +565,7 @@ void core::doDragTool(SDL_Event* e) {
   if (e->type == SDL_MOUSEBUTTONDOWN) { ball_num = findSelectedBall(currentmouse); }
   //else if (e->type == SDL_MOUSEBUTTONUP) { ball_num = -1; }
 
-  if (ball_num == -1) {return;}
+  if (ball_num == -1) { return; }
 
   if (e->type == SDL_MOUSEMOTION && holding) {
     currentmouse.y = global::config.values.uintScreenHeight - currentmouse.y;
@@ -544,14 +573,9 @@ void core::doDragTool(SDL_Event* e) {
   }
 
   //if(global::blnDebugMode) { printf("Tool Drag event\n"); }
-  if ( holding && !(cannonballs::balls[ball_num].isPaused()) ) {
+  if ( holding && !(cannonballs::balls[ball_num].isPaused()) && !(global::blnPaused) ) {
     cannonballs::balls[ball_num].togglePause();
-  } else if (!(holding) && cannonballs::balls[ball_num].isPaused()
-             && !(cannonballs::balls.back().isPaused()) &&
-                !(cannonballs::balls.front().isPaused())) {
-      // will only unpause the dragged ball if the other balls are also
-      // unpaused. I check the first and last balls to avoid the chance
-      // that the selected ball is the first or last.
+  } else if ( !(holding) && !(global::blnPaused) ) {
     cannonballs::balls[ball_num].togglePause();
     ball_num = -1;
   }
