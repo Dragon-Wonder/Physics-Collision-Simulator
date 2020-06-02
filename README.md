@@ -56,7 +56,7 @@ The first time you run the program a "Config.ini" will be created it should look
 
 ```
 Config File for the Cannon.exe
-1.4.0-R
+1.4.2-R
 Screen Width: 640
 Screen Height: 480
 Log Ball's path: 0

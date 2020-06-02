@@ -1,15 +1,15 @@
 #ifndef __CANNONBALL_HEADER__
 #define __CANNONBALL_HEADER__
 /*****************************************************************************/
-#include "vector_math.h"
+#include "../math/vector_math.h"
 #include <cstdlib>
 #include <vector>
 #include <time.h>
 #include <cmath>
-#include "screen.h"
+#include "../ui/screen.h"
 /*****************************************************************************/
 /////////////////////////////////////////////////
-/// @class clsCannonball cannonball.h "source/cannonball.h"
+/// @class clsCannonball cannonball.h "src/entity/cannonball.h"
 /// @brief This class is used to create and control each of the balls.
 /////////////////////////////////////////////////
 /*****************************************************************************/

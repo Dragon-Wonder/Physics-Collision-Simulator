@@ -4,7 +4,7 @@
 /// @brief      Holds all the main functions.
 /// @author     GamerMan7799
 /// @author     xPUREx
-/// @version    1.4.1-R
+/// @version    1.4.2-beta.1
 /// @date       2015-2020
 /// @copyright  Public Domain Unlicense.
 /////////////////////////////////////////////////
@@ -17,7 +17,7 @@
 /** @todo (GamerMan7799#8#): Set Max/Min values for mass? */
 /*****************************************************************************/
 #include "version.h"
-#include "core.h"
+#include "core/core.h"
 /*****************************************************************************/
 namespace global {
   /** Holds if build is in debug mode, this can happen if

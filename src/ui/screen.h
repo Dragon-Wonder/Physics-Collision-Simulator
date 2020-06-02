@@ -4,10 +4,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string>
-#include "config.h"
+#include "../core/config.h"
 /*****************************************************************************/
 /////////////////////////////////////////////////
-/// @class clsScreen screen.h "source/screen.h"
+/// @class clsScreen screen.h "src/ui/screen.h"
 /// @brief This class will hold all of the functions for the SDL screen.
 /////////////////////////////////////////////////
 /*****************************************************************************/
