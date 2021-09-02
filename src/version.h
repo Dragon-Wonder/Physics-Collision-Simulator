@@ -37,13 +37,13 @@
 /*****************************************************************************/
 /** The version number in a format used by Boilerplate.rc, It is in the following format
     [MAJOR].[MINOR].[PATCH].[BUILDNUMBER] */
-#define DEFINED_VER_RC_FILEVERSION 1,4,2,2
+#define DEFINED_VER_RC_FILEVERSION 1,4,2,3
 
 /** Is the same as DEFINED_VER_RC_FILEVERSION but is a null terminated string */
-#define DEFINED_VER_RC_FILEVERSION_STRING "1, 4, 2, 2\0"
+#define DEFINED_VER_RC_FILEVERSION_STRING "1, 4, 2, 3\0"
 
 /** A more specific string of the file version */
-#define DEFINED_VER_FULLVERSION_STRING  "1.4.2-beta.2\0"
+#define DEFINED_VER_FULLVERSION_STRING  "1.4.2-beta.3\0"
 
 //Software Status
 /**

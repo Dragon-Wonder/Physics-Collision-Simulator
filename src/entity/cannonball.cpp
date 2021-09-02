@@ -39,7 +39,7 @@ clsCannonball::clsCannonball() {
 
   vel_ = {0,0};
 
-  srand (time(NULL));
+  srand (time(NULL)+(props_.mass*ballID_));
 
   color_ = {(Uint8)rand() % 255,(Uint8)rand() % 255,(Uint8)rand() % 255};
 
@@ -82,7 +82,7 @@ void clsCannonball::dragCalcValues(void) {
 	props_.area = (double) (2.0 * M_PI * pow(props_.radius,2));
 	props_.volume = (double) ((4.0/3.0) * M_PI * pow(props_.radius,3));
 	props_.mass = props_.density * props_.volume;
-	if(global::blnDebugMode) { printf("Ball %i mass is %5.5f kg.\n",ballID_,props_.mass);}
+	if(global::blnDebugMode) { printf("Ball %i mass is %5.5f kg.\n",ballID_,props_.mass); }
 }
 /*****************************************************************************/
 void clsCannonball::dragUpdateAcc(void) {

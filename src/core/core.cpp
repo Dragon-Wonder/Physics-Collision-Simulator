@@ -38,7 +38,7 @@ void cannonballs::addNew(LOC mouseC, LOC mouseO, double HoldTime ) {
   //Get location, vel, and angle
   double fire_v;
   double angle;
-  double radius = (double)global::equations::kTimeSizeRatio * sqrt(HoldTime);
+  double radius = (double)global::equations::kTimeSizeRatio * cbrt(log(HoldTime+1));
 
   fire_v = -1 * sqrt( pow(mouseC.x - mouseO.x, 2) + pow(mouseC.y - mouseO.y, 2) );
   fire_v *= (double) global::equations::kVelocityScalar;

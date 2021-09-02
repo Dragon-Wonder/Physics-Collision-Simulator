@@ -4,7 +4,7 @@
 /// @brief      Holds all the main functions.
 /// @author     GamerMan7799
 /// @author     xPUREx
-/// @version    1.4.2-beta.2
+/// @version    1.4.2-beta.3
 /// @date       2015-2021
 /// @copyright  Public Domain Unlicense.
 /////////////////////////////////////////////////
@@ -56,20 +56,20 @@ namespace global {
     const float kVelocityScalar = 0.1; /**< Changing this effects the ratio
                                           of the line to the velocity when
                                           creating a cannonball */
-    const float kTimeSizeRatio = 0.025; /**< One second of holding down
+    const float kTimeSizeRatio = 0.072; /**< One second of holding down
                                                 the mouse button = this many
                                                 meters for the ball */
-    const float kMassAlphaRatio = 41.166; /**< The ratio between mass and its
+    const float kMassAlphaRatio = 83.166; /**< The ratio between mass and its
                                                 alpha (transparent) value. \n
                                                 The equation used is Global::Equations::kMassAlphaRatio
                                                 * ln( clsCannonball::props.mass ) +
                                                 Global::Equations::kMassAlphaOffset */
-    const float kMassAlphaOffset = 130.84; /**< The offset for the equation of
+    const float kMassAlphaOffset = 5; /**< The offset for the equation of
                                                 mass to alpha value \n
                                                 The equation used is Global::Equations::kMassAlphaRatio
                                                 * ln( clsCannonball::props.mass ) +
                                                 Global::Equations::kMassAlphaOffset */
-    const float kAlphaMinimum = 50; /**< The lowest that the alpha value is allowed to be,
+    const float kAlphaMinimum = 35; /**< The lowest that the alpha value is allowed to be,
                                          for reference 0 is completely transparent and 255 is completely opaque */
   } //end namespace Equations
 } //end namespace Global
