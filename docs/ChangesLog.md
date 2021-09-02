@@ -4,7 +4,7 @@ All notable changes to this project will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.4.2-beta.1] - UNRELEASED
+## [1.4.2-beta.2] - UNRELEASED
 ### Changed
 * Moved src files around to group them into similar folders
 
@@ -149,7 +149,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Makefile (it should now work).
 * Doxygen now uses DOT to make graphs.
 * Functions that were in main.cpp have been renamed and moved into a namespace.
-* All line seprators from 170 charaters long to 80 to allow me to see if I am breaking Google's recommended 80 charaters length 
+* All line separators from 170 charaters long to 80 to allow me to see if I am breaking Google's recommended 80 charaters length 
 	see [here] (https://google-styleguide.googlecode.com/svn/trunk/cppguide.html#Line_Length) .
 * Made most lines to be less than 80 charaters.
 

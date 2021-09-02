@@ -7,10 +7,10 @@
 /////////////////////////////////////////////////
 /*****************************************************************************/
 //Include the xpm files which present the images.
-#include "../image/image_ball.xpm"
-#include "../image/image_pixel.xpm"
-#include "../image/image_toolbox_frame.xpm"
-#include "../image/image_tools.xpm"
+#include "../images/image_ball.xpm"
+#include "../images/image_pixel.xpm"
+#include "../images/image_toolbox_frame.xpm"
+#include "../images/image_tools.xpm"
 /*****************************************************************************/
 namespace screen {
   WINATT screenatt;

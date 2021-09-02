@@ -39,7 +39,7 @@ namespace screen {
   extern WINATT screenatt;
 }
 /*****************************************************************************/
-#include "cannonball.h"
+#include "../entity/cannonball.h"
 /*****************************************************************************/
 class clsScreen {
   public:
